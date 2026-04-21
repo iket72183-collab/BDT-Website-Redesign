@@ -116,7 +116,10 @@ function HeroScreen({ isMobile }) {
         Elevating the next generation of creators. The industry's watching. 🚀
       </div>
       <GoldDivider />
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9, marginTop: -8 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: -10, marginBottom: 14 }}>
+        <Kicker>Social Media Links</Kicker>
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9 }}>
         {SOCIAL_LINKS.map(({ abbr, label, href }) => (
           <SocialPill key={label} abbr={abbr} label={label} href={href} fullWidth={isMobile} />
         ))}
