@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "BDT Talent Group",
+    "url": "https://bdttalentgroup.com/",
+    "logo": "https://bdttalentgroup.com/bdt-logo.jpeg",
+    "description": "AI-Powered talent management company elevating creators and culture-makers through strategic guidance and technology.",
+    "foundingDate": "2026",
+    "founder": {
+      "@type": "Person",
+      "name": "Isaac Tran"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "areaServed": "Global",
+      "availableLanguage": ["English"]
+    },
+    "sameAs": [
+      "https://x.com/BDTTalentGroup",
+      "https://www.tiktok.com/@bdttalentgroup",
+      "https://www.instagram.com/bdttalentgroup/",
+      "https://www.threads.com/@bdttalentgroup",
+      "https://bsky.app/profile/bdttalentgroup.bsky.social",
+      "https://www.facebook.com/profile.php?id=61576643010008",
+      "https://www.linkedin.com/in/isaac-tran-8668033ba/"
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "BDT Talent Group",
+    "image": "https://bdttalentgroup.com/bdt-logo.jpeg",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "San Antonio",
+      "addressRegion": "TX",
+      "addressCountry": "US"
+    },
+    "telephone": "+1-555-BDT-GROUP",
+    "email": "info@bdttalentgroup.com",
+    "areaServed": "United States",
+    "serviceType": [
+      "Talent Management",
+      "Creator Services",
+      "Social Media Strategy",
+      "Brand Development",
+      "Digital Marketing"
+    ],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ]
+  }
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BDT Talent Group</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    
+
+    .hero {
+      text-align: center;
+      padding: 60px 24px 40px;
+      width: 100%;
+      max-width: 1120px;
+    }
+
+    .logo {
+      max-width: 760px;
+      width: min(94%, 760px);
+      height: auto;
+      display: block;
+      margin: 0 auto 48px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      color: #c9a84c;
+    }
+
+    .hero p {
+      font-family: Arial, sans-serif;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      letter-spacing: 0.12em;
+      color: #b0b0b0;
+      margin-top: 8px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: #c9a84c;
+      margin: 32px auto;
+      opacity: 0.6;
+    }
+
+    .social-links {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #d8d8d8;
+      text-decoration: none;
+      padding: 10px 14px;
+      border: 1px solid rgba(201, 168, 76, 0.35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(201, 168, 76, 0.32);
+      background: rgba(201, 168, 76, 0.08);
+      color: #f1e0ac;
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .social-links a:hover {
+      color: #c9a84c;
+      border-color: rgba(201, 168, 76, 0.8);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .showcase {
+      margin-top: 42px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+      perspective: 1200px;
+    }
+
+    .showcase-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 240px;
+      border: 1px solid rgba(201, 168, 76, 0.22);
+      border-radius: 26px;
+      padding: 24px 22px;
+      background:
+        radial-gradient(circle at top right, rgba(183, 28, 28, 0.18), transparent 34%),
+        radial-gradient(circle at bottom left, rgba(201, 168, 76, 0.12), transparent 38%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      text-align: left;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.26);
+      cursor: pointer;
+      transition:
+        transform 420ms ease-in-out,
+        box-shadow 420ms ease-in-out,
+        border-color 420ms ease-in-out,
+        opacity 420ms ease-in-out,
+        filter 420ms ease-in-out,
+        background 420ms ease-in-out;
+    }
+
+    .showcase-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+      opacity: 0.45;
+      transition: opacity 420ms ease-in-out;
+    }
+
+    .showcase-card::before {
+      content: '';
+      position: absolute;
+      inset: auto 22px 18px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(201, 168, 76, 0), rgba(201, 168, 76, 0.75), rgba(201, 168, 76, 0));
+      opacity: 0.4;
+      transition: opacity 420ms ease-in-out;
+    }
+
+    .showcase-card:hover {
+      border-color: rgba(201, 168, 76, 0.42);
+      transform: translateY(-6px);
+    }
+
+    .showcase-card:focus-visible {
+      outline: none;
+      border-color: rgba(201, 168, 76, 0.82);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.14), 0 22px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .showcase.has-active .showcase-card {
+      opacity: 0.56;
+      filter: saturate(0.72);
+      transform: translateY(0);
+    }
+
+    .showcase.has-active .showcase-card.is-active {
+      opacity: 1;
+      filter: none;
+      transform: translateY(-18px);
+      border-color: rgba(201, 168, 76, 0.82);
+      background:
+        radial-gradient(circle at top right, rgba(183, 28, 28, 0.26), transparent 38%),
+        radial-gradient(circle at bottom left, rgba(201, 168, 76, 0.18), transparent 42%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+      box-shadow: 0 34px 80px rgba(0, 0, 0, 0.38);
+    }
+
+    .showcase.has-active .showcase-card.is-active::after,
+    .showcase.has-active .showcase-card.is-active::before {
+      opacity: 0.85;
+    }
+
+    .showcase-eyebrow {
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #f1d78f;
+    }
+
+    .showcase-card p {
+      margin-top: 12px;
+      font-family: Arial, sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #b78e3a;
+    }
+
+    .contact-card {
+      margin: 38px auto 0;
+      max-width: 760px;
+      padding: 28px;
+      border: 1px solid rgba(201, 168, 76, 0.22);
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      text-align: left;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.24);
+    }
+
+    .contact-eyebrow {
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #c9a84c;
+    }
+
+    .contact-card h2 {
+      margin-top: 12px;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+
+    .contact-card p {
+      margin-top: 12px;
+      font-family: Arial, sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      color: #bbb;
+    }
+
+    .contact-form {
+      margin-top: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .contact-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .contact-field span {
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e2d3a4;
+    }
+
+    .contact-input,
+    .contact-textarea {
+      width: 100%;
+      border: 1px solid rgba(201, 168, 76, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 0.95rem;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .contact-input::placeholder,
+    .contact-textarea::placeholder {
+      color: #777;
+    }
+
+    .contact-input:focus,
+    .contact-textarea:focus {
+      border-color: rgba(201, 168, 76, 0.75);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+    }
+
+    .contact-textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .contact-button {
+      border: 1px solid rgba(201, 168, 76, 0.36);
+      border-radius: 999px;
+      font-family: Arial, sans-serif;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 14px 22px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .contact-submit {
+      background: linear-gradient(180deg, rgba(201, 168, 76, 0.16), rgba(201, 168, 76, 0.08));
+      color: #f5e9bf;
+    }
+
+    .contact-submit:hover {
+      transform: translateY(-1px);
+      border-color: rgba(201, 168, 76, 0.82);
+      background: linear-gradient(180deg, rgba(201, 168, 76, 0.22), rgba(201, 168, 76, 0.12));
+    }
+
+    .contact-clear {
+      background: rgba(255, 255, 255, 0.04);
+      color: #d8d8d8;
+    }
+
+    .contact-clear:hover {
+      transform: translateY(-1px);
+      border-color: rgba(201, 168, 76, 0.58);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .contact-note {
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: #8f8f8f;
+    }
+
+    .contact-note a {
+      color: #d9bf70;
+      text-decoration: none;
+    }
+
+    .contact-note a:hover {
+      color: #f0d995;
+    }
+
+    @media (max-width: 900px) {
+      .showcase {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 48px;
+      }
+
+      .showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase-card,
+      .showcase.has-active .showcase-card.is-active {
+        transform: translateY(0);
+      }
+
+      .contact-card {
+        padding: 22px 18px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  /* Riverdale Crew image panel */
+    .crew-image-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .crew-photo {
+      width: 100%;
+      max-width: 860px;
+      height: auto;
+      border-radius: 20px;
+      display: block;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+    }
+    .crew-caption {
+      text-align: center;
+      max-width: 680px;
+    }
+    
+    </style>
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "BDT Talent Group",
+      "url": "https://www.bdttalentgroup.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.bdttalentgroup.com/bdt-logo.jpeg"
+      },
+      "description": "BDT Talent Group is a luxury talent agency pairing AI-powered discovery with hands-on representation for fashion, editorial, and brand partnerships.",
+      "founder": {
+        "@type": "Person",
+        "name": "Isaac Tran",
+        "jobTitle": "Founder & Owner",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "BDT Talent Group"
+        },
+        "sameAs": [
+          "https://twitter.com/bdttalentgroup",
+          "https://www.instagram.com/bdttalentgroup",
+          "https://www.threads.net/@bdttalentgroup"
+        ]
+      },
+      "sameAs": [
+        "https://www.instagram.com/bdttalentgroup",
+        "https://twitter.com/bdttalentgroup",
+        "https://www.threads.net/@bdttalentgroup",
+        "https://discord.gg/GW4pqHrJ",
+        "https://www.tiktok.com/@bdttalentgroup",
+        "https://bsky.app/profile/bdttalentgroup",
+        "https://www.facebook.com/bdttalentgroup",
+        "https://www.youtube.com/@bdttalentgroup"
+      ]
+    }
+  ]
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1F6TSKYQC9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1F6TSKYQC9');
+  </script>
+</head>
+<body>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      display: block;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(183, 28, 28, 0.16), transparent 26%),
+        radial-gradient(circle at top right, rgba(201, 168, 76, 0.12), transparent 22%),
+        #040404;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .site-layout {
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .mobile-bar {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      background: rgba(7, 7, 7, 0.92);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+      backdrop-filter: blur(16px);
+    }
+
+    .mobile-brand {
+      font-size: 0.92rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #f3ddb0;
+    }
+
+    .mobile-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgba(201, 168, 76, 0.22);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #f5e9bf;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    }
+
+    .mobile-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(201, 168, 76, 0.55);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.58);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 55;
+    }
+
+    .sidebar-backdrop.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 292px;
+      padding: 28px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      background:
+        radial-gradient(circle at top, rgba(183, 28, 28, 0.18), transparent 28%),
+        linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(5, 5, 5, 0.98));
+      border-right: 1px solid rgba(201, 168, 76, 0.18);
+      box-shadow: 24px 0 60px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(18px);
+      z-index: 70;
+      transition: transform 0.34s ease, box-shadow 0.34s ease;
+    }
+
+    .sidebar-brand {
+      display: grid;
+      gap: 10px;
+    }
+
+    .sidebar-kicker {
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: #c9a84c;
+    }
+
+    .sidebar-title {
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .sidebar-copy {
+      font-family: Arial, sans-serif;
+      font-size: 0.86rem;
+      line-height: 1.8;
+      color: #a7a7a7;
+    }
+
+    .sidebar-nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .sidebar-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 0 16px 0 30px;
+      border: 1px solid rgba(201, 168, 76, 0.14);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      color: #d8d8d8;
+      font-family: Arial, sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition:
+        transform 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease,
+        box-shadow 0.22s ease;
+    }
+
+    .sidebar-link::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #c9a84c;
+      opacity: 0.25;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .sidebar-link:hover {
+      transform: translateX(4px);
+      color: #f5e9bf;
+      border-color: rgba(201, 168, 76, 0.44);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .sidebar-link.is-current {
+      color: #f5e9bf;
+      transform: translateX(6px);
+      border-color: rgba(201, 168, 76, 0.68);
+      background:
+        radial-gradient(circle at left, rgba(201, 168, 76, 0.14), transparent 28%),
+        rgba(201, 168, 76, 0.08);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
+    }
+
+    .sidebar-link.is-current::before {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+
+    .site-main {
+      margin-left: 292px;
+      padding: 32px clamp(20px, 4vw, 44px) 72px;
+    }
+
+    .page-shell {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      gap: 26px;
+    }
+
+    .section-block {
+      position: relative;
+      scroll-margin-top: 88px;
+    }
+
+    .section-shell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(201, 168, 76, 0.18);
+      border-radius: 30px;
+      padding: 30px 28px;
+      background:
+        radial-gradient(circle at top right, rgba(183, 28, 28, 0.14), transparent 28%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        transform 0.52s ease,
+        opacity 0.52s ease,
+        border-color 0.28s ease,
+        box-shadow 0.28s ease;
+    }
+
+    .section-shell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+      opacity: 0.55;
+    }
+
+    .section-block.is-visible .section-shell {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-block.is-jumping .section-shell,
+    .section-block.is-jumping .contact-card {
+      animation: sectionLift 480ms ease-in-out;
+    }
+
+    .section-block.is-current-section .section-shell,
+    .section-block.is-current-section .contact-card {
+      border-color: rgba(201, 168, 76, 0.34);
+      box-shadow: 0 26px 78px rgba(0, 0, 0, 0.34);
+    }
+
+    @keyframes sectionLift {
+      0% {
+        opacity: 0.45;
+        transform: translateY(32px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      min-height: calc(100vh - 64px);
+      max-width: none;
+      width: 100%;
+      padding: 24px 0 10px;
+      display: grid;
+      gap: 22px;
+      align-content: center;
+      text-align: center;
+    }
+
+    .hero-stage {
+      padding: 24px 18px 0;
+    }
+
+    .logo {
+      max-width: 820px;
+      width: min(100%, 820px);
+      margin: 0 auto 40px;
+    }
+
+    .social-links {
+      margin-top: 28px;
+      justify-content: center;
+    }
+
+    .hero .social-links a {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-summary {
+      display: grid;
+      gap: 18px;
+      text-align: left;
+    }
+
+    .about-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .about-portrait-wrap {
+      width: min(100%, 250px);
+      justify-self: center;
+    }
+
+    .about-portrait {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 28px;
+      border: 1px solid rgba(201, 168, 76, 0.24);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .about-copy {
+      display: grid;
+      gap: 14px;
+    }
+
+    .crew-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .crew-visual {
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      border-radius: 28px;
+      border: 1px solid rgba(201, 168, 76, 0.18);
+      background:
+        radial-gradient(circle at top right, rgba(183, 28, 28, 0.14), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(201, 168, 76, 0.1), transparent 34%),
+        rgba(255, 255, 255, 0.03);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
+      text-align: center;
+    }
+
+    .crew-visual-label {
+      font-size: clamp(1.4rem, 4vw, 2.5rem);
+      line-height: 1.2;
+      letter-spacing: 0.06em;
+      color: #f5e9bf;
+    }
+
+    .crew-visual-note {
+      margin-top: 14px;
+      font-family: Arial, sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(245, 233, 191, 0.72);
+    }
+
+    .crew-copy {
+      display: grid;
+      gap: 14px;
+    }
+
+    .crew-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .crew-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      border-radius: 999px;
+      background: rgba(201, 168, 76, 0.08);
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #f5e9bf;
+    }
+
+    .section-kicker {
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #f1d78f;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 3vw, 2.8rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+
+    .section-copy {
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: rgba(255, 255, 255, 0.78);
+      max-width: 760px;
+    }
+
+    .section-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      border-radius: 999px;
+      background: rgba(201, 168, 76, 0.08);
+      font-family: Arial, sans-serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #f5e9bf;
+    }
+
+    .content-section {
+      display: grid;
+      gap: 18px;
+    }
+
+    .product-spotlight {
+      max-width: 760px;
+      margin-top: 20px;
+      padding: 24px 26px;
+      border: 1px solid rgba(201, 168, 76, 0.16);
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at top right, rgba(183, 28, 28, 0.14), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+      text-align: left;
+    }
+
+    .product-copy {
+      display: grid;
+      gap: 12px;
+    }
+
+    .product-copy h3 {
+      margin: 0;
+      max-width: 18ch;
+      font-size: clamp(1.3rem, 2.6vw, 2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+      color: #fff;
+    }
+
+    .contact-section .contact-card {
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      max-width: none;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: transform 0.52s ease, opacity 0.52s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .contact-section.is-visible .contact-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .contact-section .contact-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+      opacity: 0.45;
+    }
+
+    @media (max-width: 1180px) {
+      .sidebar {
+        width: 268px;
+      }
+
+      .site-main {
+        margin-left: 268px;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .mobile-bar {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-110%);
+        width: min(84vw, 340px);
+      }
+
+      .sidebar.is-open {
+        transform: translateX(0);
+      }
+
+      .site-main {
+        margin-left: 0;
+        padding: 22px 18px 52px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 0;
+      }
+
+      .hero-summary {
+        gap: 16px;
+      }
+
+      .about-panel {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .crew-panel {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .about-portrait-wrap {
+        width: min(100%, 180px);
+      }
+
+      .about-copy {
+        text-align: center;
+      }
+
+      .crew-copy {
+        text-align: center;
+      }
+
+      .crew-badges {
+        justify-content: center;
+      }
+
+    }
+
+    @media (max-width: 640px) {
+      .hero-stage {
+        padding: 12px 0 0;
+      }
+
+      .product-spotlight {
+        padding: 18px;
+      }
+
+      .section-shell,
+      .contact-card {
+        padding: 24px 18px;
+      }
+
+      .social-links {
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .social-links a {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .contact-actions {
+        flex-wrap: nowrap;
+        gap: 10px;
+      }
+
+      .contact-button {
+        flex: 1 1 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        padding: 14px 12px;
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+      }
+
+    }
+  </style>
+
+  <div class="mobile-bar">
+    <div class="mobile-brand">BDT Talent Group</div>
+    <button class="mobile-toggle" type="button" aria-expanded="false" aria-controls="site-sidebar" data-mobile-toggle>☰</button>
+  </div>
+
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+  <div class="site-layout">
+    <aside class="sidebar" id="site-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-kicker">Main Navigation</div>
+        <div class="sidebar-title">BDT Talent Group</div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Primary">
+        <a class="sidebar-link is-current" href="#about-me" data-nav-link>About Me</a>
+        <a class="sidebar-link" href="#riverdale-crew" data-nav-link>Riverdale Crew</a>
+        <a class="sidebar-link" href="#what-we-do" data-nav-link>What We Do</a>
+        <a class="sidebar-link" href="#products" data-nav-link>Products</a>
+        <a class="sidebar-link" href="#contact-me" data-nav-link>Contact Me</a>
+      </nav>
+
+    </aside>
+
+    <main class="site-main">
+      <div class="page-shell">
+        <section id="about-me" class="section-block hero is-visible is-current-section" data-section>
+          <div class="hero-stage">
+            <img src="bdt-logo.jpeg" alt="BDT Talent Group Logo" class="logo" />
+
+            <h1>AI-Powered Talent. <span>Human-Centered Culture.</span></h1>
+            <p>Elevating the next generation of creators. The industry’s watching. 🚀</p>
+
+            <div class="divider"></div>
+            <div class="social-links">
+              <a href="https://x.com/BDTTalentGroup" target="_blank" rel="noreferrer"><span class="social-icon">X</span><span>X</span></a>
+              <a href="https://www.tiktok.com/@bdttalentgroup" target="_blank" rel="noreferrer"><span class="social-icon">TT</span><span>TikTok</span></a>
+              <a href="https://www.instagram.com/bdttalentgroup/" target="_blank" rel="noreferrer"><span class="social-icon">IG</span><span>Instagram</span></a>
+              <a href="https://www.threads.com/@bdttalentgroup" target="_blank" rel="noreferrer"><span class="social-icon">@</span><span>Threads</span></a>
+              <a href="https://discord.gg/GW4pqHrJ" target="_blank" rel="noreferrer"><span class="social-icon">DC</span><span>Discord</span></a>
+              <a href="https://www.facebook.com/profile.php?id=61576643010008" target="_blank" rel="noreferrer"><span class="social-icon">f</span><span>Facebook</span></a>
+              <a href="https://www.linkedin.com/in/isaac-tran-8668033ba/" target="_blank" rel="noreferrer"><span class="social-icon">in</span><span>LinkedIn</span></a>
+              <a href="https://bsky.app/profile/bdttalentgroup.bsky.social" target="_blank" rel="noreferrer"><span class="social-icon">BS</span><span>Bluesky</span></a>
+              <a href="https://snapchat.com/add/BDTTalentGroup" target="_blank" rel="noreferrer"><span class="social-icon">SC</span><span>Snapchat</span></a>
+              <a href="https://www.reddit.com/u/BDTTalentGroup" target="_blank" rel="noreferrer"><span class="social-icon">R</span><span>Reddit</span></a>
+              <a href="https://www.youtube.com/channel/UCxnQAWrGGaYikuy-N4YCTNQ" target="_blank" rel="noreferrer"><span class="social-icon">YT</span><span>YouTube</span></a>
+            </div>
+          </div>
+
+          <div class="section-shell hero-summary">
+            <div class="section-title">About Me</div>
+            <div class="about-panel">
+              <div class="about-portrait-wrap">
+                <img src="BDT_website_pic.jpg" alt="Portrait of Isaac Tran, founder of BDT Talent Group" class="about-portrait" />
+              </div>
+              <div class="about-copy">
+                <div class="section-kicker">Founder, BDT Talent Group</div>
+                <p class="section-copy">
+                  Isaac Tran is the founder of BDT Talent Group and a passionate AI enthusiast who believes the
+                  future of human creativity isn't threatened by artificial intelligence - it's elevated by it. His
+                  vision is simple: empower artists, creators, and culture-makers with AI as a tool, not a
+                  replacement.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="riverdale-crew" class="section-block content-section" data-section>
+          <div class="section-shell">
+            <div class="section-title">Riverdale Crew</div>
+            <div class="crew-image-wrap">
+              <img
+                src="Riverdale_Crew.jpg"
+                alt="The Riverdale Crew — Archie, Betty, and Veronica"
+                class="crew-photo"
+              />
+              <div class="crew-caption">
+                <p class="section-copy">
+                  Meet <strong>Archie</strong>, <strong>Betty</strong>, and <strong>Veronica</strong> — the Riverdale Crew.
+                  Three AI agents working around the clock to support the team, streamline operations,
+                  and keep the creative engine running.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="what-we-do" class="section-block content-section" data-section>
+          <div class="section-shell">
+            <div class="section-title">What We Do</div>
+            <p class="section-copy">
+              We build apps. We build websites. We consult. We empower creators - all with AI but centered around
+              human and artistic culture.
+            </p>
+          </div>
+        </section>
+
+        <section id="products" class="section-block content-section" data-section>
+          <div class="section-shell">
+            <div class="section-title">Products</div>
+            <div class="product-spotlight">
+              <div class="product-copy">
+                <div class="section-kicker">Google Play Rollout</div>
+                <h3>Aight Bet, Add Me, and more on the way.</h3>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact-me" class="section-block contact-section" data-section>
+          <section class="contact-card" aria-labelledby="contact-title">
+            <div class="contact-eyebrow">Contact Me</div>
+            <h2 id="contact-title">Start a private conversation.</h2>
+            <p>
+              Share your project, talent inquiry, or brand opportunity below and we’ll route it directly to BDT
+              management.
+            </p>
+
+            <form class="contact-form" id="contact-form">
+              <div class="contact-grid">
+                <label class="contact-field">
+                  <span>Name</span>
+                  <input class="contact-input" type="text" name="name" placeholder="Your name" required />
+                </label>
+                <label class="contact-field">
+                  <span>Email</span>
+                  <input class="contact-input" type="email" name="email" placeholder="name@example.com" required />
+                </label>
+              </div>
+
+              <label class="contact-field">
+                <span>Message</span>
+                <textarea class="contact-textarea" name="message" placeholder="Tell us about your inquiry." required></textarea>
+              </label>
+
+              <div class="contact-actions">
+                <button class="contact-button contact-submit" type="submit">Send Message</button>
+                <button class="contact-button contact-clear" type="reset">Clear Form</button>
+              </div>
+            </form>
+          </section>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const body = document.body;
+    const sidebar = document.getElementById('site-sidebar');
+    const sidebarBackdrop = document.querySelector('[data-sidebar-close]');
+    const mobileToggle = document.querySelector('[data-mobile-toggle]');
+    const navLinks = Array.from(document.querySelectorAll('[data-nav-link]'));
+    const sections = Array.from(document.querySelectorAll('[data-section]'));
+    const contactForm = document.getElementById('contact-form');
+
+    const openSidebar = () => {
+      if (!sidebar || !mobileToggle) return;
+      sidebar.classList.add('is-open');
+      sidebarBackdrop.classList.add('is-visible');
+      mobileToggle.setAttribute('aria-expanded', 'true');
+      body.classList.add('menu-open');
+    };
+
+    const closeSidebar = () => {
+      if (!sidebar || !mobileToggle) return;
+      sidebar.classList.remove('is-open');
+      sidebarBackdrop.classList.remove('is-visible');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      body.classList.remove('menu-open');
+    };
+
+    const setCurrentSection = (id) => {
+      navLinks.forEach((link) => {
+        const isCurrent = link.getAttribute('href') === `#${id}`;
+        link.classList.toggle('is-current', isCurrent);
+      });
+
+      sections.forEach((section) => {
+        section.classList.toggle('is-current-section', section.id === id);
+      });
+    };
+
+    const jumpToSection = (selector) => {
+      const target = document.querySelector(selector);
+      if (!target) return;
+
+      target.classList.remove('is-jumping');
+      void target.offsetWidth;
+      target.classList.add('is-jumping');
+      window.setTimeout(() => target.classList.remove('is-jumping'), 520);
+
+      // If jumping to about-me, scroll past the hero-stage to the section-shell
+      if (selector === '#about-me') {
+        const aboutShell = target.querySelector('.section-shell');
+        if (aboutShell) {
+          const y = aboutShell.getBoundingClientRect().top + window.scrollY - 32;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          setCurrentSection('about-me');
+          closeSidebar();
+          return;
+        }
+      }
+
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setCurrentSection(target.id);
+      closeSidebar();
+    };
+
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        if (sidebar.classList.contains('is-open')) {
+          closeSidebar();
+        } else {
+          openSidebar();
+        }
+      });
+    }
+
+    if (sidebarBackdrop) {
+      sidebarBackdrop.addEventListener('click', closeSidebar);
+    }
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        jumpToSection(link.getAttribute('href'));
+      });
+    });
+
+    if (sections.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+            }
+          });
+
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((left, right) => right.intersectionRatio - left.intersectionRatio)[0];
+
+          if (visible) {
+            setCurrentSection(visible.target.id);
+          }
+        },
+        {
+          threshold: [0.2, 0.45, 0.7],
+          rootMargin: '-8% 0px -50% 0px',
+        }
+      );
+
+      sections.forEach((section) => observer.observe(section));
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 980) {
+        closeSidebar();
+      }
+    });
+
+    if (window.location.hash) {
+      window.setTimeout(() => {
+        jumpToSection(window.location.hash);
+      }, 120);
+    } else {
+      setCurrentSection('about-me');
+    }
+
+    if (contactForm) {
+      contactForm.addEventListener('reset', () => {
+        window.setTimeout(() => {
+          const firstField = contactForm.querySelector('input, textarea');
+          if (firstField instanceof HTMLElement) {
+            firstField.focus();
+          }
+        }, 0);
+      });
+
+      contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(contactForm);
+        const name = String(formData.get('name') || '').trim();
+        const email = String(formData.get('email') || '').trim();
+        const message = String(formData.get('message') || '').trim();
+        const subject = encodeURIComponent(name ? `${name} | BDT Talent Group Inquiry` : 'BDT Talent Group Inquiry');
+        const body = encodeURIComponent(
+          [
+            name ? `Name: ${name}` : '',
+            email ? `Email: ${email}` : '',
+            '',
+            message,
+          ]
+            .filter(Boolean)
+            .join('\n')
+        );
+
+        window.location.href = `mailto:bdttalentgroup@yahoo.com?subject=${subject}&body=${body}`;
+      });
+    }
+  </script>
+</body>
+</html>

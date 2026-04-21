@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BDT Talent Group</title>
+<meta
+  name="description"
+  content="BDT Talent Group is an AI-powered talent group building apps, web experiences, and creator partnerships with a human-centered approach."
+/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #F0EEF5; font-family: 'DM Sans', Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 0%, rgba(75,0,130,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 90% 5%, rgba(139,0,0,0.15) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 60% at 50% 100%, rgba(201,168,76,0.07) 0%, transparent 60%);
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const SOCIAL_LINKS = [
+  { abbr: 'X', label: 'X', href: 'https://x.com/BDTTalentGroup' },
+  { abbr: 'TT', label: 'TikTok', href: 'https://www.tiktok.com/@bdttalentgroup' },
+  { abbr: 'IG', label: 'Instagram', href: 'https://www.instagram.com/bdttalentgroup/' },
+  { abbr: '@', label: 'Threads', href: 'https://www.threads.com/@bdttalentgroup' },
+  { abbr: 'DC', label: 'Discord', href: 'https://discord.gg/GW4pqHrJ' },
+  { abbr: 'in', label: 'LinkedIn', href: 'https://www.linkedin.com/in/isaac-tran-8668033ba/' },
+  { abbr: 'YT', label: 'YouTube', href: 'https://www.youtube.com/channel/UCxnQAWrGGaYikuy-N4YCTNQ' },
+  { abbr: 'BS', label: 'Bluesky', href: 'https://bsky.app/profile/bdttalentgroup.bsky.social' },
+];
+
+// ── TOKENS ──────────────────────────────────────
+const T = {
+  gold: '#C9A84C', goldLight: '#F1D78F', goldWarm: '#F5E9BF',
+  purple: '#4B0082', purpleMid: '#6a1fa8', purpleLight: '#c99dff',
+  crimson: '#8B0000', crimsonLight: '#ff8888',
+  silver: '#C8C8D0', white: '#F0EEF5',
+  glowGold: '0 0 18px rgba(201,168,76,.55), 0 0 48px rgba(201,168,76,.2)',
+  glowPurple: '0 0 18px rgba(107,31,168,.55), 0 0 48px rgba(75,0,130,.25)',
+  glowCrimson: '0 0 18px rgba(176,16,32,.55), 0 0 48px rgba(139,0,0,.22)',
+};
+
+// ── SHARED COMPONENTS ────────────────────────────
+function Kicker({ children, color }) {
+  return <div style={{ fontFamily: "'DM Sans', Arial, sans-serif", fontSize: '0.66rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: color || T.gold, marginBottom: 6 }}>{children}</div>;
+}
+
+function SectionTitle({ children }) {
+  return <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem,2.8vw,2.5rem)', fontWeight: 500, color: T.white, lineHeight: 1.15 }}>{children}</div>;
+}
+
+function SectionCopy({ children }) {
+  return <p style={{ fontSize: '0.96rem', lineHeight: 1.85, color: 'rgba(255,255,255,0.6)', maxWidth: 640, marginTop: 10 }}>{children}</p>;
+}
+
+function GoldDivider() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '28px 0' }}>
+      <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.4))' }} />
+      <span style={{ fontSize: '0.5rem', color: T.gold }}>◆</span>
+      <div style={{ flex: 1, height: 1, background: 'linear-gradient(270deg, transparent, rgba(201,168,76,0.4))' }} />
+    </div>
+  );
+}
+
+function Btn({ children, variant = 'primary', onClick, type = 'button' }) {
+  const [hov, setHov] = useState(false);
+  const base = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 999, fontFamily: "'DM Sans', Arial, sans-serif", fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', padding: '12px 22px', cursor: 'pointer', border: '1px solid', transition: 'transform .2s, box-shadow .2s' };
+  const primary = { background: 'linear-gradient(160deg,rgba(201,168,76,.18),rgba(201,168,76,.07))', borderColor: hov ? T.gold : 'rgba(201,168,76,.38)', color: T.goldWarm, transform: hov ? 'translateY(-2px)' : 'none', boxShadow: hov ? T.glowGold : 'none' };
+  const secondary = { background: 'rgba(255,255,255,.04)', borderColor: hov ? 'rgba(201,168,76,.4)' : 'rgba(255,255,255,.1)', color: T.silver, transform: hov ? 'translateY(-2px)' : 'none' };
+  return <button type={type} style={{ ...base, ...(variant === 'primary' ? primary : secondary) }} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} onClick={onClick}>{children}</button>;
+}
+
+function Badge({ children, color }) {
+  return <div style={{ display: 'inline-flex', alignItems: 'center', minHeight: 34, padding: '0 13px', border: `1px solid ${color || 'rgba(201,168,76,0.28)'}`, borderRadius: 999, background: 'rgba(201,168,76,0.07)', fontFamily: "'DM Sans'", fontSize: '0.66rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: color || T.goldWarm }}>{children}</div>;
+}
+
+function SocialPill({ label, abbr, href }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <a href={href || '#'} target="_blank" rel="noreferrer"
+      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 13px', border: `1px solid ${hov ? 'rgba(201,168,76,.7)' : 'rgba(201,168,76,.22)'}`, borderRadius: 999, background: hov ? 'rgba(201,168,76,.06)' : 'rgba(255,255,255,.03)', color: hov ? T.goldWarm : T.silver, fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', boxShadow: hov ? T.glowGold : 'none', transition: 'all .2s' }}>
+      <span style={{ width: 18, height: 18, borderRadius: 999, border: '1px solid rgba(201,168,76,.32)', background: 'rgba(201,168,76,.08)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.52rem', fontWeight: 700, color: T.goldLight, flexShrink: 0 }}>{abbr}</span>
+      {label}
+    </a>
+  );
+}
+
+// ── SIDEBAR ──────────────────────────────────────
+function Sidebar({ active, onNav, isMobile }) {
+  const links = ['About Me','Riverdale Crew','What We Do','Products','Contact Me'];
+  if (isMobile) {
+    return (
+      <div style={{ position: 'sticky', top: 0, zIndex: 10, padding: '18px 18px 0' }}>
+        <div style={{ padding: '18px 16px', borderRadius: 22, background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(75,0,130,0.28) 0%, transparent 60%), linear-gradient(180deg,#0d0d10,#080808)', border: '1px solid rgba(201,168,76,0.15)', boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}>
+          <div style={{ textAlign: 'center', paddingBottom: 14, borderBottom: '1px solid rgba(201,168,76,0.12)' }}>
+            <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ width: 'min(100%, 180px)', height: 'auto', opacity: 0.92 }} />
+          </div>
+          <nav style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingTop: 14, scrollbarWidth: 'thin' }}>
+            {links.map(l => {
+              const isActive = active === l;
+              return (
+                <a key={l} href="#" onClick={e => { e.preventDefault(); onNav(l); }}
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minHeight: 42, padding: '0 16px', whiteSpace: 'nowrap', border: `1px solid ${isActive ? 'rgba(201,168,76,0.5)' : 'rgba(201,168,76,0.1)'}`, borderRadius: 999, background: isActive ? 'rgba(201,168,76,0.08)' : 'rgba(255,255,255,0.02)', color: isActive ? T.goldWarm : T.silver, fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', transition: 'all .2s' }}>
+                  {l}
+                </a>
+              );
+            })}
+          </nav>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <aside style={{ width: 260, flexShrink: 0, height: '100vh', position: 'sticky', top: 0, display: 'flex', flexDirection: 'column', gap: 28, padding: '28px 18px', background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(75,0,130,0.28) 0%, transparent 60%), linear-gradient(180deg,#0d0d10,#080808)', borderRight: '1px solid rgba(201,168,76,0.15)', zIndex: 10 }}>
+      <div style={{ textAlign: 'center', paddingBottom: 18, borderBottom: '1px solid rgba(201,168,76,0.12)' }}>
+        <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ width: 130, height: 'auto', opacity: 0.92 }} />
+      </div>
+      <nav style={{ display: 'grid', gap: 8 }}>
+        {links.map(l => {
+          const isActive = active === l;
+          return (
+            <a key={l} href="#" onClick={e => { e.preventDefault(); onNav(l); }}
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', minHeight: 44, padding: '0 14px 0 28px', border: `1px solid ${isActive ? 'rgba(201,168,76,0.5)' : 'rgba(201,168,76,0.1)'}`, borderRadius: 14, background: isActive ? 'rgba(201,168,76,0.08)' : 'rgba(255,255,255,0.02)', color: isActive ? T.goldWarm : T.silver, fontSize: '0.76rem', letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', transform: isActive ? 'translateX(5px)' : 'none', transition: 'all .2s', boxShadow: isActive ? '0 0 12px rgba(201,168,76,0.08)' : 'none' }}>
+              <span style={{ position: 'absolute', left: 11, fontSize: '0.42rem', color: T.gold, opacity: isActive ? 1 : 0.2 }}>◆</span>
+              {l}
+            </a>
+          );
+        })}
+      </nav>
+      <div style={{ marginTop: 'auto', paddingTop: 18, borderTop: '1px solid rgba(201,168,76,0.1)', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', textAlign: 'center', lineHeight: 1.9 }}>
+        BDT Talent Group<br />San Antonio, TX · 2026<br />AI-Powered · Human-Centered
+      </div>
+    </aside>
+  );
+}
+
+// ── HERO SCREEN ───────────────────────────────────
+function HeroScreen({ isMobile }) {
+  return (
+    <div style={{ minHeight: isMobile ? 'auto' : '100vh', display: 'grid', alignContent: 'center', textAlign: 'center', gap: 0, padding: isMobile ? '28px 18px' : '40px 24px' }}>
+      <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ maxWidth: 600, width: '90%', margin: '0 auto 44px', filter: 'drop-shadow(0 0 28px rgba(201,168,76,0.22))' }} />
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem,3.5vw,2.8rem)', fontWeight: 500, letterSpacing: '0.02em', lineHeight: 1.2, color: T.white }}>
+        AI-Powered Talent.<br />
+        <span style={{ color: T.goldLight, fontStyle: 'italic', textShadow: T.glowGold }}>Human-Centered Culture.</span>
+      </div>
+      <div style={{ marginTop: 14, fontSize: '0.84rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: T.silver, opacity: 0.65 }}>
+        Elevating the next generation of creators &amp; culture-makers
+      </div>
+      <GoldDivider />
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9, marginTop: -8 }}>
+        {SOCIAL_LINKS.map(({ abbr, label, href }) => (
+          <SocialPill key={label} abbr={abbr} label={label} href={href} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── ABOUT SCREEN ─────────────────────────────────
+function AboutScreen({ isMobile }) {
+  return (
+    <div style={{ padding: '40px 32px', border: '1px solid rgba(201,168,76,0.16)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', backdropFilter: 'blur(4px)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
+      <Kicker>Founder</Kicker>
+      <SectionTitle>About Me</SectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', gap: 28, alignItems: 'center', marginTop: 22 }}>
+        <img src="./assets/BDT_website_pic.jpg" alt="Isaac Tran" style={{ width: isMobile ? 'min(100%, 220px)' : '100%', justifySelf: 'center', aspectRatio: '4/5', objectFit: 'cover', borderRadius: 18, border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 0 40px rgba(75,0,130,0.18), 0 24px 60px rgba(0,0,0,0.5)' }} />
+        <div style={{ display: 'grid', gap: 12 }}>
+          <Kicker>Isaac Tran · BDT Talent Group</Kicker>
+          <SectionCopy>Isaac Tran is the founder of BDT Talent Group — a passionate AI enthusiast who believes the future of human creativity isn't threatened by artificial intelligence, it's elevated by it. His vision: empower artists, creators, and culture-makers with AI as a tool, not a replacement.</SectionCopy>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 6 }}>
+            <Badge>Founder</Badge>
+            <Badge>AI Enthusiast</Badge>
+            <Badge>San Antonio, TX</Badge>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── RIVERDALE CREW ────────────────────────────────
+function AgentCard({ initial, name, role, desc, colorScheme }) {
+  const [hov, setHov] = useState(false);
+  const schemes = {
+    gold:    { border: `rgba(201,168,76,${hov ? 0.42 : 0.28})`, glow: hov ? T.glowGold : 'none', avatarBorder: 'rgba(201,168,76,0.45)', avatarBg: 'rgba(201,168,76,0.1)', avatarColor: T.goldLight, radial: 'rgba(201,168,76,0.1)', roleColor: T.gold, dotBg: T.gold, dotGlow: T.gold },
+    purple:  { border: `rgba(107,31,168,${hov ? 0.48 : 0.32})`, glow: hov ? T.glowPurple : 'none', avatarBorder: 'rgba(107,31,168,0.5)', avatarBg: 'rgba(107,31,168,0.12)', avatarColor: '#c99dff', radial: 'rgba(107,31,168,0.1)', roleColor: '#c99dff', dotBg: '#c99dff', dotGlow: '#9b59b6' },
+    crimson: { border: `rgba(176,16,32,${hov ? 0.45 : 0.3})`, glow: hov ? T.glowCrimson : 'none', avatarBorder: 'rgba(176,16,32,0.45)', avatarBg: 'rgba(176,16,32,0.12)', avatarColor: '#ff9999', radial: 'rgba(176,16,32,0.1)', roleColor: '#ff8888', dotBg: '#ff8888', dotGlow: '#c0392b' },
+  };
+  const s = schemes[colorScheme];
+  return (
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ position: 'relative', overflow: 'hidden', borderRadius: 20, padding: '26px 20px', border: `1px solid ${s.border}`, background: '#0a0a0c', display: 'flex', flexDirection: 'column', gap: 12, transform: hov ? 'translateY(-8px)' : 'none', boxShadow: s.glow, transition: 'transform .35s ease, box-shadow .35s ease', cursor: 'default' }}>
+      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at top, ${s.radial} 0%, transparent 65%)`, pointerEvents: 'none' }} />
+      <div style={{ width: 50, height: 50, borderRadius: '50%', border: `1px solid ${s.avatarBorder}`, background: s.avatarBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 700, color: s.avatarColor, boxShadow: s.glow, position: 'relative', zIndex: 1 }}>{initial}</div>
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 500, color: T.white }}>{name}</div>
+        <div style={{ fontFamily: "'DM Sans'", fontSize: '0.62rem', letterSpacing: '0.26em', textTransform: 'uppercase', color: s.roleColor, marginTop: 3 }}>{role}</div>
+      </div>
+      <div style={{ fontSize: '0.86rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.52)', position: 'relative', zIndex: 1 }}>{desc}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 7, position: 'relative', zIndex: 1 }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: s.dotBg, boxShadow: `0 0 6px ${s.dotGlow}`, animation: 'pulse 2s infinite' }} />
+        <span style={{ fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: s.roleColor }}>Online</span>
+      </div>
+    </div>
+  );
+}
+
+function CrewScreen() {
+  return (
+    <div style={{ padding: '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
+      <Kicker>AI Agents · Active 24/7</Kicker>
+      <SectionTitle>Riverdale Crew</SectionTitle>
+      <SectionCopy>Three AI agents working around the clock — supporting the team, streamlining operations, and keeping the creative engine running.</SectionCopy>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginTop: 24 }}>
+        <AgentCard initial="A" name="Archie" role="The Builder" colorScheme="gold" desc="Handles development workflows, technical operations, and keeps the infrastructure running at full speed." />
+        <AgentCard initial="B" name="Betty" role="The Strategist" colorScheme="purple" desc="Manages content strategy, data analysis, and ensures every decision is backed by insight and intelligence." />
+        <AgentCard initial="V" name="Veronica" role="The Connector" colorScheme="crimson" desc="Drives partnerships, outreach, and brand relationships — making sure BDT's network keeps growing." />
+      </div>
+      <div style={{ marginTop: 24 }}>
+        <img src="./assets/Riverdale_Crew.jpg" alt="Riverdale Crew" style={{ width: '100%', borderRadius: 16, border: '1px solid rgba(201,168,76,0.13)', boxShadow: '0 8px 50px rgba(0,0,0,0.6)' }} />
+        <div style={{ textAlign: 'center', marginTop: 14, fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
+          Meet <span style={{ color: T.goldLight }}>Archie</span>, <span style={{ color: '#c99dff' }}>Betty</span>, and <span style={{ color: '#ff8888' }}>Veronica</span> — the Riverdale Crew.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── WHAT WE DO ────────────────────────────────────
+function WhatWeDoScreen() {
+  const services = [
+    ['01','App Development','Native mobile apps for iOS and Android — built for the creators building tomorrow\'s culture.'],
+    ['02','Web Experiences','Cinematic, high-performance websites that make brands impossible to ignore.'],
+    ['03','AI Consulting','Strategic guidance on integrating AI into creative workflows — tool, not replacement.'],
+    ['04','Talent Management','End-to-end representation for creators, artists, and culture-makers ready to scale.'],
+    ['05','Brand Partnerships','Connecting talent with brands that share their vision for culture-forward creativity.'],
+    ['06','Social Strategy','Data-driven social media strategy designed to turn creators into cultural institutions.'],
+  ];
+  return (
+    <div style={{ padding: '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
+      <Kicker>Services</Kicker>
+      <SectionTitle>What We Do</SectionTitle>
+      <SectionCopy>We build apps. We build websites. We consult. We empower creators — all with AI but centered around human and artistic culture.</SectionCopy>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginTop: 24 }}>
+        {services.map(([num, name, desc]) => (
+          <ServiceCard key={num} num={num} name={name} desc={desc} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({ num, name, desc }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ padding: '22px 18px', borderRadius: 16, border: `1px solid ${hov ? 'rgba(201,168,76,0.35)' : 'rgba(201,168,76,0.1)'}`, background: hov ? 'rgba(201,168,76,0.04)' : 'rgba(255,255,255,0.02)', transform: hov ? 'translateY(-4px)' : 'none', transition: 'all .25s', display: 'grid', gap: 9 }}>
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.8rem', fontWeight: 700, color: 'rgba(201,168,76,0.18)', lineHeight: 1 }}>{num}</div>
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1rem', color: T.white }}>{name}</div>
+      <div style={{ fontSize: '0.83rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.46)' }}>{desc}</div>
+    </div>
+  );
+}
+
+// ── PRODUCTS ─────────────────────────────────────
+function ProductCard({ platform, name, desc, badge, variant }) {
+  const [hov, setHov] = useState(false);
+  const isPurple = variant === 'purple';
+  return (
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ position: 'relative', overflow: 'hidden', borderRadius: 18, padding: '26px 24px', border: `1px solid ${isPurple ? (hov ? 'rgba(107,31,168,0.5)' : 'rgba(107,31,168,0.2)') : (hov ? 'rgba(201,168,76,0.42)' : 'rgba(201,168,76,0.16)')}`, background: isPurple ? 'rgba(75,0,130,0.04)' : 'rgba(255,255,255,0.025)', transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? (isPurple ? T.glowPurple : '0 0 40px rgba(201,168,76,0.08), 0 20px 60px rgba(0,0,0,0.4)') : 'none', transition: 'all .3s', display: 'grid', gap: 13 }}>
+      <div style={{ position: 'absolute', top: 0, right: 0, width: 100, height: 100, background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.gold }}>{platform}</div>
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.45rem', fontWeight: 500, color: T.white }}>{name}</div>
+      <div style={{ fontSize: '0.87rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.5)' }}>{desc}</div>
+      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', width: 'fit-content', border: `1px solid ${isPurple ? 'rgba(107,31,168,0.3)' : 'rgba(201,168,76,0.22)'}`, borderRadius: 999, background: isPurple ? 'rgba(107,31,168,0.08)' : 'rgba(201,168,76,0.06)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.goldWarm }}>◆ {badge}</div>
+    </div>
+  );
+}
+
+function ProductsScreen() {
+  return (
+    <div style={{ padding: '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
+      <Kicker>Mobile · Google Play</Kicker>
+      <SectionTitle>Products</SectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginTop: 24 }}>
+        <ProductCard platform="Google Play · Available Now" name="Aight Bet" desc="A culture-first mobile app built for the next generation of creators and social connectors." badge="Live on Google Play" />
+        <ProductCard platform="Google Play · Available Now" name="Add Me" desc="Connect, discover, and grow — a seamless way to expand your network and creative circle." badge="Live on Google Play" />
+        <ProductCard platform="Coming Soon" name="More on the Way" desc="BDT's product roadmap is growing. New apps engineered with AI at the core, culture at the heart." badge="In Development" variant="purple" />
+      </div>
+    </div>
+  );
+}
+
+// ── CONTACT ───────────────────────────────────────
+function ContactScreen({ isMobile }) {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const updateField = (field) => (event) => {
+    setForm((current) => ({ ...current, [field]: event.target.value }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const subject = encodeURIComponent(form.name ? `${form.name} | BDT Talent Group Inquiry` : 'BDT Talent Group Inquiry');
+    const body = encodeURIComponent(
+      [
+        form.name ? `Name: ${form.name}` : '',
+        form.email ? `Email: ${form.email}` : '',
+        '',
+        form.message,
+      ]
+        .filter(Boolean)
+        .join('\n')
+    );
+    window.location.href = `mailto:bdttalentgroup@yahoo.com?subject=${subject}&body=${body}`;
+  };
+
+  const clearForm = () => {
+    setForm({ name: '', email: '', message: '' });
+  };
+
+  return (
+    <div style={{ position: 'relative', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.18)', borderRadius: 26, padding: '36px 32px', background: 'rgba(255,255,255,0.02)', boxShadow: '0 24px 80px rgba(0,0,0,0.5)' }}>
+      <div style={{ position: 'absolute', top: -80, left: -80, width: 300, height: 300, background: 'radial-gradient(circle, rgba(75,0,130,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: -60, right: -60, width: 260, height: 260, background: 'radial-gradient(circle, rgba(139,0,0,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <Kicker>Contact</Kicker>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem,2.5vw,2.1rem)', fontWeight: 500, color: T.white, marginTop: 8 }}>Start a private conversation.</div>
+        <p style={{ fontSize: '0.93rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.5)', marginTop: 10, marginBottom: 22 }}>Share your project, talent inquiry, or brand opportunity and we'll route it directly to BDT management.</p>
+        <form style={{ display: 'grid', gap: 14 }} onSubmit={handleSubmit}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
+            <ContactField label="Name" placeholder="Your name" type="text" value={form.name} onChange={updateField('name')} required />
+            <ContactField label="Email" placeholder="name@example.com" type="email" value={form.email} onChange={updateField('email')} required />
+          </div>
+          <ContactField label="Message" placeholder="Tell us about your inquiry." value={form.message} onChange={updateField('message')} textarea required />
+          <div style={{ display: 'flex', gap: 12 }}>
+            <Btn variant="primary" type="submit">Send Message</Btn>
+            <Btn variant="secondary" onClick={clearForm}>Clear Form</Btn>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function ContactField({ label, placeholder, type, textarea, value, onChange, required }) {
+  const [focus, setFocus] = useState(false);
+  const inputStyle = { width: '100%', background: 'rgba(255,255,255,0.03)', border: `1px solid ${focus ? 'rgba(201,168,76,0.6)' : 'rgba(201,168,76,0.18)'}`, borderRadius: 13, color: '#F0EEF5', fontFamily: "'DM Sans'", fontSize: '0.93rem', padding: '12px 15px', outline: 'none', boxShadow: focus ? '0 0 0 3px rgba(201,168,76,0.07)' : 'none', transition: 'border-color .2s, box-shadow .2s', resize: textarea ? 'vertical' : undefined, minHeight: textarea ? 120 : undefined };
+  return (
+    <div style={{ display: 'grid', gap: 7 }}>
+      <span style={{ fontSize: '0.64rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.8)' }}>{label}</span>
+      {textarea
+        ? <textarea style={inputStyle} placeholder={placeholder} value={value} onChange={onChange} required={required} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
+        : <input type={type} style={inputStyle} placeholder={placeholder} value={value} onChange={onChange} required={required} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
+      }
+    </div>
+  );
+}
+
+// ── APP ───────────────────────────────────────────
+function AboutMeScreen({ isMobile }) {
+  return (
+    <div style={{ display: 'grid', gap: 28 }}>
+      <HeroScreen isMobile={isMobile} />
+      <AboutScreen isMobile={isMobile} />
+    </div>
+  );
+}
+
+const SCREENS = { 'About Me': AboutMeScreen, 'Riverdale Crew': CrewScreen, 'What We Do': WhatWeDoScreen, 'Products': ProductsScreen, 'Contact Me': ContactScreen };
+
+function App() {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 960);
+  const [active, setActive] = useState(() => localStorage.getItem('bdt-kit-screen') || 'About Me');
+  useEffect(() => { localStorage.setItem('bdt-kit-screen', active); }, [active]);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 960);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const Screen = SCREENS[active] || AboutMeScreen;
+  return (
+    <>
+      <style>{`@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.85)} }`}</style>
+      <div style={{ display: isMobile ? 'block' : 'flex', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+        <Sidebar active={active} onNav={setActive} isMobile={isMobile} />
+        <main style={{ flex: 1, padding: isMobile ? '18px 18px 48px' : '32px clamp(18px,3vw,48px) 72px', overflowY: 'auto' }}>
+          <div style={{ maxWidth: 1020, margin: '0 auto' }}>
+            <Screen isMobile={isMobile} />
+          </div>
+        </main>
+      </div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
