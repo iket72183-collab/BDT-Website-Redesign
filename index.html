@@ -116,17 +116,17 @@ function MobileBar({ mobileMenuOpen, onToggle }) {
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 20, padding: '14px 18px 0' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 16px', borderRadius: 20, background: 'rgba(8,8,10,0.92)', border: '1px solid rgba(201,168,76,0.14)', backdropFilter: 'blur(16px)', boxShadow: '0 16px 34px rgba(0,0,0,0.32)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-          <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ width: 54, height: 54, objectFit: 'contain', borderRadius: 12, border: '1px solid rgba(201,168,76,0.14)' }} />
+        <button type="button" onClick={onToggle} aria-expanded={mobileMenuOpen} aria-label="Toggle navigation"
+          style={{ width: 46, height: 46, flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, border: '1px solid rgba(201,168,76,0.22)', background: 'rgba(255,255,255,0.04)', color: T.goldWarm, fontSize: '1.2rem', cursor: 'pointer' }}>
+          {mobileMenuOpen ? '×' : '☰'}
+        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
           <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: '0.72rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: T.goldLight, whiteSpace: 'nowrap' }}>BDT Talent Group</div>
             <div style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.46)', whiteSpace: 'nowrap' }}>Navigation</div>
           </div>
         </div>
-        <button type="button" onClick={onToggle} aria-expanded={mobileMenuOpen} aria-label="Toggle navigation"
-          style={{ width: 46, height: 46, flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, border: '1px solid rgba(201,168,76,0.22)', background: 'rgba(255,255,255,0.04)', color: T.goldWarm, fontSize: '1.2rem', cursor: 'pointer' }}>
-          {mobileMenuOpen ? '×' : '☰'}
-        </button>
+        <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ width: 46, height: 46, objectFit: 'contain', borderRadius: 12, border: '1px solid rgba(201,168,76,0.14)', flexShrink: 0 }} />
       </div>
     </div>
   );
