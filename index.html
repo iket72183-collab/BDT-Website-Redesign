@@ -153,7 +153,7 @@ function Sidebar({ active, onNav, isMobile }) {
         })}
       </nav>
       <div style={{ marginTop: 'auto', paddingTop: 18, borderTop: '1px solid rgba(201,168,76,0.1)', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', textAlign: 'center', lineHeight: 1.9 }}>
-        BDT Talent Group<br />San Antonio, TX · 2026<br />AI-Powered · Human-Centered
+        BDT Talent Group<br />Houston, TX · 2026<br />AI-Powered · Human-Centered
       </div>
     </aside>
   );
@@ -185,18 +185,12 @@ function HeroScreen({ isMobile }) {
 function AboutScreen({ isMobile }) {
   return (
     <div style={{ padding: isMobile ? '28px 20px' : '40px 32px', border: '1px solid rgba(201,168,76,0.16)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', backdropFilter: 'blur(4px)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
-      <Kicker>Founder</Kicker>
       <SectionTitle>About Me</SectionTitle>
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', gap: 28, alignItems: 'center', marginTop: 22 }}>
         <img src="./assets/BDT_website_pic.jpg" alt="Isaac Tran" style={{ width: isMobile ? 'min(100%, 220px)' : '100%', justifySelf: 'center', aspectRatio: '4/5', objectFit: 'cover', borderRadius: 18, border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 0 40px rgba(75,0,130,0.18), 0 24px 60px rgba(0,0,0,0.5)' }} />
         <div style={{ display: 'grid', gap: 12 }}>
           <Kicker>Isaac Tran · BDT Talent Group</Kicker>
           <SectionCopy>Isaac Tran is the founder of BDT Talent Group — a passionate AI enthusiast who believes the future of human creativity isn't threatened by artificial intelligence, it's elevated by it. His vision: empower artists, creators, and culture-makers with AI as a tool, not a replacement.</SectionCopy>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 6 }}>
-            <Badge>Founder</Badge>
-            <Badge>AI Enthusiast</Badge>
-            <Badge>San Antonio, TX</Badge>
-          </div>
         </div>
       </div>
     </div>
@@ -306,11 +300,11 @@ function ProductCard({ platform, name, desc, badge, variant }) {
 function ProductsScreen({ isMobile }) {
   return (
     <div style={{ padding: isMobile ? '28px 20px' : '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
-      <Kicker>Mobile · Google Play</Kicker>
+      <Kicker>Mobile · Google Play · Apple App Store</Kicker>
       <SectionTitle>Products</SectionTitle>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginTop: 24 }}>
-        <ProductCard platform="Google Play · Available Now" name="Aight Bet" desc="A culture-first mobile app built for the next generation of creators and social connectors." badge="Live on Google Play" />
-        <ProductCard platform="Google Play · Available Now" name="Add Me" desc="Connect, discover, and grow — a seamless way to expand your network and creative circle." badge="Live on Google Play" />
+        <ProductCard platform="Google Play · Apple App Store" name="Aight Bet" desc="A culture-first mobile app built for the next generation of creators and social connectors." badge="Live on Mobile Stores" />
+        <ProductCard platform="Google Play · Apple App Store" name="Add Me" desc="Connect, discover, and grow — a seamless way to expand your network and creative circle." badge="Live on Mobile Stores" />
         <ProductCard platform="Coming Soon" name="More on the Way" desc="BDT's product roadmap is growing. New apps engineered with AI at the core, culture at the heart." badge="In Development" variant="purple" />
       </div>
     </div>
