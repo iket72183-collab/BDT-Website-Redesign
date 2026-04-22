@@ -3,19 +3,69 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BDT Talent Group</title>
+<title>BDT Talent Group | AI-Powered Talent, Human-Centered Culture</title>
 <meta
   name="description"
-  content="BDT Talent Group is an AI-powered talent group building apps, web experiences, and creator partnerships with a human-centered approach."
+  content="BDT Talent Group is a Houston-based creative company building AI-powered talent, apps, web experiences, and creator partnerships with a human-centered approach."
 />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<link rel="canonical" href="https://bdttalentgroup.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="BDT Talent Group | AI-Powered Talent, Human-Centered Culture" />
+<meta property="og:description" content="Houston-based talent, apps, web experiences, and creator partnerships powered by AI and built around people." />
+<meta property="og:url" content="https://bdttalentgroup.com/" />
+<meta property="og:site_name" content="BDT Talent Group" />
+<meta property="og:image" content="https://bdttalentgroup.com/assets/bdt-logo.jpeg" />
+<meta property="og:image:alt" content="BDT Talent Group logo" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BDT Talent Group | AI-Powered Talent, Human-Centered Culture" />
+<meta name="twitter:description" content="Houston-based talent, apps, web experiences, and creator partnerships powered by AI and built around people." />
+<meta name="twitter:image" content="https://bdttalentgroup.com/assets/bdt-logo.jpeg" />
+<link rel="icon" type="image/jpeg" href="./assets/bdt-logo.jpeg" />
+<link rel="apple-touch-icon" href="./assets/bdt-logo.jpeg" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "BDT Talent Group",
+  "url": "https://bdttalentgroup.com/",
+  "logo": "https://bdttalentgroup.com/assets/bdt-logo.jpeg",
+  "email": "bdttalentgroup@yahoo.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Houston",
+    "addressRegion": "TX",
+    "addressCountry": "US"
+  },
+  "sameAs": [
+    "https://x.com/BDTTalentGroup",
+    "https://www.tiktok.com/@bdttalentgroup",
+    "https://www.instagram.com/bdttalentgroup/",
+    "https://www.threads.com/@bdttalentgroup",
+    "https://discord.gg/GW4pqHrJ",
+    "https://www.facebook.com/profile.php?id=61576643010008",
+    "https://www.linkedin.com/in/isaac-tran-8668033ba/",
+    "https://snapchat.com/add/BDTTalentGroup",
+    "https://www.reddit.com/u/BDTTalentGroup",
+    "https://bdttalentgroup.substack.com/",
+    "https://www.youtube.com/channel/UCxnQAWrGGaYikuy-N4YCTNQ",
+    "https://bsky.app/profile/bdttalentgroup.bsky.social"
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { background: #0a0a0a; color: #F0EEF5; font-family: 'DM Sans', Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid #C9A84C;
+    outline-offset: 3px;
+  }
   body::before {
     content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background:
@@ -63,7 +113,7 @@ function Kicker({ children, color }) {
 }
 
 function SectionTitle({ children }) {
-  return <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem,2.8vw,2.5rem)', fontWeight: 500, color: T.white, lineHeight: 1.15 }}>{children}</div>;
+  return <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem,2.8vw,2.5rem)', fontWeight: 500, color: T.white, lineHeight: 1.15 }}>{children}</h2>;
 }
 
 function SectionCopy({ children }) {
@@ -95,7 +145,7 @@ function Badge({ children, color }) {
 function SocialPill({ label, abbr, href, fullWidth }) {
   const [hov, setHov] = useState(false);
   return (
-    <a href={href || '#'} target="_blank" rel="noreferrer"
+    <a href={href || '#'} target="_blank" rel="noopener noreferrer" aria-label={`Visit BDT Talent Group on ${label}`}
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{ display: 'inline-flex', alignItems: 'center', justifyContent: fullWidth ? 'center' : 'flex-start', flex: fullWidth ? '1 1 160px' : undefined, gap: 7, padding: '8px 13px', border: `1px solid ${hov ? 'rgba(201,168,76,.7)' : 'rgba(201,168,76,.22)'}`, borderRadius: 999, background: hov ? 'rgba(201,168,76,.06)' : 'rgba(255,255,255,.03)', color: hov ? T.goldWarm : T.silver, fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', boxShadow: hov ? T.glowGold : 'none', transition: 'all .2s' }}>
       <span style={{ width: 18, height: 18, borderRadius: 999, border: '1px solid rgba(201,168,76,.32)', background: 'rgba(201,168,76,.08)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.52rem', fontWeight: 700, color: T.goldLight, flexShrink: 0 }}>{abbr}</span>
@@ -107,12 +157,12 @@ function SocialPill({ label, abbr, href, fullWidth }) {
 // ── HERO SCREEN ───────────────────────────────────
 function HeroScreen({ isMobile }) {
   return (
-    <div style={{ minHeight: isMobile ? 'auto' : '100vh', display: 'grid', alignContent: 'center', textAlign: 'center', gap: 0, padding: isMobile ? '20px 8px 8px' : '40px 24px' }}>
+    <section style={{ minHeight: isMobile ? 'auto' : '100vh', display: 'grid', alignContent: 'center', textAlign: 'center', gap: 0, padding: isMobile ? '20px 8px 8px' : '40px 24px' }}>
       <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ maxWidth: 600, width: isMobile ? '100%' : '90%', margin: '0 auto 44px', filter: 'drop-shadow(0 0 28px rgba(201,168,76,0.22))' }} />
-      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem,3.5vw,2.8rem)', fontWeight: 500, letterSpacing: '0.02em', lineHeight: 1.2, color: T.white }}>
+      <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem,3.5vw,2.8rem)', fontWeight: 500, letterSpacing: '0.02em', lineHeight: 1.2, color: T.white }}>
         AI-Powered Talent.<br />
         <span style={{ color: T.goldLight, fontStyle: 'italic', textShadow: T.glowGold }}>Human-Centered Culture.</span>
-      </div>
+      </h1>
       <div style={{ marginTop: 14, fontSize: isMobile ? '0.98rem' : '0.9rem', letterSpacing: isMobile ? '0.02em' : '0.08em', textTransform: 'none', color: T.silver, opacity: 0.72, lineHeight: 1.6, maxWidth: 640, marginInline: 'auto' }}>
         Elevating the next generation of creators. The industry's watching. 🚀
       </div>
@@ -125,7 +175,7 @@ function HeroScreen({ isMobile }) {
           <SocialPill key={label} abbr={abbr} label={label} href={href} fullWidth={isMobile} />
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -163,7 +213,7 @@ function AgentCard({ initial, name, role, desc, colorScheme }) {
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 500, color: T.white }}>{name}</div>
         <div style={{ fontFamily: "'DM Sans'", fontSize: '0.62rem', letterSpacing: '0.26em', textTransform: 'uppercase', color: s.roleColor, marginTop: 3 }}>{role}</div>
       </div>
-      <div style={{ fontSize: '0.86rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.52)', position: 'relative', zIndex: 1 }}>{desc}</div>
+      <div style={{ fontSize: '0.86rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.68)', position: 'relative', zIndex: 1 }}>{desc}</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, position: 'relative', zIndex: 1 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: s.dotBg, boxShadow: `0 0 6px ${s.dotGlow}`, animation: 'pulse 2s infinite' }} />
         <span style={{ fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: s.roleColor }}>Online</span>
@@ -185,7 +235,7 @@ function CrewScreen({ isMobile }) {
       </div>
       <div style={{ marginTop: 24 }}>
         <img src="./assets/Riverdale_Crew.jpg" alt="Riverdale Crew" style={{ width: '100%', borderRadius: 16, border: '1px solid rgba(201,168,76,0.13)', boxShadow: '0 8px 50px rgba(0,0,0,0.6)' }} />
-        <div style={{ textAlign: 'center', marginTop: 14, fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
+        <div style={{ textAlign: 'center', marginTop: 14, fontSize: '0.9rem', color: 'rgba(255,255,255,0.66)', lineHeight: 1.8 }}>
           Meet <span style={{ color: T.goldLight }}>Archie</span>, <span style={{ color: '#c99dff' }}>Betty</span>, and <span style={{ color: '#ff8888' }}>Veronica</span> — the Riverdale Crew.
         </div>
       </div>
@@ -224,7 +274,7 @@ function ServiceCard({ num, name, desc }) {
       style={{ padding: '22px 18px', borderRadius: 16, border: `1px solid ${hov ? 'rgba(201,168,76,0.35)' : 'rgba(201,168,76,0.1)'}`, background: hov ? 'rgba(201,168,76,0.04)' : 'rgba(255,255,255,0.02)', transform: hov ? 'translateY(-4px)' : 'none', transition: 'all .25s', display: 'grid', gap: 9 }}>
       <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.8rem', fontWeight: 700, color: 'rgba(201,168,76,0.18)', lineHeight: 1 }}>{num}</div>
       <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1rem', color: T.white }}>{name}</div>
-      <div style={{ fontSize: '0.83rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.46)' }}>{desc}</div>
+      <div style={{ fontSize: '0.83rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
     </div>
   );
 }
@@ -239,7 +289,7 @@ function ProductCard({ platform, name, desc, badge, variant }) {
       <div style={{ position: 'absolute', top: 0, right: 0, width: 100, height: 100, background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.gold }}>{platform}</div>
       <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.45rem', fontWeight: 500, color: T.white }}>{name}</div>
-      <div style={{ fontSize: '0.87rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.5)' }}>{desc}</div>
+      <div style={{ fontSize: '0.87rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
       {badge ? <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', width: 'fit-content', border: `1px solid ${isPurple ? 'rgba(107,31,168,0.3)' : 'rgba(201,168,76,0.22)'}`, borderRadius: 999, background: isPurple ? 'rgba(107,31,168,0.08)' : 'rgba(201,168,76,0.06)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.goldWarm }}>◆ {badge}</div> : null}
     </div>
   );
@@ -293,7 +343,7 @@ function ContactScreen({ isMobile }) {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Kicker>Contact</Kicker>
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem,2.5vw,2.1rem)', fontWeight: 500, color: T.white, marginTop: 8 }}>Start a private conversation.</div>
-        <p style={{ fontSize: '0.93rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.5)', marginTop: 10, marginBottom: 22 }}>Share your project, talent inquiry, or brand opportunity and we'll route it directly to BDT management.</p>
+        <p style={{ fontSize: '0.93rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.68)', marginTop: 10, marginBottom: 22 }}>Share your project, talent inquiry, or brand opportunity and we'll route it directly to BDT management.</p>
         <form style={{ display: 'grid', gap: 14 }} onSubmit={handleSubmit}>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
             <ContactField label="Name" placeholder="Your name" type="text" value={form.name} onChange={updateField('name')} required />
@@ -312,13 +362,14 @@ function ContactScreen({ isMobile }) {
 
 function ContactField({ label, placeholder, type, textarea, value, onChange, required }) {
   const [focus, setFocus] = useState(false);
+  const fieldId = `contact-${label.toLowerCase().replace(/\s+/g, '-')}`;
   const inputStyle = { width: '100%', background: 'rgba(255,255,255,0.03)', border: `1px solid ${focus ? 'rgba(201,168,76,0.6)' : 'rgba(201,168,76,0.18)'}`, borderRadius: 13, color: '#F0EEF5', fontFamily: "'DM Sans'", fontSize: '0.93rem', padding: '12px 15px', outline: 'none', boxShadow: focus ? '0 0 0 3px rgba(201,168,76,0.07)' : 'none', transition: 'border-color .2s, box-shadow .2s', resize: textarea ? 'vertical' : undefined, minHeight: textarea ? 120 : undefined };
   return (
     <div style={{ display: 'grid', gap: 7 }}>
-      <span style={{ fontSize: '0.64rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.8)' }}>{label}</span>
+      <label htmlFor={fieldId} style={{ fontSize: '0.64rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.8)' }}>{label}</label>
       {textarea
-        ? <textarea style={inputStyle} placeholder={placeholder} value={value} onChange={onChange} required={required} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
-        : <input type={type} style={inputStyle} placeholder={placeholder} value={value} onChange={onChange} required={required} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
+        ? <textarea id={fieldId} style={inputStyle} placeholder={placeholder} value={value} onChange={onChange} required={required} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
+        : <input id={fieldId} type={type} style={inputStyle} placeholder={placeholder} value={value} onChange={onChange} required={required} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
       }
     </div>
   );
