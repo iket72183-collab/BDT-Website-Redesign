@@ -311,7 +311,7 @@ function ProductsScreen({ isMobile }) {
 
 // ── CONTACT ───────────────────────────────────────
 function ContactScreen({ isMobile }) {
-  const [form, setForm] = useState({ fullName: '', email: '', message: '' });
+  const [form, setForm] = useState({ fullName: '', email: '', message: '', _gotcha: '' });
   const [status, setStatus] = useState('idle');
   const updateField = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -333,6 +333,7 @@ function ContactScreen({ isMobile }) {
           fullName: form.fullName,
           email: form.email,
           message: form.message,
+          _gotcha: form._gotcha,
           source: 'bdttalentgroup.com contact form',
         }),
       });
@@ -342,14 +343,14 @@ function ContactScreen({ isMobile }) {
       }
 
       setStatus('sent');
-      setForm({ fullName: '', email: '', message: '' });
+      setForm({ fullName: '', email: '', message: '', _gotcha: '' });
     } catch (error) {
       setStatus('error');
     }
   };
 
   const clearForm = () => {
-    setForm({ fullName: '', email: '', message: '' });
+    setForm({ fullName: '', email: '', message: '', _gotcha: '' });
     setStatus('idle');
   };
 
@@ -362,6 +363,18 @@ function ContactScreen({ isMobile }) {
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem,2.5vw,2.1rem)', fontWeight: 500, color: T.white, marginTop: 8 }}>Start a private conversation.</div>
         <p style={{ fontSize: '0.93rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.68)', marginTop: 10, marginBottom: 22 }}>Share your project, talent inquiry, or brand opportunity and we'll route it directly to BDT management.</p>
         <form style={{ display: 'grid', gap: 14 }} onSubmit={handleSubmit}>
+          <div style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }} aria-hidden="true">
+            <label htmlFor="contact-company-name">Company Name</label>
+            <input
+              id="contact-company-name"
+              type="text"
+              name="_gotcha"
+              tabIndex="-1"
+              autoComplete="off"
+              value={form._gotcha}
+              onChange={updateField('_gotcha')}
+            />
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
             <ContactField label="Full Name" placeholder="Your full name" type="text" value={form.fullName} onChange={updateField('fullName')} required />
             <ContactField label="Email Address" placeholder="name@example.com" type="email" value={form.email} onChange={updateField('email')} required />
@@ -373,8 +386,14 @@ function ContactScreen({ isMobile }) {
             </p>
           ) : null}
           {status === 'sent' ? (
-            <div style={{ padding: '14px 16px', borderRadius: 14, border: '1px solid rgba(201,168,76,0.26)', background: 'rgba(201,168,76,0.08)', color: T.goldWarm, fontSize: '0.84rem', lineHeight: 1.7 }}>
-              Your message was sent successfully. BDT management will receive it through the new contact form.
+            <div style={{ display: 'grid', gap: 8, padding: '16px 18px', borderRadius: 16, border: '1px solid rgba(201,168,76,0.28)', background: 'linear-gradient(160deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04))', boxShadow: '0 0 24px rgba(201,168,76,0.08)', color: T.goldWarm }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '0.82rem', letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+                <span style={{ width: 24, height: 24, borderRadius: 999, border: '1px solid rgba(201,168,76,0.42)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(201,168,76,0.1)' }}>✓</span>
+                Message Sent
+              </div>
+              <div style={{ fontSize: '0.85rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.78)' }}>
+                Your message was sent successfully. BDT management will receive it through the new contact form.
+              </div>
             </div>
           ) : null}
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 12 }}>
