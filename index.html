@@ -311,29 +311,46 @@ function ProductsScreen({ isMobile }) {
 
 // ── CONTACT ───────────────────────────────────────
 function ContactScreen({ isMobile }) {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ fullName: '', email: '', message: '' });
+  const [status, setStatus] = useState('idle');
   const updateField = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const subject = encodeURIComponent(form.name ? `${form.name} | BDT Talent Group Inquiry` : 'BDT Talent Group Inquiry');
-    const body = encodeURIComponent(
-      [
-        form.name ? `Name: ${form.name}` : '',
-        form.email ? `Email: ${form.email}` : '',
-        '',
-        form.message,
-      ]
-        .filter(Boolean)
-        .join('\n')
-    );
-    window.location.href = `mailto:bdttalentgroup@yahoo.com?subject=${subject}&body=${body}`;
+    if (!form.fullName || !form.email || !form.message) return;
+    setStatus('sending');
+
+    try {
+      const response = await fetch('https://formspree.io/f/mojykkbw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: form.fullName,
+          email: form.email,
+          message: form.message,
+          source: 'bdttalentgroup.com contact form',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Formspree submission failed');
+      }
+
+      setStatus('sent');
+      setForm({ fullName: '', email: '', message: '' });
+    } catch (error) {
+      setStatus('error');
+    }
   };
 
   const clearForm = () => {
-    setForm({ name: '', email: '', message: '' });
+    setForm({ fullName: '', email: '', message: '' });
+    setStatus('idle');
   };
 
   return (
@@ -346,12 +363,22 @@ function ContactScreen({ isMobile }) {
         <p style={{ fontSize: '0.93rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.68)', marginTop: 10, marginBottom: 22 }}>Share your project, talent inquiry, or brand opportunity and we'll route it directly to BDT management.</p>
         <form style={{ display: 'grid', gap: 14 }} onSubmit={handleSubmit}>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
-            <ContactField label="Name" placeholder="Your name" type="text" value={form.name} onChange={updateField('name')} required />
-            <ContactField label="Email" placeholder="name@example.com" type="email" value={form.email} onChange={updateField('email')} required />
+            <ContactField label="Full Name" placeholder="Your full name" type="text" value={form.fullName} onChange={updateField('fullName')} required />
+            <ContactField label="Email Address" placeholder="name@example.com" type="email" value={form.email} onChange={updateField('email')} required />
           </div>
           <ContactField label="Message" placeholder="Tell us about your inquiry." value={form.message} onChange={updateField('message')} textarea required />
+          {status === 'error' ? (
+            <p style={{ fontSize: '0.82rem', color: '#ff9a9a', lineHeight: 1.7 }}>
+              Something went wrong while sending your message. Please try again in a moment.
+            </p>
+          ) : null}
+          {status === 'sent' ? (
+            <div style={{ padding: '14px 16px', borderRadius: 14, border: '1px solid rgba(201,168,76,0.26)', background: 'rgba(201,168,76,0.08)', color: T.goldWarm, fontSize: '0.84rem', lineHeight: 1.7 }}>
+              Your message was sent successfully. BDT management will receive it through the new contact form.
+            </div>
+          ) : null}
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 12 }}>
-            <Btn variant="primary" type="submit">Send Message</Btn>
+            <Btn variant="primary" type="submit">{status === 'sending' ? 'Sending...' : 'Send Message'}</Btn>
             <Btn variant="secondary" onClick={clearForm}>Clear Form</Btn>
           </div>
         </form>
