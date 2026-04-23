@@ -249,19 +249,18 @@ function AboutScreen({ isMobile }) {
 }
 
 // ── RIVERDALE CREW ────────────────────────────────
-function AgentCard({ initial, name, role, desc, colorScheme, staggerIndex }) {
+function AgentCard({ name, role, desc, colorScheme, staggerIndex }) {
   const [hov, setHov] = useState(false);
   const schemes = {
-    gold:    { border: `rgba(201,168,76,${hov ? 0.42 : 0.28})`, glow: hov ? T.glowGold : 'none', avatarBorder: 'rgba(201,168,76,0.45)', avatarBg: 'rgba(201,168,76,0.1)', avatarColor: T.goldLight, radial: 'rgba(201,168,76,0.1)', roleColor: T.gold, dotBg: T.gold, dotGlow: T.gold },
-    purple:  { border: `rgba(107,31,168,${hov ? 0.48 : 0.32})`, glow: hov ? T.glowPurple : 'none', avatarBorder: 'rgba(107,31,168,0.5)', avatarBg: 'rgba(107,31,168,0.12)', avatarColor: '#c99dff', radial: 'rgba(107,31,168,0.1)', roleColor: '#c99dff', dotBg: '#c99dff', dotGlow: '#9b59b6' },
-    crimson: { border: `rgba(176,16,32,${hov ? 0.45 : 0.3})`, glow: hov ? T.glowCrimson : 'none', avatarBorder: 'rgba(176,16,32,0.45)', avatarBg: 'rgba(176,16,32,0.12)', avatarColor: '#ff9999', radial: 'rgba(176,16,32,0.1)', roleColor: '#ff8888', dotBg: '#ff8888', dotGlow: '#c0392b' },
+    gold:    { border: `rgba(201,168,76,${hov ? 0.42 : 0.28})`, glow: hov ? T.glowGold : 'none', radial: 'rgba(201,168,76,0.1)', roleColor: T.gold, dotBg: T.gold, dotGlow: T.gold },
+    purple:  { border: `rgba(107,31,168,${hov ? 0.48 : 0.32})`, glow: hov ? T.glowPurple : 'none', radial: 'rgba(107,31,168,0.1)', roleColor: '#c99dff', dotBg: '#c99dff', dotGlow: '#9b59b6' },
+    crimson: { border: `rgba(176,16,32,${hov ? 0.45 : 0.3})`, glow: hov ? T.glowCrimson : 'none', radial: 'rgba(176,16,32,0.1)', roleColor: '#ff8888', dotBg: '#ff8888', dotGlow: '#c0392b' },
   };
   const s = schemes[colorScheme];
   return (
     <div className="stagger-item" onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{ '--stagger-index': staggerIndex, position: 'relative', overflow: 'hidden', borderRadius: 20, padding: '26px 20px', border: `1px solid ${s.border}`, background: '#0a0a0c', display: 'flex', flexDirection: 'column', gap: 12, transform: hov ? 'translateY(-8px)' : 'none', boxShadow: s.glow, transition: 'transform .35s ease, box-shadow .35s ease', cursor: 'default' }}>
       <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at top, ${s.radial} 0%, transparent 65%)`, pointerEvents: 'none' }} />
-      <div style={{ width: 50, height: 50, borderRadius: '50%', border: `1px solid ${s.avatarBorder}`, background: s.avatarBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 700, color: s.avatarColor, boxShadow: s.glow, position: 'relative', zIndex: 1 }}>{initial}</div>
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 500, color: T.white }}>{name}</div>
         <div style={{ fontFamily: "'DM Sans'", fontSize: '0.62rem', letterSpacing: '0.26em', textTransform: 'uppercase', color: s.roleColor, marginTop: 3 }}>{role}</div>
@@ -282,9 +281,9 @@ function CrewScreen({ isMobile }) {
       <SectionTitle>Riverdale Crew</SectionTitle>
       <SectionCopy>Three AI agents working around the clock — supporting the team, streamlining operations, and keeping the creative engine running.</SectionCopy>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginTop: 24 }}>
-        <AgentCard initial="A" name="Archie" role="The Builder" colorScheme="gold" desc="Handles development workflows, technical operations, and keeps the infrastructure running at full speed." staggerIndex={1} />
-        <AgentCard initial="B" name="Betty" role="The Strategist" colorScheme="purple" desc="Manages content strategy, data analysis, and ensures every decision is backed by insight and intelligence." staggerIndex={2} />
-        <AgentCard initial="V" name="Veronica" role="The Connector" colorScheme="crimson" desc="Drives partnerships, outreach, and brand relationships — making sure BDT's network keeps growing." staggerIndex={3} />
+        <AgentCard name="Archie" role="The Builder" colorScheme="gold" desc="Handles development workflows, technical operations, and keeps the infrastructure running at full speed." staggerIndex={1} />
+        <AgentCard name="Betty" role="The Strategist" colorScheme="purple" desc="Manages content strategy, data analysis, and ensures every decision is backed by insight and intelligence." staggerIndex={2} />
+        <AgentCard name="Veronica" role="The Connector" colorScheme="crimson" desc="Drives partnerships, outreach, and brand relationships — making sure BDT's network keeps growing." staggerIndex={3} />
       </div>
       <div style={{ marginTop: 24 }}>
         <img src="./assets/Riverdale_Crew.jpg" alt="Riverdale Crew" style={{ width: '100%', borderRadius: 16, border: '1px solid rgba(201,168,76,0.13)', boxShadow: '0 8px 50px rgba(0,0,0,0.6)' }} />
