@@ -109,6 +109,41 @@
     animation: luxuryFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     animation-delay: calc(var(--stagger-index, 0) * 50ms);
   }
+  @media (max-width: 768px) {
+    .fade-section {
+      transform: translateY(16px) scale(0.995);
+      filter: blur(3px);
+      transition:
+        opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fade-section.is-peeking {
+      opacity: 0.62;
+      transform: translateY(6px) scale(0.998);
+      filter: blur(1px);
+    }
+    .stagger-item {
+      transform: translateY(8px) scale(0.996);
+      filter: blur(2px);
+    }
+    @keyframes luxuryFadeInMobile {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.996);
+        filter: blur(2px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+    .fade-section.visible .stagger-item {
+      animation: luxuryFadeInMobile 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: calc(var(--stagger-index, 0) * 35ms);
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .fade-section,
@@ -173,9 +208,9 @@ function SectionCopy({ children }) {
   return <p style={{ fontSize: '0.96rem', lineHeight: 1.85, color: 'rgba(255,255,255,0.6)', maxWidth: 640, marginTop: 10 }}>{children}</p>;
 }
 
-function GoldDivider() {
+function GoldDivider({ compact = false }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '28px 0' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: compact ? 8 : 10, margin: compact ? '20px 0' : '28px 0' }}>
       <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.4))' }} />
       <span style={{ fontSize: '0.5rem', color: T.gold }}>◆</span>
       <div style={{ flex: 1, height: 1, background: 'linear-gradient(270deg, transparent, rgba(201,168,76,0.4))' }} />
@@ -210,20 +245,20 @@ function SocialPill({ label, abbr, href, fullWidth }) {
 // ── HERO SCREEN ───────────────────────────────────
 function HeroScreen({ isMobile }) {
   return (
-    <section className="stagger-item" style={{ '--stagger-index': 0, minHeight: isMobile ? 'auto' : '100vh', display: 'grid', alignContent: 'center', textAlign: 'center', gap: 0, padding: isMobile ? '20px 8px 8px' : '40px 24px' }}>
-      <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ maxWidth: 600, width: isMobile ? '100%' : '90%', margin: '0 auto 44px', filter: 'drop-shadow(0 0 28px rgba(201,168,76,0.22))' }} />
+    <section className="stagger-item" style={{ '--stagger-index': 0, minHeight: isMobile ? 'auto' : '100vh', display: 'grid', alignContent: 'center', textAlign: 'center', gap: 0, padding: isMobile ? '10px 4px 0' : '40px 24px' }}>
+      <img src="./assets/bdt-logo.jpeg" alt="BDT Talent Group" style={{ maxWidth: 600, width: isMobile ? 'min(100%, 360px)' : '90%', margin: isMobile ? '0 auto 28px' : '0 auto 44px', filter: 'drop-shadow(0 0 28px rgba(201,168,76,0.22))' }} />
       <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem,3.5vw,2.8rem)', fontWeight: 500, letterSpacing: '0.02em', lineHeight: 1.2, color: T.white }}>
         AI-Powered Talent.<br />
         <span style={{ color: T.goldLight, fontStyle: 'italic', textShadow: T.glowGold }}>Human-Centered Culture.</span>
       </h1>
-      <div style={{ marginTop: 14, fontSize: isMobile ? '0.98rem' : '0.9rem', letterSpacing: isMobile ? '0.02em' : '0.08em', textTransform: 'none', color: T.silver, opacity: 0.72, lineHeight: 1.6, maxWidth: 640, marginInline: 'auto' }}>
+      <div style={{ marginTop: isMobile ? 10 : 14, fontSize: isMobile ? '0.94rem' : '0.9rem', letterSpacing: isMobile ? '0.01em' : '0.08em', textTransform: 'none', color: T.silver, opacity: 0.72, lineHeight: 1.55, maxWidth: 560, marginInline: 'auto' }}>
         Elevating the next generation of creators. The industry's watching. 🚀
       </div>
-      <GoldDivider />
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: -10, marginBottom: 14 }}>
+      <GoldDivider compact={isMobile} />
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: isMobile ? -6 : -10, marginBottom: isMobile ? 10 : 14 }}>
         <Kicker>Social Media Links</Kicker>
       </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: isMobile ? 8 : 9 }}>
         {SOCIAL_LINKS.map(({ abbr, label, href }) => (
           <SocialPill key={label} abbr={abbr} label={label} href={href} fullWidth={isMobile} />
         ))}
@@ -236,12 +271,12 @@ function HeroScreen({ isMobile }) {
 function AboutScreen({ isMobile }) {
   return (
     <div className="stagger-item" style={{ '--stagger-index': 1, padding: isMobile ? '28px 20px' : '40px 32px', border: '1px solid rgba(201,168,76,0.16)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', backdropFilter: 'blur(4px)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
-      <SectionTitle>About Me</SectionTitle>
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', gap: 28, alignItems: 'center', marginTop: 22 }}>
+      <SectionTitle>Who We Are</SectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', gap: isMobile ? 20 : 28, alignItems: 'center', marginTop: 18 }}>
         <img src="./assets/BDT_website_pic.jpg" alt="Isaac Tran" style={{ width: isMobile ? 'min(100%, 220px)' : '100%', justifySelf: 'center', aspectRatio: '4/5', objectFit: 'cover', borderRadius: 18, border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 0 40px rgba(75,0,130,0.18), 0 24px 60px rgba(0,0,0,0.5)' }} />
-        <div style={{ display: 'grid', gap: 12 }}>
-          <Kicker>Isaac Tran · BDT Talent Group</Kicker>
-          <SectionCopy>Isaac Tran is the founder of BDT Talent Group — a passionate AI enthusiast who believes the future of human creativity isn't threatened by artificial intelligence, it's elevated by it. His vision: empower artists, creators, and culture-makers with AI as a tool, not a replacement.</SectionCopy>
+        <div style={{ display: 'grid', gap: isMobile ? 10 : 12 }}>
+          <Kicker>Houston · BDT Talent Group</Kicker>
+          <SectionCopy>BDT Talent Group is a Houston-based creative studio and talent company built to help creators, artists, and culture-shaping brands move faster with intention. We use AI as a tool to expand human creativity, not replace it.</SectionCopy>
         </div>
       </div>
     </div>
@@ -249,7 +284,7 @@ function AboutScreen({ isMobile }) {
 }
 
 // ── RIVERDALE CREW ────────────────────────────────
-function AgentCard({ name, role, desc, colorScheme, staggerIndex }) {
+function AgentCard({ name, role, desc, colorScheme, staggerIndex, isMobile }) {
   const [hov, setHov] = useState(false);
   const schemes = {
     gold:    { border: `rgba(201,168,76,${hov ? 0.42 : 0.28})`, glow: hov ? T.glowGold : 'none', radial: 'rgba(201,168,76,0.1)', roleColor: T.gold, dotBg: T.gold, dotGlow: T.gold },
@@ -259,13 +294,13 @@ function AgentCard({ name, role, desc, colorScheme, staggerIndex }) {
   const s = schemes[colorScheme];
   return (
     <div className="stagger-item" onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ '--stagger-index': staggerIndex, position: 'relative', overflow: 'hidden', borderRadius: 20, padding: '26px 20px', border: `1px solid ${s.border}`, background: '#0a0a0c', display: 'flex', flexDirection: 'column', gap: 12, transform: hov ? 'translateY(-8px)' : 'none', boxShadow: s.glow, transition: 'transform .35s ease, box-shadow .35s ease', cursor: 'default' }}>
+      style={{ '--stagger-index': staggerIndex, position: 'relative', overflow: 'hidden', borderRadius: 20, padding: isMobile ? '22px 18px' : '26px 20px', border: `1px solid ${s.border}`, background: '#0a0a0c', display: 'flex', flexDirection: 'column', gap: isMobile ? 10 : 12, transform: hov ? 'translateY(-8px)' : 'none', boxShadow: s.glow, transition: 'transform .35s ease, box-shadow .35s ease', cursor: 'default' }}>
       <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at top, ${s.radial} 0%, transparent 65%)`, pointerEvents: 'none' }} />
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 500, color: T.white }}>{name}</div>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? '1.16rem' : '1.25rem', fontWeight: 500, color: T.white }}>{name}</div>
         <div style={{ fontFamily: "'DM Sans'", fontSize: '0.62rem', letterSpacing: '0.26em', textTransform: 'uppercase', color: s.roleColor, marginTop: 3 }}>{role}</div>
       </div>
-      <div style={{ fontSize: '0.86rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.68)', position: 'relative', zIndex: 1 }}>{desc}</div>
+      <div style={{ fontSize: isMobile ? '0.82rem' : '0.86rem', lineHeight: isMobile ? 1.65 : 1.75, color: 'rgba(255,255,255,0.68)', position: 'relative', zIndex: 1 }}>{desc}</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, position: 'relative', zIndex: 1 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: s.dotBg, boxShadow: `0 0 6px ${s.dotGlow}`, animation: 'pulse 2s infinite' }} />
         <span style={{ fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: s.roleColor }}>Online</span>
@@ -278,12 +313,12 @@ function CrewScreen({ isMobile }) {
   return (
     <div className="stagger-item" style={{ '--stagger-index': 0, padding: isMobile ? '28px 20px' : '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
       <Kicker>AI Agents · Active 24/7</Kicker>
-      <SectionTitle>Riverdale Crew</SectionTitle>
-      <SectionCopy>Three AI agents working around the clock — supporting the team, streamlining operations, and keeping the creative engine running.</SectionCopy>
+      <SectionTitle>Meet the Riverdale Crew</SectionTitle>
+      <SectionCopy>Three AI agents supporting operations, strategy, and relationship-building around the clock.</SectionCopy>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginTop: 24 }}>
-        <AgentCard name="Archie" role="The Builder" colorScheme="gold" desc="Handles development workflows, technical operations, and keeps the infrastructure running at full speed." staggerIndex={1} />
-        <AgentCard name="Betty" role="The Strategist" colorScheme="purple" desc="Manages content strategy, data analysis, and ensures every decision is backed by insight and intelligence." staggerIndex={2} />
-        <AgentCard name="Veronica" role="The Connector" colorScheme="crimson" desc="Drives partnerships, outreach, and brand relationships — making sure BDT's network keeps growing." staggerIndex={3} />
+        <AgentCard name="Archie" role="The Builder" colorScheme="gold" desc="Runs development workflows, technical ops, and the systems behind execution." staggerIndex={1} isMobile={isMobile} />
+        <AgentCard name="Betty" role="The Strategist" colorScheme="purple" desc="Shapes content strategy, research, and decision support with data-backed insight." staggerIndex={2} isMobile={isMobile} />
+        <AgentCard name="Veronica" role="The Connector" colorScheme="crimson" desc="Supports outreach, partnerships, and the brand relationships that expand the network." staggerIndex={3} isMobile={isMobile} />
       </div>
       <div style={{ marginTop: 24 }}>
         <img src="./assets/Riverdale_Crew.jpg" alt="Riverdale Crew" style={{ width: '100%', borderRadius: 16, border: '1px solid rgba(201,168,76,0.13)', boxShadow: '0 8px 50px rgba(0,0,0,0.6)' }} />
@@ -298,50 +333,50 @@ function CrewScreen({ isMobile }) {
 // ── WHAT WE DO ────────────────────────────────────
 function WhatWeDoScreen({ isMobile }) {
   const services = [
-    ['01','App Development','Native mobile apps for iOS and Android — built for the creators building tomorrow\'s culture.'],
-    ['02','Web Experiences','Cinematic, high-performance websites that make brands impossible to ignore.'],
-    ['03','AI Consulting','Strategic guidance on integrating AI into creative workflows — tool, not replacement.'],
-    ['04','Talent Management','End-to-end representation for creators, artists, and culture-makers ready to scale.'],
-    ['05','Brand Partnerships','Connecting talent with brands that share their vision for culture-forward creativity.'],
-    ['06','Social Strategy','Data-driven social media strategy designed to turn creators into cultural institutions.'],
+    ['01','App Development','iOS and Android apps built for creator-led brands and culture-first audiences.'],
+    ['02','Web Experiences','Fast, cinematic websites with sharper storytelling and stronger conversion.'],
+    ['03','AI Consulting','Practical AI strategy for teams, workflows, and creative operations.'],
+    ['04','Talent Management','Representation and support for artists, creators, and rising talent.'],
+    ['05','Brand Partnerships','Matches between talent and brands with aligned audiences and intent.'],
+    ['06','Social Strategy','Content systems and platform strategy designed for sustainable growth.'],
   ];
   return (
     <div className="stagger-item" style={{ '--stagger-index': 0, padding: isMobile ? '28px 20px' : '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
       <Kicker>Services</Kicker>
-      <SectionTitle>What We Do</SectionTitle>
-      <SectionCopy>We build apps. We build websites. We consult. We empower creators — all with AI but centered around human and artistic culture.</SectionCopy>
+      <SectionTitle>What We Build</SectionTitle>
+      <SectionCopy>Apps, websites, strategy, and creator support designed to move brands and talent forward without losing the human core.</SectionCopy>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginTop: 24 }}>
         {services.map(([num, name, desc], index) => (
-          <ServiceCard key={num} num={num} name={name} desc={desc} staggerIndex={index + 1} />
+          <ServiceCard key={num} num={num} name={name} desc={desc} staggerIndex={index + 1} isMobile={isMobile} />
         ))}
       </div>
     </div>
   );
 }
 
-function ServiceCard({ num, name, desc, staggerIndex }) {
+function ServiceCard({ num, name, desc, staggerIndex, isMobile }) {
   const [hov, setHov] = useState(false);
   return (
     <div className="stagger-item" onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ '--stagger-index': staggerIndex, padding: '22px 18px', borderRadius: 16, border: `1px solid ${hov ? 'rgba(201,168,76,0.35)' : 'rgba(201,168,76,0.1)'}`, background: hov ? 'rgba(201,168,76,0.04)' : 'rgba(255,255,255,0.02)', transform: hov ? 'translateY(-4px)' : 'none', transition: 'all .25s', display: 'grid', gap: 9 }}>
-      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.8rem', fontWeight: 700, color: 'rgba(201,168,76,0.18)', lineHeight: 1 }}>{num}</div>
-      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1rem', color: T.white }}>{name}</div>
-      <div style={{ fontSize: '0.83rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
+      style={{ '--stagger-index': staggerIndex, padding: isMobile ? '18px 16px' : '22px 18px', borderRadius: 16, border: `1px solid ${hov ? 'rgba(201,168,76,0.35)' : 'rgba(201,168,76,0.1)'}`, background: hov ? 'rgba(201,168,76,0.04)' : 'rgba(255,255,255,0.02)', transform: hov ? 'translateY(-4px)' : 'none', transition: 'all .25s', display: 'grid', gap: isMobile ? 7 : 9 }}>
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? '1.5rem' : '1.8rem', fontWeight: 700, color: 'rgba(201,168,76,0.18)', lineHeight: 1 }}>{num}</div>
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? '0.96rem' : '1rem', color: T.white }}>{name}</div>
+      <div style={{ fontSize: isMobile ? '0.8rem' : '0.83rem', lineHeight: isMobile ? 1.6 : 1.7, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
     </div>
   );
 }
 
 // ── PRODUCTS ─────────────────────────────────────
-function ProductCard({ platform, name, desc, badge, variant, staggerIndex }) {
+function ProductCard({ platform, name, desc, badge, variant, staggerIndex, isMobile }) {
   const [hov, setHov] = useState(false);
   const isPurple = variant === 'purple';
   return (
     <div className="stagger-item" onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ '--stagger-index': staggerIndex, position: 'relative', overflow: 'hidden', borderRadius: 18, padding: '26px 24px', border: `1px solid ${isPurple ? (hov ? 'rgba(107,31,168,0.5)' : 'rgba(107,31,168,0.2)') : (hov ? 'rgba(201,168,76,0.42)' : 'rgba(201,168,76,0.16)')}`, background: isPurple ? 'rgba(75,0,130,0.04)' : 'rgba(255,255,255,0.025)', transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? (isPurple ? T.glowPurple : '0 0 40px rgba(201,168,76,0.08), 0 20px 60px rgba(0,0,0,0.4)') : 'none', transition: 'all .3s', display: 'grid', gap: 13 }}>
+      style={{ '--stagger-index': staggerIndex, position: 'relative', overflow: 'hidden', borderRadius: 18, padding: isMobile ? '22px 20px' : '26px 24px', border: `1px solid ${isPurple ? (hov ? 'rgba(107,31,168,0.5)' : 'rgba(107,31,168,0.2)') : (hov ? 'rgba(201,168,76,0.42)' : 'rgba(201,168,76,0.16)')}`, background: isPurple ? 'rgba(75,0,130,0.04)' : 'rgba(255,255,255,0.025)', transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? (isPurple ? T.glowPurple : '0 0 40px rgba(201,168,76,0.08), 0 20px 60px rgba(0,0,0,0.4)') : 'none', transition: 'all .3s', display: 'grid', gap: isMobile ? 10 : 13 }}>
       <div style={{ position: 'absolute', top: 0, right: 0, width: 100, height: 100, background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      {platform ? <div style={{ fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.gold }}>{platform}</div> : null}
-      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.45rem', fontWeight: 500, color: T.white }}>{name}</div>
-      <div style={{ fontSize: '0.87rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
+      {platform ? <div style={{ fontSize: isMobile ? '0.58rem' : '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.gold }}>{platform}</div> : null}
+      <div style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? '1.28rem' : '1.45rem', fontWeight: 500, color: T.white }}>{name}</div>
+      <div style={{ fontSize: isMobile ? '0.83rem' : '0.87rem', lineHeight: isMobile ? 1.65 : 1.75, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
       {badge ? <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', width: 'fit-content', border: `1px solid ${isPurple ? 'rgba(107,31,168,0.3)' : 'rgba(201,168,76,0.22)'}`, borderRadius: 999, background: isPurple ? 'rgba(107,31,168,0.08)' : 'rgba(201,168,76,0.06)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.goldWarm }}>◆ {badge}</div> : null}
     </div>
   );
@@ -351,11 +386,12 @@ function ProductsScreen({ isMobile }) {
   return (
     <div className="stagger-item" style={{ '--stagger-index': 0, padding: isMobile ? '28px 20px' : '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
       <Kicker>Mobile · Google Play · Apple App Store</Kicker>
-      <SectionTitle>Products</SectionTitle>
+      <SectionTitle>Products We're Building</SectionTitle>
+      <SectionCopy>A growing product slate focused on culture, discovery, and fan engagement.</SectionCopy>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginTop: 24 }}>
-        <ProductCard name="Aight Bet" desc="A sports betting app concept built for fans who want a sharper, culture-aware betting experience." staggerIndex={1} />
-        <ProductCard name="Add Me" desc="A social discovery app concept focused on making new connections and expanding your circle." staggerIndex={2} />
-        <ProductCard platform="Coming Soon" name="More on the Way" desc="BDT's product roadmap is growing. New apps engineered with AI at the core, culture at the heart." badge="In Development" variant="purple" staggerIndex={3} />
+        <ProductCard name="Aight Bet" desc="A sports betting concept built for fans who want a sharper, culture-aware experience." staggerIndex={1} isMobile={isMobile} />
+        <ProductCard name="Add Me" desc="A social discovery concept centered on meeting new people and expanding your circle." staggerIndex={2} isMobile={isMobile} />
+        <ProductCard platform="Coming Soon" name="More on the Way" desc="New apps are on the roadmap, built with AI at the core and culture at the heart." badge="In Development" variant="purple" staggerIndex={3} isMobile={isMobile} />
       </div>
     </div>
   );
@@ -412,8 +448,8 @@ function ContactScreen({ isMobile }) {
       <div style={{ position: 'absolute', bottom: -60, right: -60, width: 260, height: 260, background: 'radial-gradient(circle, rgba(139,0,0,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Kicker>Contact</Kicker>
-        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem,2.5vw,2.1rem)', fontWeight: 500, color: T.white, marginTop: 8 }}>Start a private conversation.</div>
-        <p style={{ fontSize: '0.93rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.68)', marginTop: 10, marginBottom: 22 }}>Share your project, talent inquiry, or brand opportunity and we'll route it directly to BDT management.</p>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem,2.5vw,2.1rem)', fontWeight: 500, color: T.white, marginTop: 8 }}>How to Reach Us</div>
+        <p style={{ fontSize: '0.93rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.68)', marginTop: 10, marginBottom: 22 }}>Share your project, talent inquiry, or brand opportunity and it will route directly to BDT management.</p>
         <form style={{ display: 'grid', gap: 14 }} onSubmit={handleSubmit}>
           <div style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }} aria-hidden="true">
             <label htmlFor="contact-company-name">Company Name</label>
