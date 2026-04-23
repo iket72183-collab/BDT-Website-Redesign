@@ -340,7 +340,7 @@ function ProductCard({ platform, name, desc, badge, variant, staggerIndex }) {
     <div className="stagger-item" onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{ '--stagger-index': staggerIndex, position: 'relative', overflow: 'hidden', borderRadius: 18, padding: '26px 24px', border: `1px solid ${isPurple ? (hov ? 'rgba(107,31,168,0.5)' : 'rgba(107,31,168,0.2)') : (hov ? 'rgba(201,168,76,0.42)' : 'rgba(201,168,76,0.16)')}`, background: isPurple ? 'rgba(75,0,130,0.04)' : 'rgba(255,255,255,0.025)', transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? (isPurple ? T.glowPurple : '0 0 40px rgba(201,168,76,0.08), 0 20px 60px rgba(0,0,0,0.4)') : 'none', transition: 'all .3s', display: 'grid', gap: 13 }}>
       <div style={{ position: 'absolute', top: 0, right: 0, width: 100, height: 100, background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.gold }}>{platform}</div>
+      {platform ? <div style={{ fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.gold }}>{platform}</div> : null}
       <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.45rem', fontWeight: 500, color: T.white }}>{name}</div>
       <div style={{ fontSize: '0.87rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
       {badge ? <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', width: 'fit-content', border: `1px solid ${isPurple ? 'rgba(107,31,168,0.3)' : 'rgba(201,168,76,0.22)'}`, borderRadius: 999, background: isPurple ? 'rgba(107,31,168,0.08)' : 'rgba(201,168,76,0.06)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.goldWarm }}>◆ {badge}</div> : null}
@@ -354,8 +354,8 @@ function ProductsScreen({ isMobile }) {
       <Kicker>Mobile · Google Play · Apple App Store</Kicker>
       <SectionTitle>Products</SectionTitle>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginTop: 24 }}>
-        <ProductCard platform="Google Play · Apple App Store" name="Aight Bet" desc="A sports betting app concept built for fans who want a sharper, culture-aware betting experience." staggerIndex={1} />
-        <ProductCard platform="Google Play · Apple App Store" name="Add Me" desc="A social discovery app concept focused on making new connections and expanding your circle." staggerIndex={2} />
+        <ProductCard name="Aight Bet" desc="A sports betting app concept built for fans who want a sharper, culture-aware betting experience." staggerIndex={1} />
+        <ProductCard name="Add Me" desc="A social discovery app concept focused on making new connections and expanding your circle." staggerIndex={2} />
         <ProductCard platform="Coming Soon" name="More on the Way" desc="BDT's product roadmap is growing. New apps engineered with AI at the core, culture at the heart." badge="In Development" variant="purple" staggerIndex={3} />
       </div>
     </div>
