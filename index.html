@@ -336,7 +336,7 @@ function WhatWeDoScreen({ isMobile }) {
     ['01','App Development','iOS and Android apps built for creator-led brands and culture-first audiences.'],
     ['02','Web Experiences','Fast, cinematic websites with sharper storytelling and stronger conversion.'],
     ['03','AI Consulting','Practical AI strategy for teams, workflows, and creative operations.'],
-    ['04','Talent Management','Representation and support for artists, creators, and rising talent.'],
+    ['04','Subsidiary Expansion','Growing BDT Talent Group into a larger parent company with future ventures like BDT Productions and BDT Tech.'],
     ['05','Brand Partnerships','Matches between talent and brands with aligned audiences and intent.'],
     ['06','Social Strategy','Content systems and platform strategy designed for sustainable growth.'],
   ];
@@ -344,7 +344,7 @@ function WhatWeDoScreen({ isMobile }) {
     <div className="stagger-item" style={{ '--stagger-index': 0, padding: isMobile ? '28px 20px' : '36px 32px', border: '1px solid rgba(201,168,76,0.14)', borderRadius: 26, background: 'rgba(255,255,255,0.025)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)' }}>
       <Kicker>Services</Kicker>
       <SectionTitle>What We Build</SectionTitle>
-      <SectionCopy>Apps, websites, strategy, and creator support designed to move brands and talent forward without losing the human core.</SectionCopy>
+      <SectionCopy>Apps, websites, AI strategy, partnerships, and future subsidiaries designed to grow the BDT ecosystem without losing the human core.</SectionCopy>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginTop: 24 }}>
         {services.map(([num, name, desc], index) => (
           <ServiceCard key={num} num={num} name={name} desc={desc} staggerIndex={index + 1} isMobile={isMobile} />
