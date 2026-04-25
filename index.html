@@ -367,13 +367,14 @@ function ServiceCard({ num, name, desc, staggerIndex, isMobile }) {
 }
 
 // ── PRODUCTS ─────────────────────────────────────
-function ProductCard({ platform, name, desc, badge, variant, staggerIndex, isMobile }) {
+function ProductCard({ platform, name, desc, badge, variant, staggerIndex, isMobile, imageSrc }) {
   const [hov, setHov] = useState(false);
   const isPurple = variant === 'purple';
   return (
     <div className="stagger-item" onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{ '--stagger-index': staggerIndex, position: 'relative', overflow: 'hidden', borderRadius: 18, padding: isMobile ? '22px 20px' : '26px 24px', border: `1px solid ${isPurple ? (hov ? 'rgba(107,31,168,0.5)' : 'rgba(107,31,168,0.2)') : (hov ? 'rgba(201,168,76,0.42)' : 'rgba(201,168,76,0.16)')}`, background: isPurple ? 'rgba(75,0,130,0.04)' : 'rgba(255,255,255,0.025)', transform: hov ? 'translateY(-5px)' : 'none', boxShadow: hov ? (isPurple ? T.glowPurple : '0 0 40px rgba(201,168,76,0.08), 0 20px 60px rgba(0,0,0,0.4)') : 'none', transition: 'all .3s', display: 'grid', gap: isMobile ? 10 : 13 }}>
       <div style={{ position: 'absolute', top: 0, right: 0, width: 100, height: 100, background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      {imageSrc ? <img src={imageSrc} alt={`${name} app icon`} style={{ width: isMobile ? 56 : 64, height: isMobile ? 56 : 64, borderRadius: 16, objectFit: 'cover', border: '1px solid rgba(201,168,76,0.18)', boxShadow: '0 10px 28px rgba(0,0,0,0.35)' }} /> : null}
       {platform ? <div style={{ fontSize: isMobile ? '0.58rem' : '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: isPurple ? '#c99dff' : T.gold }}>{platform}</div> : null}
       <div style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? '1.28rem' : '1.45rem', fontWeight: 500, color: T.white }}>{name}</div>
       <div style={{ fontSize: isMobile ? '0.83rem' : '0.87rem', lineHeight: isMobile ? 1.65 : 1.75, color: 'rgba(255,255,255,0.68)' }}>{desc}</div>
@@ -389,9 +390,10 @@ function ProductsScreen({ isMobile }) {
       <SectionTitle>Products We're Building</SectionTitle>
       <SectionCopy>A growing product slate focused on culture, discovery, and fan engagement.</SectionCopy>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginTop: 24 }}>
-        <ProductCard name="Aight Bet" desc="A sports betting concept built for fans who want a sharper, culture-aware experience." staggerIndex={1} isMobile={isMobile} />
-        <ProductCard name="Add Me" desc="A social discovery concept centered on meeting new people and expanding your circle." staggerIndex={2} isMobile={isMobile} />
-        <ProductCard platform="Coming Soon" name="More on the Way" desc="New apps are on the roadmap, built with AI at the core and culture at the heart." badge="In Development" variant="purple" staggerIndex={3} isMobile={isMobile} />
+        <ProductCard platform="Mobile App" name="Catholic Daily Scripture" desc="A mobile app that delivers a daily scripture reading in multiple languages with a clean, easy-to-use interface designed for all ages. Open the app to read, reflect, and share today's verse with friends and family." imageSrc="./assets/catholic-daily-scripture-logo.png" staggerIndex={1} isMobile={isMobile} />
+        <ProductCard name="Aight Bet" desc="A sports betting concept built for fans who want a sharper, culture-aware experience." staggerIndex={2} isMobile={isMobile} />
+        <ProductCard name="Add Me" desc="A social discovery concept centered on meeting new people and expanding your circle." staggerIndex={3} isMobile={isMobile} />
+        <ProductCard platform="Coming Soon" name="More on the Way" desc="New apps are on the roadmap, built with AI at the core and culture at the heart." badge="In Development" variant="purple" staggerIndex={4} isMobile={isMobile} />
       </div>
     </div>
   );
