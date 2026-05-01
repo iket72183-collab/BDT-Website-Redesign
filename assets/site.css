@@ -601,8 +601,13 @@ textarea:focus-visible {
 .product-card img {
   width: 58px;
   height: 58px;
+  object-fit: cover;
   border-radius: 8px;
   margin-bottom: 18px;
+}
+
+.product-card img.aight-bet-logo {
+  box-shadow: 0 0 24px rgba(197, 51, 255, 0.22);
 }
 
 .text-link {
