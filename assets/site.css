@@ -685,13 +685,6 @@ textarea:focus-visible {
   overflow: hidden;
 }
 
-.form-note {
-  margin: -4px 0 0;
-  color: var(--soft) !important;
-  font-size: 0.82rem !important;
-  line-height: 1.6 !important;
-}
-
 .site-footer {
   position: relative;
   z-index: 1;
