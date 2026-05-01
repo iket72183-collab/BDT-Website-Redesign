@@ -23,6 +23,17 @@ if (toggle && menu) {
   });
 }
 
+const lightTargets = document.querySelectorAll(
+  ".section-card, .mini-card, .service-card, .product-card, .promo-grid, .wide-image, .contact-form, .nav-links a, .hero-socials a, .social-row a, .button"
+);
+
+lightTargets.forEach((target) => {
+  target.addEventListener("pointerdown", () => {
+    target.classList.add("is-lit");
+    window.setTimeout(() => target.classList.remove("is-lit"), 650);
+  });
+});
+
 const revealItems = document.querySelectorAll(".reveal");
 
 if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
