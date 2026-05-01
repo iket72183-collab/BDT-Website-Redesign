@@ -24,7 +24,7 @@ if (toggle && menu) {
 }
 
 const lightTargets = document.querySelectorAll(
-  ".section-card, .mini-card, .service-card, .product-card, .promo-grid, .wide-image, .contact-form, .nav-links a, .hero-socials a, .social-row a, .button"
+  ".section-card, .mini-card, .service-card, .product-card, .promo-grid, .wide-image, .contact-form, .nav-links a, .hero-socials a, .button"
 );
 
 lightTargets.forEach((target) => {
@@ -33,6 +33,58 @@ lightTargets.forEach((target) => {
     window.setTimeout(() => target.classList.remove("is-lit"), 650);
   });
 });
+
+const navSectionLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+
+const setActiveNavLink = (hash) => {
+  navSectionLinks.forEach((link) => {
+    const isActive = link.getAttribute("href") === hash;
+    link.classList.toggle("is-active", isActive);
+
+    if (isActive) {
+      link.setAttribute("aria-current", "location");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+};
+
+navSectionLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    const hash = link.getAttribute("href");
+    if (hash) {
+      setActiveNavLink(hash);
+    }
+  });
+});
+
+if (window.location.hash) {
+  setActiveNavLink(window.location.hash);
+}
+
+const navSections = navSectionLinks
+  .map((link) => {
+    const hash = link.getAttribute("href");
+    return hash ? document.querySelector(hash) : null;
+  })
+  .filter(Boolean);
+
+if ("IntersectionObserver" in window && navSections.length) {
+  const navObserver = new IntersectionObserver(
+    (entries) => {
+      const visibleEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (visibleEntry) {
+        setActiveNavLink(`#${visibleEntry.target.id}`);
+      }
+    },
+    { rootMargin: "-25% 0px -55% 0px", threshold: [0.12, 0.32, 0.55] }
+  );
+
+  navSections.forEach((section) => navObserver.observe(section));
+}
 
 const revealItems = document.querySelectorAll(".reveal");
 

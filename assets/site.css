@@ -152,6 +152,7 @@ textarea:focus-visible {
 .nav-links a,
 .footer-links a {
   padding: 10px 12px;
+  border: 1px solid transparent;
   border-radius: 999px;
   color: var(--muted);
   font-size: 0.72rem;
@@ -163,14 +164,20 @@ textarea:focus-visible {
 }
 
 .nav-links a:hover,
+.nav-links a:focus-visible,
 .nav-links a:active,
 .nav-links a.is-lit,
+.nav-links a.is-active,
+.nav-links a[aria-current="location"],
 .footer-links a:hover,
+.footer-links a:focus-visible,
 .footer-links a:active,
 .footer-links a.is-lit {
   color: var(--gold-warm);
+  border-color: rgba(201, 168, 76, 0.48);
   background: rgba(201, 168, 76, 0.08);
   box-shadow: 0 0 24px rgba(201, 168, 76, 0.12);
+  text-shadow: 0 0 18px rgba(241, 215, 143, 0.42);
 }
 
 .menu-toggle {
@@ -285,7 +292,7 @@ textarea:focus-visible {
   flex-wrap: wrap;
   justify-content: center;
   gap: 9px;
-  margin-top: 24px;
+  margin: 0 0 24px;
   max-width: 900px;
 }
 
@@ -324,14 +331,14 @@ textarea:focus-visible {
 }
 
 .hero-socials a:hover,
+.hero-socials a:focus-visible,
 .hero-socials a:active,
 .hero-socials a.is-lit,
 .menu-socials a:hover,
+.menu-socials a:focus-visible,
 .menu-socials a:active,
 .menu-socials a.is-lit,
-.social-row a:hover,
-.social-row a:active,
-.social-row a.is-lit {
+.menu-socials a.is-active {
   color: var(--gold-warm);
   border-color: rgba(201, 168, 76, 0.62);
   background: rgba(201, 168, 76, 0.075);
@@ -748,27 +755,6 @@ textarea:focus-visible {
   gap: 4px;
 }
 
-.social-row {
-  width: 100%;
-  max-width: var(--max);
-  margin: 24px auto 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.social-row a {
-  border: 1px solid rgba(201, 168, 76, 0.22);
-  border-radius: 999px;
-  padding: 8px 12px;
-  color: var(--muted);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
 .legal-line {
   width: 100%;
   max-width: var(--max);
@@ -974,7 +960,7 @@ textarea:focus-visible {
     overflow-x: auto;
     width: 100%;
     gap: 8px;
-    margin-top: 22px;
+    margin: 0 0 22px;
     padding-bottom: 4px;
     scrollbar-width: thin;
   }
@@ -1018,13 +1004,11 @@ textarea:focus-visible {
     padding: 20px;
   }
 
-  .social-row,
   .footer-links {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .social-row a,
   .footer-links a {
     text-align: center;
   }
