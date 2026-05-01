@@ -298,11 +298,6 @@ textarea:focus-visible {
   text-transform: uppercase;
 }
 
-.hero-tagline span {
-  color: var(--gold);
-  padding-right: 0.55em;
-}
-
 .hero-lede {
   width: min(calc(100vw - 40px), 620px);
   max-width: 620px;
@@ -669,6 +664,7 @@ textarea:focus-visible {
 .promo-grid {
   grid-template-columns: 0.9fr 0.72fr;
   gap: 38px;
+  overflow: hidden;
 }
 
 .feature-list {
@@ -699,11 +695,13 @@ textarea:focus-visible {
 
 .flyer-link {
   display: block;
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
 }
 
 .flyer-link img {
-  width: min(100%, 420px);
-  margin-left: auto;
+  width: 100%;
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
 }
 
@@ -785,13 +783,13 @@ textarea:focus-visible {
   max-width: var(--max);
   margin: 0 auto;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .footer-links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 4px;
 }
 
@@ -803,6 +801,7 @@ textarea:focus-visible {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.2em;
+  text-align: center;
   text-transform: uppercase;
 }
 
@@ -949,16 +948,9 @@ textarea:focus-visible {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .flyer-link img {
-    margin: 0;
-  }
-
-  .footer-grid {
-    justify-content: flex-start;
-  }
-
-  .footer-links {
-    justify-content: flex-start;
+  .flyer-link {
+    width: min(100%, 420px);
+    margin: 0 auto;
   }
 }
 
@@ -1050,6 +1042,11 @@ textarea:focus-visible {
     padding: 22px;
   }
 
+  .flyer-link {
+    width: calc(100vw - 76px);
+    max-width: 100%;
+  }
+
   .section-heading h2,
   .section-card h1,
   .section-card h2,
@@ -1074,10 +1071,11 @@ textarea:focus-visible {
 
   .footer-links {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
   }
 
   .footer-links a {
+    min-width: 168px;
     text-align: center;
   }
 }
