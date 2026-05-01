@@ -227,10 +227,12 @@ textarea:focus-visible {
   display: grid;
   justify-items: center;
   text-align: center;
+  min-width: 0;
 }
 
 .hero-logo {
-  width: min(100%, 640px);
+  width: min(calc(100vw - 40px), 640px);
+  max-width: 640px;
   border: 1px solid rgba(201, 168, 76, 0.24);
   border-radius: 8px;
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.46), 0 0 44px rgba(201, 168, 76, 0.1);
@@ -263,7 +265,46 @@ textarea:focus-visible {
   overflow-wrap: break-word;
 }
 
+.hero-launch .hero-mission {
+  width: min(calc(100vw - 40px), 980px);
+  max-width: 980px;
+  font-size: 4.35rem;
+  line-height: 1.05;
+  letter-spacing: 0.035em;
+  font-weight: 500;
+}
+
+.hero-mission-accent {
+  display: block;
+  color: var(--gold-light);
+  font-style: italic;
+  text-shadow: 0 0 26px rgba(201, 168, 76, 0.28);
+  white-space: normal;
+}
+
+.hero-mission-accent .mission-break {
+  display: inline;
+}
+
+.hero-tagline {
+  width: min(calc(100vw - 40px), 820px);
+  max-width: 820px;
+  margin: 18px auto 0;
+  color: var(--gold-warm);
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.85;
+  text-transform: uppercase;
+}
+
+.hero-tagline span {
+  color: var(--gold);
+  padding-right: 0.55em;
+}
+
 .hero-lede {
+  width: min(calc(100vw - 40px), 620px);
   max-width: 620px;
   margin: 18px auto 0;
   color: var(--muted);
@@ -889,6 +930,10 @@ textarea:focus-visible {
     font-size: 3rem;
   }
 
+  .hero-launch .hero-mission {
+    font-size: 3.05rem;
+  }
+
   .section-heading h2,
   .section-card h1,
   .section-card h2,
@@ -956,18 +1001,40 @@ textarea:focus-visible {
     line-height: 1.02;
   }
 
+  .hero-launch .hero-mission {
+    width: calc(100vw - 28px);
+    font-size: 1.9rem;
+    line-height: 1.08;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-mission-accent .mission-break {
+    display: block;
+  }
+
   .hero-logo {
-    width: min(100%, 420px);
+    width: calc(100vw - 28px);
+    max-width: none;
     margin-bottom: 22px;
   }
 
+  .hero-tagline {
+    width: calc(100vw - 28px);
+    margin-top: 14px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    line-height: 1.65;
+  }
+
   .hero-lede {
+    width: calc(100vw - 28px);
     margin-top: 16px;
     font-size: 0.97rem;
     line-height: 1.65;
   }
 
   .hero-actions {
+    width: calc(100vw - 28px);
     margin-top: 24px;
   }
 
