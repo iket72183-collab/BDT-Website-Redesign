@@ -14,6 +14,7 @@
   --soft: rgba(240, 238, 245, 0.54);
   --max: 1120px;
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+  --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -377,6 +378,37 @@ textarea:focus-visible {
   color: var(--gold-warm);
 }
 
+.reveal,
+.reveal-card {
+  --reveal-y: 0px;
+  --hover-y: 0px;
+  --reveal-delay: 0ms;
+  opacity: 1;
+  transform: translate3d(0, calc(var(--reveal-y) + var(--hover-y)), 0);
+  transform-origin: center;
+  transition:
+    opacity 720ms var(--reveal-ease),
+    filter 720ms var(--reveal-ease),
+    transform 720ms var(--reveal-ease);
+}
+
+.js .reveal,
+.js .reveal-card {
+  --reveal-y: 20px;
+  opacity: 0;
+  filter: saturate(0.92);
+  transition-delay: var(--reveal-delay);
+  will-change: opacity, transform;
+}
+
+.js .reveal.is-visible,
+.js .reveal-card.is-visible {
+  --reveal-y: 0px;
+  opacity: 1;
+  filter: none;
+  will-change: auto;
+}
+
 .section-card,
 .mini-card,
 .service-card,
@@ -390,6 +422,9 @@ textarea:focus-visible {
     linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
     rgba(10, 10, 11, 0.82);
   box-shadow: var(--shadow);
+  --reveal-y: 0px;
+  --hover-y: 0px;
+  transform: translate3d(0, calc(var(--reveal-y) + var(--hover-y)), 0);
 }
 
 .section-card,
@@ -399,7 +434,13 @@ textarea:focus-visible {
 .promo-grid,
 .wide-image,
 .contact-form {
-  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+  transition:
+    opacity 720ms var(--reveal-ease),
+    filter 720ms var(--reveal-ease),
+    transform 720ms var(--reveal-ease),
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .section-card:hover,
@@ -429,7 +470,7 @@ textarea:focus-visible {
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.024)),
     rgba(10, 10, 11, 0.9);
   box-shadow: 0 0 26px rgba(201, 168, 76, 0.18), 0 26px 80px rgba(0, 0, 0, 0.42);
-  transform: translateY(-2px);
+  --hover-y: -2px;
 }
 
 .section-card,
@@ -759,6 +800,14 @@ textarea:focus-visible {
   *::after {
     transition: none !important;
     animation: none !important;
+  }
+
+  .js .reveal,
+  .js .reveal-card {
+    --reveal-y: 0px;
+    opacity: 1;
+    filter: none;
+    transform: none;
   }
 }
 

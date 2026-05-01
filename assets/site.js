@@ -86,22 +86,71 @@ if ("IntersectionObserver" in window && navSections.length) {
   navSections.forEach((section) => navObserver.observe(section));
 }
 
-const revealItems = document.querySelectorAll(".reveal");
+const revealItems = Array.from(document.querySelectorAll(".reveal, .reveal-card"));
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+document.querySelectorAll(".crew-grid, .service-grid, .product-grid").forEach((group) => {
+  group.querySelectorAll(".reveal, .reveal-card").forEach((item, index) => {
+    item.style.setProperty("--reveal-delay", `${Math.min(index * 70, 210)}ms`);
+  });
+});
+
+if ("IntersectionObserver" in window && !reduceMotion) {
+  const revealElement = (item) => {
+    item.classList.add("is-visible");
+  };
+
+  const isInRevealRange = (item) => {
+    const rect = item.getBoundingClientRect();
+    return rect.top < window.innerHeight * 0.92 && rect.bottom > window.innerHeight * 0.08;
+  };
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
+          revealElement(entry.target);
           observer.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    { threshold: 0.14, rootMargin: "0px 0px -10% 0px" }
   );
 
-  revealItems.forEach((item) => observer.observe(item));
+  const revealVisibleItems = () => {
+    revealItems.forEach((item) => {
+      if (!item.classList.contains("is-visible") && isInRevealRange(item)) {
+        revealElement(item);
+        observer.unobserve(item);
+      }
+    });
+  };
+
+  revealItems.forEach((item) => {
+    if (isInRevealRange(item)) {
+      revealElement(item);
+    } else {
+      observer.observe(item);
+    }
+  });
+
+  let revealTicking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (revealTicking) {
+        return;
+      }
+
+      revealTicking = true;
+      window.requestAnimationFrame(() => {
+        revealVisibleItems();
+        revealTicking = false;
+      });
+    },
+    { passive: true }
+  );
+  window.addEventListener("load", revealVisibleItems, { once: true });
 } else {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 }
