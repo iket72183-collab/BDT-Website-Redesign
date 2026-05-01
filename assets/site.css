@@ -667,6 +667,10 @@ textarea:focus-visible {
   overflow: hidden;
 }
 
+.promo-copy {
+  min-width: 0;
+}
+
 .feature-list {
   display: grid;
   gap: 10px;
@@ -702,6 +706,7 @@ textarea:focus-visible {
 
 .flyer-link img {
   width: 100%;
+  height: auto;
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
 }
 
@@ -1025,7 +1030,7 @@ textarea:focus-visible {
     line-height: 1.65;
   }
 
-  .hero-actions {
+  .hero-launch > .hero-actions {
     width: calc(100vw - 28px);
     margin-top: 24px;
   }
@@ -1042,9 +1047,28 @@ textarea:focus-visible {
     padding: 22px;
   }
 
+  .promo-grid {
+    gap: 28px;
+  }
+
+  .promo-copy,
+  .feature-list,
+  .promo-copy .hero-actions,
   .flyer-link {
-    width: calc(100vw - 76px);
+    width: 100%;
     max-width: 100%;
+  }
+
+  .feature-list {
+    margin-top: 22px;
+  }
+
+  .promo-copy .hero-actions {
+    margin: 28px auto 0;
+  }
+
+  .flyer-link {
+    margin: 2px auto 0;
   }
 
   .section-heading h2,
