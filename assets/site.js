@@ -24,7 +24,7 @@ if (toggle && menu) {
 }
 
 const lightTargets = document.querySelectorAll(
-  ".section-card, .mini-card, .service-card, .product-card, .promo-grid, .wide-image, .contact-form, .nav-links a, .hero-socials a, .button"
+  ".section-card, .mini-card, .service-card, .product-card, .promo-grid, .wide-image, .contact-form, .nav-links a, .button"
 );
 
 lightTargets.forEach((target) => {

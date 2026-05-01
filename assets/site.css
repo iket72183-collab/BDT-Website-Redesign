@@ -149,6 +149,10 @@ textarea:focus-visible {
   display: none;
 }
 
+.menu-social-title {
+  display: none;
+}
+
 .nav-links a,
 .footer-links a {
   padding: 10px 12px;
@@ -287,16 +291,6 @@ textarea:focus-visible {
   margin-top: 26px;
 }
 
-.hero-socials {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 9px;
-  margin: 0 0 24px;
-  max-width: 900px;
-}
-
-.hero-socials a,
 .menu-socials a {
   display: inline-flex;
   align-items: center;
@@ -316,24 +310,6 @@ textarea:focus-visible {
   transition: color 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
-.hero-socials a span {
-  width: 19px;
-  height: 19px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(201, 168, 76, 0.32);
-  border-radius: 999px;
-  color: var(--gold-light);
-  font-size: 0.52rem;
-  letter-spacing: 0;
-  background: rgba(201, 168, 76, 0.08);
-}
-
-.hero-socials a:hover,
-.hero-socials a:focus-visible,
-.hero-socials a:active,
-.hero-socials a.is-lit,
 .menu-socials a:hover,
 .menu-socials a:focus-visible,
 .menu-socials a:active,
@@ -852,6 +828,17 @@ textarea:focus-visible {
     border-top: 1px solid rgba(201, 168, 76, 0.16);
   }
 
+  .menu-social-title {
+    display: block;
+    grid-column: 1 / -1;
+    margin: 0 0 2px;
+    color: var(--gold);
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
   .menu-socials a {
     border-radius: 6px;
     padding: 9px 10px;
@@ -951,23 +938,6 @@ textarea:focus-visible {
 
   .hero-actions {
     margin-top: 24px;
-  }
-
-  .hero-socials {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    width: 100%;
-    gap: 8px;
-    margin: 0 0 22px;
-    padding-bottom: 4px;
-    scrollbar-width: thin;
-  }
-
-  .hero-socials a {
-    flex: 0 0 auto;
-    min-height: 38px;
   }
 
   .button {
