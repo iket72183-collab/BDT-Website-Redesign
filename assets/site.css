@@ -893,6 +893,7 @@ textarea:focus-visible {
 
   .nav-links a {
     border-radius: 6px;
+    font-size: 0.76rem;
   }
 
   .menu-socials {
@@ -909,7 +910,7 @@ textarea:focus-visible {
     grid-column: 1 / -1;
     margin: 0 0 2px;
     color: var(--gold);
-    font-size: 0.66rem;
+    font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -917,6 +918,7 @@ textarea:focus-visible {
 
   .menu-socials a {
     border-radius: 6px;
+    font-size: 0.7rem;
     padding: 9px 10px;
   }
 
