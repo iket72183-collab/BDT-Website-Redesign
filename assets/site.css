@@ -697,24 +697,8 @@ textarea:focus-visible {
   width: 100%;
   max-width: var(--max);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 28px;
-  align-items: start;
-}
-
-.footer-brand {
-  color: var(--gold-light);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.45rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.site-footer p {
-  max-width: 520px;
-  color: var(--soft);
-  line-height: 1.7;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .footer-links {
@@ -871,7 +855,7 @@ textarea:focus-visible {
   }
 
   .footer-grid {
-    grid-template-columns: 1fr;
+    justify-content: flex-start;
   }
 
   .footer-links {
