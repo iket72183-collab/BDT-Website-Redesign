@@ -347,6 +347,20 @@ textarea:focus-visible {
   transition: color 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
+.social-icon {
+  width: 0.92em;
+  height: 0.92em;
+  flex: 0 0 auto;
+  color: rgba(241, 215, 143, 0.84);
+  opacity: 0.86;
+  transition: color 180ms ease, opacity 180ms ease, transform 180ms ease;
+}
+
+.menu-socials a span {
+  min-width: 0;
+  line-height: 1;
+}
+
 .menu-socials a:hover,
 .menu-socials a:focus-visible,
 .menu-socials a:active,
@@ -357,6 +371,15 @@ textarea:focus-visible {
   background: rgba(201, 168, 76, 0.075);
   box-shadow: 0 0 24px rgba(201, 168, 76, 0.18), 0 0 54px rgba(201, 168, 76, 0.08);
   transform: translateY(-1px);
+}
+
+.menu-socials a:hover .social-icon,
+.menu-socials a:focus-visible .social-icon,
+.menu-socials a:active .social-icon,
+.menu-socials a.is-lit .social-icon {
+  color: var(--gold-light);
+  opacity: 1;
+  transform: scale(1.08);
 }
 
 .button {
