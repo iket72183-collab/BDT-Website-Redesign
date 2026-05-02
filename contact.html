@@ -113,6 +113,18 @@
           <input type="email" name="email" autocomplete="email" placeholder="name@example.com" required />
         </label>
         <label>
+          <span>Inquiry Type</span>
+          <select name="inquiryType" autocomplete="off" required>
+            <option value="" selected disabled>Select inquiry type</option>
+            <option value="talent-creator-strategy">Talent / Creator Strategy</option>
+            <option value="brand-partnership">Brand Partnership</option>
+            <option value="app-development">App Development</option>
+            <option value="ai-consulting">AI Consulting</option>
+            <option value="media-press">Media / Press</option>
+            <option value="general-business">General Business</option>
+          </select>
+        </label>
+        <label>
           <span>Inquiry</span>
           <textarea name="message" rows="5" placeholder="Tell us about your project, talent inquiry, or partnership opportunity." required></textarea>
         </label>

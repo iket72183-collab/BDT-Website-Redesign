@@ -64,6 +64,7 @@ a {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--gold-light);
   outline-offset: 3px;
@@ -779,14 +780,36 @@ textarea:focus-visible {
 }
 
 .contact-form input,
+.contact-form select,
 .contact-form textarea {
   width: 100%;
+  min-height: 48px;
   border: 1px solid rgba(201, 168, 76, 0.2);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.035);
   color: var(--text);
   font: inherit;
   padding: 13px 14px;
+  touch-action: manipulation;
+}
+
+.contact-form select {
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, var(--gold-light) 50%) right 18px center / 7px 7px no-repeat,
+    linear-gradient(135deg, var(--gold-light) 50%, transparent 50%) right 13px center / 7px 7px no-repeat,
+    rgba(255, 255, 255, 0.035);
+  padding-right: 42px;
+  cursor: pointer;
+}
+
+.contact-form select:invalid {
+  color: rgba(240, 238, 245, 0.42);
+}
+
+.contact-form select option {
+  background: #111113;
+  color: var(--text);
 }
 
 .contact-form textarea {
@@ -799,6 +822,7 @@ textarea:focus-visible {
 }
 
 .contact-form input:focus,
+.contact-form select:focus,
 .contact-form textarea:focus {
   border-color: rgba(241, 215, 143, 0.75);
   outline: none;
