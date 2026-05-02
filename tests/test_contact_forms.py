@@ -80,6 +80,19 @@ class ContactFormTests(unittest.TestCase):
         self.assertIn("appearance: none", css)
         self.assertIn("touch-action: manipulation", css)
 
+    def test_contact_form_select_keeps_bdt_dark_gold_visual_treatment(self):
+        css = (ROOT / "assets" / "site.css").read_text()
+
+        self.assertIn("-webkit-appearance: none", css)
+        self.assertIn("background-color: rgba(255, 255, 255, 0.035)", css)
+        self.assertIn("box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.015)", css)
+        self.assertIn("color: var(--text)", css)
+        self.assertIn("font-size: 1rem", css)
+        self.assertIn(".contact-form select:hover", css)
+        self.assertIn(".contact-form select:focus", css)
+        self.assertNotIn("background: white", css.lower())
+        self.assertNotIn("background-color: white", css.lower())
+
 
 if __name__ == "__main__":
     unittest.main()

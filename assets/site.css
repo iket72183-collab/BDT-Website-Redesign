@@ -787,20 +787,43 @@ textarea:focus-visible {
   border: 1px solid rgba(201, 168, 76, 0.2);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.035);
+  background-color: rgba(255, 255, 255, 0.035);
   color: var(--text);
+  color-scheme: dark;
   font: inherit;
+  font-size: 1rem;
   padding: 13px 14px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.015);
   touch-action: manipulation;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 
 .contact-form select {
+  -webkit-appearance: none;
   appearance: none;
-  background:
-    linear-gradient(45deg, transparent 50%, var(--gold-light) 50%) right 18px center / 7px 7px no-repeat,
-    linear-gradient(135deg, var(--gold-light) 50%, transparent 50%) right 13px center / 7px 7px no-repeat,
-    rgba(255, 255, 255, 0.035);
+  background-color: rgba(255, 255, 255, 0.035);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--gold-light) 50%),
+    linear-gradient(135deg, var(--gold-light) 50%, transparent 50%);
+  background-position:
+    right 18px center,
+    right 13px center;
+  background-size:
+    7px 7px,
+    7px 7px;
+  background-repeat: no-repeat;
   padding-right: 42px;
   cursor: pointer;
+}
+
+.contact-form select::-ms-expand {
+  display: none;
+}
+
+.contact-form select:hover {
+  border-color: rgba(201, 168, 76, 0.42);
+  background-color: rgba(201, 168, 76, 0.055);
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.08), 0 0 18px rgba(201, 168, 76, 0.08);
 }
 
 .contact-form select:invalid {
