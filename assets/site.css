@@ -684,6 +684,13 @@ textarea:focus-visible {
   margin-right: auto;
 }
 
+.product-card img.catholic-app-logo {
+  width: 88px;
+  height: 88px;
+  border-radius: 12px;
+  box-shadow: 0 0 28px rgba(201, 168, 76, 0.18);
+}
+
 .product-card img.aight-bet-logo {
   box-shadow: 0 0 24px rgba(197, 51, 255, 0.22);
 }
@@ -1238,6 +1245,11 @@ textarea:focus-visible {
   .service-card,
   .product-card {
     padding: 20px;
+  }
+
+  .product-card img.catholic-app-logo {
+    width: 80px;
+    height: 80px;
   }
 
   .footer-links {
