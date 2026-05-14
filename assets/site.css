@@ -1312,11 +1312,13 @@ textarea:focus-visible {
   .menu-social-title {
     display: block;
     grid-column: 1 / -1;
+    justify-self: center;
     margin: 0 0 2px;
     color: var(--gold);
     font-size: 0.68rem;
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 0.2em;
+    text-align: center;
     text-transform: uppercase;
   }
 
