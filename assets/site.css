@@ -222,11 +222,33 @@ textarea:focus-visible {
   padding: 76px 0;
   scroll-margin-top: 96px;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
+  position: relative;
 }
 
 .section:first-of-type,
 .hero {
   border-top: none;
+}
+
+/* Purple accent divider between sections */
+.section:not(:first-of-type)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(45, 10, 78, 0.0) 10%,
+    rgba(88, 28, 135, 0.45) 35%,
+    rgba(106, 31, 168, 0.62) 50%,
+    rgba(88, 28, 135, 0.45) 65%,
+    rgba(45, 10, 78, 0.0) 90%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 .hero {
@@ -274,7 +296,8 @@ textarea:focus-visible {
   font-size: 3.6rem;
   line-height: 0.98;
   font-weight: 700;
-  color: var(--text);
+  color: #ffffff;
+  letter-spacing: 0.01em;
   overflow-wrap: break-word;
 }
 
@@ -741,6 +764,9 @@ textarea:focus-visible {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.42rem;
   line-height: 1.18;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.01em;
 }
 
 .mini-card p,
@@ -1015,7 +1041,9 @@ textarea:focus-visible {
 }
 
 .contact-form textarea {
-  resize: vertical;
+  resize: none;
+  height: 120px;
+  min-height: unset;
 }
 
 .contact-form input::placeholder,
@@ -1341,13 +1369,13 @@ textarea:focus-visible {
   }
 
   .hero-launch h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     line-height: 1.02;
   }
 
   .hero-launch .hero-mission {
     width: calc(100vw - 28px);
-    font-size: 1.9rem;
+    font-size: 2.1rem;
     line-height: 1.08;
     letter-spacing: 0.01em;
   }
