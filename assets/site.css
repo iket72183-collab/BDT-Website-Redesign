@@ -981,41 +981,54 @@ textarea:focus-visible {
 
 .contact-form label {
   display: grid;
-  gap: 7px;
+  position: relative;
+  z-index: 2;
+  gap: 8px;
 }
 
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
+  position: relative;
+  z-index: 2;
   width: 100%;
   min-height: 48px;
-  border: 1px solid rgba(201, 168, 76, 0.2);
+  border: 1px solid rgba(245, 233, 191, 0.32);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.035);
-  background-color: rgba(255, 255, 255, 0.035);
+  background:
+    linear-gradient(180deg, rgba(18, 18, 19, 0.98), rgba(9, 9, 10, 0.98));
+  background-color: #101011;
+  background-clip: padding-box;
   color: var(--text);
   color-scheme: dark;
+  caret-color: var(--gold-light);
   font: inherit;
   font-size: 1rem;
   padding: 13px 14px;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.015);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.28),
+    0 10px 28px rgba(0, 0, 0, 0.24);
   touch-action: manipulation;
-  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, color 180ms ease;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .contact-form select {
   -webkit-appearance: none;
   appearance: none;
-  background-color: rgba(255, 255, 255, 0.035);
+  background-color: #101011;
   background-image:
     linear-gradient(45deg, transparent 50%, var(--gold-light) 50%),
-    linear-gradient(135deg, var(--gold-light) 50%, transparent 50%);
+    linear-gradient(135deg, var(--gold-light) 50%, transparent 50%),
+    linear-gradient(180deg, rgba(18, 18, 19, 0.98), rgba(9, 9, 10, 0.98));
   background-position:
     right 18px center,
-    right 13px center;
+    right 13px center,
+    0 0;
   background-size:
     7px 7px,
-    7px 7px;
+    7px 7px,
+    100% 100%;
   background-repeat: no-repeat;
   padding-right: 42px;
   cursor: pointer;
@@ -1026,13 +1039,17 @@ textarea:focus-visible {
 }
 
 .contact-form select:hover {
-  border-color: rgba(201, 168, 76, 0.42);
-  background-color: rgba(201, 168, 76, 0.055);
-  box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.08), 0 0 18px rgba(201, 168, 76, 0.08);
+  border-color: rgba(245, 233, 191, 0.48);
+  background-color: #131313;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.065),
+    inset 0 0 0 1px rgba(201, 168, 76, 0.08),
+    0 0 18px rgba(201, 168, 76, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
 .contact-form select:invalid {
-  color: rgba(240, 238, 245, 0.42);
+  color: rgba(240, 238, 245, 0.62);
 }
 
 .contact-form select option {
@@ -1048,15 +1065,51 @@ textarea:focus-visible {
 
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
-  color: rgba(240, 238, 245, 0.42);
+  color: rgba(240, 238, 245, 0.52);
+}
+
+.contact-form input:hover,
+.contact-form textarea:hover {
+  border-color: rgba(245, 233, 191, 0.48);
+  background:
+    linear-gradient(180deg, rgba(22, 22, 22, 0.98), rgba(10, 10, 10, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.065),
+    inset 0 0 0 1px rgba(201, 168, 76, 0.08),
+    0 0 18px rgba(201, 168, 76, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
 .contact-form input:focus,
 .contact-form select:focus,
 .contact-form textarea:focus {
-  border-color: rgba(241, 215, 143, 0.75);
+  border-color: rgba(241, 215, 143, 0.88);
+  background:
+    linear-gradient(180deg, rgba(24, 23, 20, 0.99), rgba(11, 10, 9, 0.99));
   outline: none;
-  box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.08);
+  box-shadow:
+    0 0 0 4px rgba(201, 168, 76, 0.12),
+    0 0 24px rgba(201, 168, 76, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 0 1px rgba(201, 168, 76, 0.12);
+  transform: translateY(-1px);
+}
+
+.contact-form select:focus {
+  background-color: #161410;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--gold-light) 50%),
+    linear-gradient(135deg, var(--gold-light) 50%, transparent 50%),
+    linear-gradient(180deg, rgba(24, 23, 20, 0.99), rgba(11, 10, 9, 0.99));
+  background-position:
+    right 18px center,
+    right 13px center,
+    0 0;
+  background-size:
+    7px 7px,
+    7px 7px,
+    100% 100%;
+  background-repeat: no-repeat;
 }
 
 .hidden-field {
