@@ -504,8 +504,8 @@ textarea:focus-visible {
   border: 1px solid transparent;
   border-radius: 8px;
   background:
-    radial-gradient(circle at 50% 0%, rgba(241, 215, 143, 0.035), transparent 38%) padding-box,
-    linear-gradient(180deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.014) 46%, rgba(201, 168, 76, 0.014)) padding-box,
+    radial-gradient(circle at 50% 0%, rgba(241, 215, 143, 0.016), transparent 38%) padding-box,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.006) 46%, rgba(201, 168, 76, 0.006)) padding-box,
     linear-gradient(135deg, rgba(245, 233, 191, 0.3), rgba(201, 168, 76, 0.08) 32%, rgba(255, 255, 255, 0.04) 58%, rgba(201, 168, 76, 0.2)) border-box;
   box-shadow:
     0 22px 60px rgba(0, 0, 0, 0.42),
@@ -608,8 +608,8 @@ textarea:focus-visible {
 .contact-form.is-lit {
   border-color: transparent;
   background:
-    radial-gradient(circle at 50% 0%, rgba(241, 215, 143, 0.095), transparent 42%) padding-box,
-    linear-gradient(180deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.022) 44%, rgba(201, 168, 76, 0.032)) padding-box,
+    radial-gradient(circle at 50% 0%, rgba(241, 215, 143, 0.048), transparent 42%) padding-box,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.010) 44%, rgba(201, 168, 76, 0.014)) padding-box,
     linear-gradient(135deg, rgba(245, 233, 191, 0.5), rgba(201, 168, 76, 0.2) 32%, rgba(255, 255, 255, 0.058) 58%, rgba(216, 189, 120, 0.38)) border-box;
   box-shadow:
     0 0 24px rgba(201, 168, 76, 0.16),
