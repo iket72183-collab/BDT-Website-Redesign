@@ -221,6 +221,12 @@ textarea:focus-visible {
   margin: 0 auto;
   padding: 76px 0;
   scroll-margin-top: 96px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.section:first-of-type,
+.hero {
+  border-top: none;
 }
 
 .hero {
@@ -431,7 +437,7 @@ textarea:focus-visible {
 }
 
 .button-secondary {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
   background: rgba(255, 255, 255, 0.035);
   color: var(--muted);
 }
@@ -746,7 +752,7 @@ textarea:focus-visible {
 }
 
 .service-card span {
-  color: rgba(201, 168, 76, 0.35);
+  color: rgba(201, 168, 76, 0.55);
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.65rem;
   font-weight: 700;
@@ -771,15 +777,17 @@ textarea:focus-visible {
 
 .role.purple {
   color: #c99dff !important;
+  text-shadow: 0 0 14px rgba(201, 157, 255, 0.45);
 }
 
 .role.crimson {
   color: #ff9d9d !important;
+  text-shadow: 0 0 14px rgba(255, 157, 157, 0.45);
 }
 
 .wide-image {
   margin: 22px 0 0;
-  padding: 20px;
+  padding: 12px;
   box-shadow:
     0 18px 48px rgba(0, 0, 0, 0.3),
     0 0 24px rgba(201, 168, 76, 0.035);
@@ -1054,10 +1062,24 @@ textarea:focus-visible {
   gap: 4px;
 }
 
+.footer-divider {
+  width: 100%;
+  max-width: var(--max);
+  margin: 28px auto 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(201, 168, 76, 0.32) 25%,
+    rgba(245, 233, 191, 0.48) 50%,
+    rgba(201, 168, 76, 0.32) 75%,
+    transparent
+  );
+}
+
 .legal-line {
   width: 100%;
   max-width: var(--max);
-  margin: 24px auto 0;
+  margin: 18px auto 0;
   color: rgba(240, 238, 245, 0.36) !important;
   font-size: 0.68rem;
   font-weight: 700;
@@ -1181,6 +1203,12 @@ textarea:focus-visible {
 
   .nav-links.is-open {
     display: flex;
+    animation: nav-drop 220ms var(--reveal-ease) both;
+  }
+
+  @keyframes nav-drop {
+    from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
   }
 
   .nav-links a {
@@ -1271,6 +1299,10 @@ textarea:focus-visible {
   .flyer-link {
     width: min(100%, 420px);
     margin: 0 auto;
+  }
+
+  .section {
+    border-top-color: rgba(255, 255, 255, 0.06);
   }
 }
 
@@ -1422,5 +1454,33 @@ textarea:focus-visible {
   .footer-links a {
     min-width: 168px;
     text-align: center;
+  }
+
+  /* ── Mobile product card alignment ── */
+  .product-card {
+    align-items: center;
+    text-align: center;
+  }
+
+  .product-card .eyebrow,
+  .product-card h3,
+  .product-card p {
+    text-align: center;
+  }
+
+  .product-card .text-link {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Mobile section spacing ── */
+  .section {
+    padding: 36px 0;
+    border-top-color: rgba(255, 255, 255, 0.055);
+  }
+
+  /* ── Mobile contact heading spacing ── */
+  .section-heading {
+    margin-bottom: 16px;
   }
 }
