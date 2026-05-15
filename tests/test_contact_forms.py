@@ -6,6 +6,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTACT_PAGES = [ROOT / "index.html", ROOT / "contact.html"]
 EXPECTED_OPTIONS = {
     "": "Select inquiry type",
+    "bdt-enterprises": "BDT Enterprises",
+    "bdt-productions": "BDT Productions",
     "bdt-tech": "BDT Tech",
     "talent-strategy": "Talent Strategy",
     "creator-partnerships": "Creator Partnerships",

@@ -831,22 +831,6 @@ textarea:focus-visible {
   align-items: start;
 }
 
-.service-card.featured {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: minmax(280px, 0.95fr) minmax(280px, 1fr);
-  align-items: center;
-  gap: 24px;
-}
-
-.service-card.featured .service-banner {
-  margin-bottom: 0;
-}
-
-.service-copy {
-  min-width: 0;
-}
-
 .product-grid {
   grid-template-columns: repeat(4, 1fr);
   align-items: start;
@@ -1545,11 +1529,6 @@ textarea:focus-visible {
   .service-card,
   .product-card {
     padding: 20px;
-  }
-
-  .service-card.featured {
-    grid-template-columns: 1fr;
-    gap: 0;
   }
 
   .product-card .product-banner,
