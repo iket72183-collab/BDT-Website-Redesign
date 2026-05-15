@@ -759,21 +759,6 @@ textarea:focus-visible {
   line-height: 1.72;
 }
 
-.service-card span {
-  color: rgba(201, 168, 76, 0.55);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.65rem;
-  font-weight: 700;
-  transition: color 220ms ease, text-shadow 220ms ease;
-}
-
-.service-card:hover span,
-.service-card:active span,
-.service-card.is-lit span {
-  color: rgba(241, 215, 143, 0.68);
-  text-shadow: 0 0 18px rgba(201, 168, 76, 0.28);
-}
-
 .role {
   margin: 8px 0 0;
   color: var(--gold-light) !important;
