@@ -515,7 +515,6 @@ textarea:focus-visible {
 }
 
 .section-card,
-.mini-card,
 .service-card,
 .product-card,
 .promo-grid,
@@ -540,7 +539,6 @@ textarea:focus-visible {
 }
 
 .section-card::before,
-.mini-card::before,
 .service-card::before,
 .product-card::before,
 .promo-grid::before,
@@ -562,7 +560,6 @@ textarea:focus-visible {
 }
 
 .section-card::after,
-.mini-card::after,
 .service-card::after,
 .product-card::after,
 .promo-grid::after,
@@ -582,7 +579,6 @@ textarea:focus-visible {
 }
 
 .section-card > *,
-.mini-card > *,
 .service-card > *,
 .product-card > *,
 .promo-grid > *,
@@ -593,7 +589,6 @@ textarea:focus-visible {
 }
 
 .section-card,
-.mini-card,
 .service-card,
 .product-card,
 .promo-grid,
@@ -611,9 +606,6 @@ textarea:focus-visible {
 .section-card:hover,
 .section-card:active,
 .section-card.is-lit,
-.mini-card:hover,
-.mini-card:active,
-.mini-card.is-lit,
 .service-card:hover,
 .service-card:active,
 .service-card.is-lit,
@@ -646,9 +638,6 @@ textarea:focus-visible {
 .section-card:hover::before,
 .section-card:active::before,
 .section-card.is-lit::before,
-.mini-card:hover::before,
-.mini-card:active::before,
-.mini-card.is-lit::before,
 .service-card:hover::before,
 .service-card:active::before,
 .service-card.is-lit::before,
@@ -672,9 +661,6 @@ textarea:focus-visible {
 .section-card:hover::after,
 .section-card:active::after,
 .section-card.is-lit::after,
-.mini-card:hover::after,
-.mini-card:active::after,
-.mini-card.is-lit::after,
 .service-card:hover::after,
 .service-card:active::after,
 .service-card.is-lit::after,
@@ -737,7 +723,6 @@ textarea:focus-visible {
   margin: 0 auto;
 }
 
-.crew-grid,
 .service-grid,
 .product-grid {
   display: grid;
@@ -745,7 +730,6 @@ textarea:focus-visible {
   gap: 16px;
 }
 
-.mini-card,
 .service-card,
 .product-card {
   display: flex;
@@ -757,7 +741,6 @@ textarea:focus-visible {
     0 0 24px rgba(201, 168, 76, 0.035);
 }
 
-.mini-card h3,
 .service-card h3,
 .product-card h3 {
   margin: 10px 0 0;
@@ -769,7 +752,6 @@ textarea:focus-visible {
   letter-spacing: 0.01em;
 }
 
-.mini-card p,
 .service-card p,
 .product-card p {
   margin: 12px 0 0;
@@ -826,8 +808,37 @@ textarea:focus-visible {
   line-height: 1.7;
 }
 
+.crew-feature figcaption {
+  text-align: left;
+}
+
+.crew-caption-intro {
+  margin: 0;
+  text-align: center;
+}
+
+.crew-caption-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.crew-caption-item h3 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.28rem;
+  line-height: 1.18;
+  color: #ffffff;
+}
+
+.crew-caption-item p:last-child {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
 .service-grid {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   align-items: start;
 }
 
@@ -1381,7 +1392,6 @@ textarea:focus-visible {
     font-size: 2.15rem;
   }
 
-  .crew-grid,
   .service-grid,
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1519,16 +1529,18 @@ textarea:focus-visible {
     font-size: 1.85rem;
   }
 
-  .crew-grid,
   .service-grid,
   .product-grid {
     grid-template-columns: 1fr;
   }
 
-  .mini-card,
   .service-card,
   .product-card {
     padding: 20px;
+  }
+
+  .crew-caption-grid {
+    grid-template-columns: 1fr;
   }
 
   .product-card .product-banner,

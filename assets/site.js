@@ -24,7 +24,7 @@ if (toggle && menu) {
 }
 
 const lightTargets = document.querySelectorAll(
-  ".section-card, .mini-card, .service-card, .product-card, .promo-grid, .wide-image, .contact-form, .nav-links a, .button"
+  ".section-card, .service-card, .product-card, .promo-grid, .wide-image, .contact-form, .nav-links a, .button"
 );
 
 lightTargets.forEach((target) => {
@@ -189,7 +189,7 @@ if (contactForm) {
 const revealItems = Array.from(document.querySelectorAll(".reveal, .reveal-card"));
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-document.querySelectorAll(".crew-grid, .service-grid, .product-grid").forEach((group) => {
+document.querySelectorAll(".service-grid, .product-grid").forEach((group) => {
   group.querySelectorAll(".reveal, .reveal-card").forEach((item, index) => {
     item.style.setProperty("--reveal-delay", `${Math.min(index * 70, 210)}ms`);
   });
