@@ -828,6 +828,7 @@ textarea:focus-visible {
 
 .service-grid {
   grid-template-columns: repeat(2, 1fr);
+  align-items: start;
 }
 
 .product-grid {
@@ -855,7 +856,8 @@ textarea:focus-visible {
   transition: transform 280ms var(--reveal-ease), box-shadow 280ms ease, filter 280ms ease;
 }
 
-.product-card .product-banner {
+.product-card .product-banner,
+.service-card .service-banner {
   align-self: stretch;
   flex: 0 0 auto;
   width: 100%;
@@ -882,7 +884,10 @@ textarea:focus-visible {
 
 .product-card:hover .product-banner,
 .product-card:active .product-banner,
-.product-card.is-lit .product-banner {
+.product-card.is-lit .product-banner,
+.service-card:hover .service-banner,
+.service-card:active .service-banner,
+.service-card.is-lit .service-banner {
   border-color: rgba(241, 215, 143, 0.34);
   box-shadow:
     0 18px 34px rgba(0, 0, 0, 0.32),
@@ -1526,7 +1531,8 @@ textarea:focus-visible {
     padding: 20px;
   }
 
-  .product-card .product-banner {
+  .product-card .product-banner,
+  .service-card .service-banner {
     margin-bottom: 18px;
   }
 
