@@ -84,8 +84,9 @@ class ContactFormTests(unittest.TestCase):
         css = (ROOT / "assets" / "site.css").read_text()
 
         self.assertIn("-webkit-appearance: none", css)
-        self.assertIn("background-color: rgba(255, 255, 255, 0.035)", css)
-        self.assertIn("box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.015)", css)
+        self.assertIn("background-color: #101011", css)
+        self.assertIn("border: 1px solid rgba(245, 233, 191, 0.32)", css)
+        self.assertIn("caret-color: var(--gold-light)", css)
         self.assertIn("color: var(--text)", css)
         self.assertIn("font-size: 1rem", css)
         self.assertIn(".contact-form select:hover", css)
