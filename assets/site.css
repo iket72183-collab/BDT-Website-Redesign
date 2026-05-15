@@ -856,7 +856,10 @@ textarea:focus-visible {
 }
 
 .product-card .product-banner {
+  align-self: stretch;
+  flex: 0 0 auto;
   width: 100%;
+  min-width: 100%;
   max-width: 100%;
   height: auto;
   display: block;
@@ -868,20 +871,6 @@ textarea:focus-visible {
     0 0 20px rgba(201, 168, 76, 0.05);
   object-fit: contain;
   transition: border-color 220ms ease, box-shadow 280ms ease, filter 280ms ease;
-}
-
-.product-card img.catholic-app-logo {
-  width: 88px;
-  height: 88px;
-  border-radius: 12px;
-  box-shadow: 0 0 28px rgba(201, 168, 76, 0.18);
-}
-
-.product-card img.aight-bet-logo {
-  width: 88px;
-  height: 88px;
-  border-radius: 12px;
-  box-shadow: 0 0 28px rgba(197, 51, 255, 0.24);
 }
 
 .product-card:hover img:not(.product-banner),
@@ -899,18 +888,6 @@ textarea:focus-visible {
     0 18px 34px rgba(0, 0, 0, 0.32),
     0 0 24px rgba(201, 168, 76, 0.09);
   filter: saturate(1.04);
-}
-
-.product-card:hover img.catholic-app-logo,
-.product-card:active img.catholic-app-logo,
-.product-card.is-lit img.catholic-app-logo {
-  box-shadow: 0 0 34px rgba(201, 168, 76, 0.25);
-}
-
-.product-card:hover img.aight-bet-logo,
-.product-card:active img.aight-bet-logo,
-.product-card.is-lit img.aight-bet-logo {
-  box-shadow: 0 0 34px rgba(197, 51, 255, 0.32);
 }
 
 .text-link {
@@ -1547,12 +1524,6 @@ textarea:focus-visible {
   .service-card,
   .product-card {
     padding: 20px;
-  }
-
-  .product-card img.catholic-app-logo,
-  .product-card img.aight-bet-logo {
-    width: 80px;
-    height: 80px;
   }
 
   .product-card .product-banner {
