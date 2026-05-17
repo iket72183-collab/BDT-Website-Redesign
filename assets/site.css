@@ -759,25 +759,6 @@ textarea:focus-visible {
   line-height: 1.72;
 }
 
-.role {
-  margin: 8px 0 0;
-  color: var(--gold-light) !important;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.role.purple {
-  color: #c99dff !important;
-  text-shadow: 0 0 14px rgba(201, 157, 255, 0.45);
-}
-
-.role.crimson {
-  color: #ff9d9d !important;
-  text-shadow: 0 0 14px rgba(255, 157, 157, 0.45);
-}
-
 .wide-image {
   margin: 22px 0 0;
   padding: 12px;
@@ -793,33 +774,9 @@ textarea:focus-visible {
   line-height: 1.7;
 }
 
-.crew-feature figcaption {
-  text-align: left;
-}
-
 .crew-caption-intro {
   margin: 0;
   text-align: center;
-}
-
-.crew-caption-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
-}
-
-.crew-caption-item h3 {
-  margin: 0;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.28rem;
-  line-height: 1.18;
-  color: #ffffff;
-}
-
-.crew-caption-item p:last-child {
-  margin: 10px 0 0;
-  color: var(--muted);
 }
 
 .service-grid {
@@ -1522,10 +1479,6 @@ textarea:focus-visible {
   .service-card,
   .product-card {
     padding: 20px;
-  }
-
-  .crew-caption-grid {
-    grid-template-columns: 1fr;
   }
 
   .product-card .product-banner,
