@@ -6,6 +6,7 @@ This folder is a deployment-ready static site for the new BDT Talent Group websi
 
 - `index.html`: the new redesign, adjusted for direct static hosting
 - `privacy.html`, `terms.html`, and `contact.html`: public trust/legal pages
+- `connect/`: statically exported BDT Connect product landing page and legal pages
 - `assets/`: images used by the redesign
 - `assets/promos/catholic-daily-scripture-flyer.jpg`: compressed Catholic Daily Scripture promo flyer
 - `legacy/current-site/`: a rollback snapshot of the current live site from `iket72183-collab/BDT-Website-Hosting`
@@ -14,6 +15,7 @@ This folder is a deployment-ready static site for the new BDT Talent Group websi
 
 - The redesign keeps the legacy site in this repo so the previous version is easy to recover.
 - Social links and the contact form are wired up for production use.
+- The homepage product grid links to the BDT Connect section at `/connect/`.
 - The site is static and can be hosted on GitHub Pages or any basic HTML hosting setup.
 - The homepage is written as semantic HTML with separate CSS/JS files, so it does not require React, Babel, or a build step.
 

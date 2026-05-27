@@ -1,5 +1,4 @@
-User-agent: *
+User-Agent: *
 Allow: /
 
-Sitemap: https://bdttalentgroup.com/sitemap.xml
 Sitemap: https://bdttalentgroup.com/connect/sitemap.xml
