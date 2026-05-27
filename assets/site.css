@@ -828,6 +828,17 @@ textarea:focus-visible {
   transition: border-color 220ms ease, box-shadow 280ms ease, filter 280ms ease;
 }
 
+.product-banner-link {
+  display: block;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.product-banner-link:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 4px;
+}
+
 .product-card:hover img:not(.product-banner),
 .product-card:active img:not(.product-banner),
 .product-card.is-lit img:not(.product-banner) {
