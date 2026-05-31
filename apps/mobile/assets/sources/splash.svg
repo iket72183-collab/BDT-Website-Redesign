@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1242 2436">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="20%" r="80%">
+      <stop offset="0%"  stop-color="#1a1410"/>
+      <stop offset="60%" stop-color="#0A0A0A"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1242" y2="1242" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#8B7355"/>
+      <stop offset="35%"  stop-color="#C9A882"/>
+      <stop offset="55%"  stop-color="#E8D4A8"/>
+      <stop offset="75%"  stop-color="#D4AF7A"/>
+      <stop offset="100%" stop-color="#8B7355"/>
+    </linearGradient>
+  </defs>
+  <rect width="1242" height="2436" fill="url(#bg)"/>
+  <!-- centered wordmark with brand eyebrow + tagline -->
+  <text x="621" y="1180" text-anchor="middle"
+        font-family="Inter, Helvetica, Arial, sans-serif" font-weight="600"
+        font-size="42" letter-spacing="7"
+        fill="#C9A882" opacity="0.85">BDT TALENT GROUP</text>
+  <text x="621" y="1340" text-anchor="middle"
+        font-family="Playfair Display, Georgia, serif" font-weight="700"
+        font-size="180" letter-spacing="-6"
+        fill="url(#metal)">BDT Connect</text>
+  <text x="621" y="1420" text-anchor="middle"
+        font-family="Inter, Helvetica, Arial, sans-serif" font-weight="400"
+        font-size="36" letter-spacing="2"
+        fill="#A89880" opacity="0.85">Professionally delivered</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="bg" cx="30%" cy="20%" r="80%">
+      <stop offset="0%"  stop-color="#1a1410"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#8B7355"/>
+      <stop offset="35%"  stop-color="#C9A882"/>
+      <stop offset="55%"  stop-color="#E8D4A8"/>
+      <stop offset="75%"  stop-color="#D4AF7A"/>
+      <stop offset="100%" stop-color="#8B7355"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <!-- subtle inner ring -->
+  <rect x="48" y="48" width="928" height="928" rx="200" fill="none"
+        stroke="#C9A882" stroke-opacity="0.12" stroke-width="2"/>
+  <text x="512" y="630" text-anchor="middle"
+        font-family="Playfair Display, Georgia, serif" font-weight="700"
+        font-size="640" letter-spacing="-20"
+        fill="url(#metal)">B</text>
+</svg>

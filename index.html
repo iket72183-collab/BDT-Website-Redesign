@@ -1,0 +1,2269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="BDT Connect helps local businesses get a professionally managed website and social media presence through one simple platform."
+    />
+    <title>BDT Connect | Your Business. Our Expertise. One Platform.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background: #0a0a0a;
+        --surface: #111111;
+        --surface-light: rgba(255, 255, 255, 0.03);
+        --rose: #c9a882;
+        --gold: #d4af7a;
+        --cream: #f5f0e8;
+        --muted: #a89880;
+        --border: #8b7355;
+        --border-soft: rgba(139, 115, 85, 0.25);
+        --glow: rgba(201, 168, 130, 0.25);
+        --red-muted: #c37d73;
+        --max: 1180px;
+        --nav-height: 82px;
+        --radius: 22px;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--cream);
+        background:
+          radial-gradient(circle at 55% 12%, rgba(201, 168, 130, 0.07), transparent 30rem),
+          var(--background);
+        font-family: 'Inter', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      body.menu-open {
+        overflow: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+
+      button {
+        color: inherit;
+        font: inherit;
+        background: none;
+        border: 0;
+        cursor: pointer;
+      }
+
+      p,
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      ::selection {
+        color: var(--background);
+        background: var(--rose);
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 4px;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 1200;
+        padding: 10px 16px;
+        color: var(--background);
+        background: var(--rose);
+        border-radius: 999px;
+        transform: translateY(-150%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .container {
+        width: min(calc(100% - 48px), var(--max));
+        margin: 0 auto;
+      }
+
+      .section {
+        position: relative;
+        padding: clamp(74px, 9vw, 116px) 0;
+        scroll-margin-top: var(--nav-height);
+      }
+
+      .eyebrow {
+        margin-bottom: 16px;
+        color: var(--rose);
+        font-size: 0.73rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .section-head {
+        max-width: 720px;
+        margin: 0 auto clamp(42px, 5vw, 60px);
+        text-align: center;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 600;
+        line-height: 1.12;
+        letter-spacing: -0.025em;
+      }
+
+      .section-title {
+        color: var(--cream);
+        font-size: clamp(2.1rem, 4vw, 3rem);
+      }
+
+      .section-copy {
+        margin-top: 17px;
+        color: var(--muted);
+        font-size: clamp(0.98rem, 1.2vw, 1.05rem);
+      }
+
+      .glass-card {
+        background: var(--surface-light);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition:
+          border-color 180ms ease,
+          box-shadow 180ms ease,
+          transform 180ms ease;
+      }
+
+      .glass-card:hover {
+        border-color: rgba(201, 168, 130, 0.45);
+        box-shadow:
+          var(--shadow),
+          0 0 12px var(--glow);
+        transform: translateY(-2px);
+      }
+
+      .btn {
+        display: inline-flex;
+        min-height: 52px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 27px;
+        border-radius: 999px;
+        font-size: 0.93rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        transition:
+          box-shadow 180ms ease,
+          border-color 180ms ease,
+          color 180ms ease,
+          transform 180ms ease;
+      }
+
+      .btn:hover {
+        box-shadow: 0 0 12px var(--glow);
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        color: #130f0d;
+        background: linear-gradient(
+          110deg,
+          #b28e68 0%,
+          var(--rose) 27%,
+          #f0d7b3 46%,
+          var(--gold) 62%,
+          #b28e68 100%
+        );
+        background-size: 220% auto;
+        box-shadow: 0 6px 24px rgba(201, 168, 130, 0.22);
+        animation: metallic-shimmer 5.5s ease-in-out infinite;
+      }
+
+      .btn-primary:hover {
+        box-shadow:
+          0 10px 30px rgba(201, 168, 130, 0.32),
+          0 0 12px var(--glow);
+      }
+
+      .btn-ghost {
+        color: var(--cream);
+        border: 1px solid rgba(201, 168, 130, 0.46);
+        background: rgba(255, 255, 255, 0.018);
+      }
+
+      .btn-ghost:hover {
+        color: var(--gold);
+        border-color: var(--rose);
+      }
+
+      .btn-large {
+        min-height: 60px;
+        padding-right: 35px;
+        padding-left: 35px;
+        font-size: 1rem;
+      }
+
+      @keyframes metallic-shimmer {
+        0%,
+        34% {
+          background-position: 100% center;
+        }
+        58%,
+        100% {
+          background-position: 0 center;
+        }
+      }
+
+      /* Navigation */
+      .site-nav {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1000;
+        border-bottom: 1px solid transparent;
+        transition:
+          background-color 180ms ease,
+          border-color 180ms ease,
+          backdrop-filter 180ms ease;
+      }
+
+      .site-nav.is-scrolled {
+        background: rgba(10, 10, 10, 0.82);
+        border-color: rgba(139, 115, 85, 0.2);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      .nav-shell {
+        display: flex;
+        min-height: var(--nav-height);
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+      }
+
+      .logo {
+        display: inline-flex;
+        flex-shrink: 0;
+        flex-direction: column;
+        line-height: 1;
+      }
+
+      .logo-line {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        color: transparent;
+        background: linear-gradient(112deg, #ad8964 2%, #f0d7b3 42%, var(--rose) 65%, #b18861);
+        background-clip: text;
+        -webkit-background-clip: text;
+      }
+
+      .logo-bdt {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.63rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .logo-connect {
+        font-size: 0.83rem;
+        font-weight: 600;
+        letter-spacing: 0.32em;
+      }
+
+      .logo-subtitle {
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 0.53rem;
+        font-weight: 600;
+        letter-spacing: 0.19em;
+        text-transform: uppercase;
+      }
+
+      .nav-actions,
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-actions {
+        gap: 36px;
+      }
+
+      .nav-links {
+        gap: 32px;
+      }
+
+      .nav-link {
+        position: relative;
+        color: #d2c7b9;
+        font-size: 0.92rem;
+        font-weight: 500;
+        transition: color 180ms ease;
+      }
+
+      .nav-link::after {
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        content: '';
+        background: var(--rose);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 180ms ease;
+      }
+
+      .nav-link:hover,
+      .nav-link:focus-visible {
+        color: var(--cream);
+      }
+
+      .nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      .nav-cta {
+        min-height: 46px;
+        padding: 11px 23px;
+      }
+
+      .menu-toggle {
+        display: none;
+        width: 46px;
+        height: 46px;
+        flex-shrink: 0;
+        place-items: center;
+        border: 1px solid var(--border-soft);
+        border-radius: 50%;
+      }
+
+      .menu-toggle span,
+      .menu-toggle span::before,
+      .menu-toggle span::after {
+        display: block;
+        width: 19px;
+        height: 1px;
+        content: '';
+        background: var(--cream);
+        transition:
+          transform 180ms ease,
+          opacity 180ms ease;
+      }
+
+      .menu-toggle span {
+        position: relative;
+      }
+
+      .menu-toggle span::before {
+        position: absolute;
+        top: -6px;
+      }
+
+      .menu-toggle span::after {
+        position: absolute;
+        top: 6px;
+      }
+
+      .menu-toggle[aria-expanded='true'] span {
+        background: transparent;
+      }
+
+      .menu-toggle[aria-expanded='true'] span::before {
+        transform: translateY(6px) rotate(45deg);
+      }
+
+      .menu-toggle[aria-expanded='true'] span::after {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      .mobile-menu {
+        display: none;
+      }
+
+      /* Hero */
+      .hero {
+        position: relative;
+        display: flex;
+        min-height: 100svh;
+        align-items: center;
+        overflow: hidden;
+        padding: calc(var(--nav-height) + clamp(44px, 6vw, 64px)) 0 clamp(66px, 8vw, 88px);
+      }
+
+      .hero::before {
+        position: absolute;
+        inset: -25%;
+        content: '';
+        background:
+          radial-gradient(circle at 68% 39%, rgba(201, 168, 130, 0.13), transparent 22%),
+          radial-gradient(circle at 24% 56%, rgba(212, 175, 122, 0.05), transparent 26%),
+          linear-gradient(128deg, transparent 30%, rgba(201, 168, 130, 0.035), transparent 70%);
+        animation: atmosphere 15s ease-in-out infinite alternate;
+      }
+
+      .hero::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+        content: '';
+        background: linear-gradient(90deg, transparent, rgba(201, 168, 130, 0.32), transparent);
+      }
+
+      @keyframes atmosphere {
+        to {
+          transform: translate3d(-2%, 2%, 0) scale(1.07);
+        }
+      }
+
+      .particles {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .particle {
+        position: absolute;
+        display: block;
+        width: 3px;
+        height: 3px;
+        background: var(--rose);
+        border-radius: 50%;
+        opacity: 0;
+        box-shadow: 0 0 14px rgba(201, 168, 130, 0.42);
+        animation: float-up 12s linear infinite;
+      }
+
+      .particle:nth-child(1) {
+        bottom: 10%;
+        left: 9%;
+        animation-delay: -4s;
+      }
+
+      .particle:nth-child(2) {
+        bottom: 0;
+        left: 31%;
+        width: 2px;
+        height: 2px;
+        animation-delay: -10s;
+        animation-duration: 16s;
+      }
+
+      .particle:nth-child(3) {
+        bottom: 21%;
+        left: 54%;
+        animation-delay: -2s;
+        animation-duration: 18s;
+      }
+
+      .particle:nth-child(4) {
+        bottom: 2%;
+        left: 76%;
+        width: 2px;
+        height: 2px;
+        animation-delay: -12s;
+        animation-duration: 17s;
+      }
+
+      .particle:nth-child(5) {
+        bottom: 17%;
+        left: 89%;
+        animation-delay: -8s;
+        animation-duration: 13s;
+      }
+
+      .particle:nth-child(6) {
+        bottom: 0;
+        left: 67%;
+        animation-delay: -5s;
+        animation-duration: 14s;
+      }
+
+      @keyframes float-up {
+        0% {
+          opacity: 0;
+          transform: translateY(0) scale(0.8);
+        }
+        18% {
+          opacity: 0.46;
+        }
+        80% {
+          opacity: 0.14;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-370px) scale(1.5);
+        }
+      }
+
+      .hero-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(450px, 1.04fr) minmax(335px, 0.76fr);
+        align-items: center;
+        gap: clamp(54px, 7vw, 106px);
+      }
+
+      .hero-heading {
+        max-width: 680px;
+        font-size: clamp(3.1rem, 5.65vw, 5.15rem);
+      }
+
+      .hero-copy {
+        max-width: 570px;
+        margin-top: 24px;
+        color: var(--muted);
+        font-size: clamp(1.02rem, 1.4vw, 1.15rem);
+        line-height: 1.8;
+      }
+
+      .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 38px;
+      }
+
+      .hero-note {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 29px;
+        color: #b8ab98;
+        font-size: 0.86rem;
+      }
+
+      .hero-note::before {
+        width: 25px;
+        height: 1px;
+        content: '';
+        background: var(--rose);
+      }
+
+      .phone-area {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .phone-aura {
+        position: absolute;
+        top: 16%;
+        left: 50%;
+        width: min(430px, 100%);
+        aspect-ratio: 1;
+        background: radial-gradient(circle, rgba(201, 168, 130, 0.2), transparent 64%);
+        transform: translateX(-50%);
+        filter: blur(3px);
+      }
+
+      .phone {
+        position: relative;
+        z-index: 1;
+        width: min(316px, 82vw);
+        padding: 11px;
+        border: 1px solid rgba(201, 168, 130, 0.48);
+        border-radius: 45px;
+        background: linear-gradient(145deg, #26231f, #080808 22%, #15120f 94%);
+        box-shadow:
+          0 0 0 3px #080808,
+          0 32px 72px rgba(0, 0, 0, 0.62),
+          0 0 42px rgba(201, 168, 130, 0.12);
+      }
+
+      .phone::before {
+        position: absolute;
+        top: 21%;
+        right: -4px;
+        width: 3px;
+        height: 50px;
+        content: '';
+        background: var(--border);
+        border-radius: 0 2px 2px 0;
+      }
+
+      .phone-screen {
+        position: relative;
+        min-height: 593px;
+        overflow: hidden;
+        padding: 50px 16px 18px;
+        border-radius: 35px;
+        background:
+          radial-gradient(circle at top right, rgba(201, 168, 130, 0.12), transparent 36%), #0c0c0c;
+      }
+
+      .phone-notch {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        width: 93px;
+        height: 26px;
+        background: #050505;
+        border-radius: 18px;
+        transform: translateX(-50%);
+      }
+
+      .phone-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 27px;
+      }
+
+      .phone-label {
+        color: var(--muted);
+        font-size: 0.64rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .phone-title {
+        margin-top: 5px;
+        color: var(--cream);
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.16rem;
+      }
+
+      .avatar {
+        display: grid;
+        width: 37px;
+        height: 37px;
+        place-items: center;
+        color: var(--background);
+        background: linear-gradient(120deg, #f0d7b3, var(--rose));
+        border-radius: 50%;
+        font-size: 0.67rem;
+        font-weight: 700;
+      }
+
+      .plan-status {
+        padding: 17px 16px;
+        background: linear-gradient(135deg, rgba(201, 168, 130, 0.16), rgba(201, 168, 130, 0.04));
+        border: 1px solid rgba(201, 168, 130, 0.27);
+        border-radius: 17px;
+      }
+
+      .status-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .status-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .status-pill {
+        padding: 4px 9px;
+        color: var(--gold);
+        background: rgba(212, 175, 122, 0.1);
+        border-radius: 999px;
+        font-size: 0.55rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .progress-copy {
+        display: flex;
+        justify-content: space-between;
+        margin: 17px 0 8px;
+        color: var(--muted);
+        font-size: 0.68rem;
+      }
+
+      .progress-bar {
+        height: 5px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 9px;
+      }
+
+      .progress-bar span {
+        display: block;
+        width: 72%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--rose), var(--gold));
+        border-radius: inherit;
+      }
+
+      .screen-heading {
+        margin: 23px 0 13px;
+        color: var(--cream);
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .task {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 9px;
+        padding: 12px 11px;
+        border: 1px solid rgba(139, 115, 85, 0.2);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.025);
+      }
+
+      .task-icon {
+        display: grid;
+        width: 29px;
+        height: 29px;
+        flex-shrink: 0;
+        place-items: center;
+        color: var(--rose);
+        background: rgba(201, 168, 130, 0.11);
+        border-radius: 9px;
+      }
+
+      .task-icon svg {
+        width: 15px;
+        height: 15px;
+      }
+
+      .task strong {
+        display: block;
+        font-size: 0.69rem;
+        font-weight: 600;
+      }
+
+      .task small {
+        display: block;
+        color: var(--muted);
+        font-size: 0.58rem;
+      }
+
+      .message-preview {
+        margin-top: 18px;
+        padding: 13px;
+        color: #ded5ca;
+        background: #151311;
+        border-radius: 13px;
+        font-size: 0.65rem;
+      }
+
+      .message-preview span {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--gold);
+        font-weight: 600;
+      }
+
+      .screen-tabs {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 18px;
+        padding-top: 14px;
+        color: #827663;
+        border-top: 1px solid rgba(139, 115, 85, 0.14);
+        font-size: 0.54rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .screen-tabs .active {
+        color: var(--rose);
+      }
+
+      /* Problem / Solution */
+      .problem-solution {
+        padding: clamp(52px, 7vw, 72px) 0;
+        background: #0d0d0d;
+        border-bottom: 1px solid rgba(139, 115, 85, 0.15);
+      }
+
+      .transition-grid {
+        display: grid;
+        grid-template-columns: minmax(255px, 1fr) 190px minmax(255px, 1fr);
+        align-items: center;
+        gap: clamp(24px, 4vw, 48px);
+      }
+
+      .comparison {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+      }
+
+      .comparison-icon {
+        display: grid;
+        width: 49px;
+        height: 49px;
+        flex-shrink: 0;
+        place-items: center;
+        border-radius: 50%;
+        font-size: 1.38rem;
+      }
+
+      .comparison-icon.negative {
+        color: var(--red-muted);
+        background: rgba(195, 125, 115, 0.1);
+      }
+
+      .comparison-icon.positive {
+        color: var(--gold);
+        background: rgba(212, 175, 122, 0.1);
+      }
+
+      .comparison h2 {
+        margin-bottom: 11px;
+        font-family: 'Inter', Arial, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .comparison p {
+        color: #d0c5b7;
+        font-size: 0.96rem;
+        line-height: 1.76;
+      }
+
+      .comparison.negative h2 {
+        color: var(--red-muted);
+      }
+
+      .comparison.positive h2 {
+        color: var(--gold);
+      }
+
+      .transition {
+        color: var(--rose);
+        text-align: center;
+      }
+
+      .transition-arrow {
+        display: block;
+        margin-bottom: 7px;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 3.4rem;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .transition span:last-child {
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      /* Process */
+      .steps-grid {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: clamp(22px, 4vw, 38px);
+      }
+
+      .steps-grid::before {
+        position: absolute;
+        top: 42px;
+        right: 12%;
+        left: 12%;
+        height: 1px;
+        content: '';
+        background: linear-gradient(90deg, transparent, rgba(201, 168, 130, 0.4), transparent);
+      }
+
+      .step {
+        position: relative;
+        padding: 0 20px;
+        text-align: center;
+      }
+
+      .step-number {
+        position: relative;
+        display: grid;
+        width: 84px;
+        height: 84px;
+        place-items: center;
+        margin: 0 auto 27px;
+        color: var(--rose);
+        background: var(--background);
+        border: 1px solid rgba(201, 168, 130, 0.32);
+        border-radius: 50%;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 2.55rem;
+      }
+
+      .step h3 {
+        margin-bottom: 12px;
+        font-size: 1.46rem;
+      }
+
+      .step p {
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      .store-links {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .store-link {
+        padding: 6px 10px;
+        color: #c8bbaa;
+        border: 1px solid var(--border-soft);
+        border-radius: 7px;
+        font-size: 0.67rem;
+        font-weight: 500;
+        transition:
+          border-color 180ms ease,
+          color 180ms ease;
+      }
+
+      .store-link:hover {
+        color: var(--cream);
+        border-color: rgba(201, 168, 130, 0.4);
+      }
+
+      /* Features */
+      .features {
+        background:
+          linear-gradient(180deg, transparent, rgba(201, 168, 130, 0.018) 45%, transparent),
+          var(--background);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
+
+      .feature-card {
+        position: relative;
+        min-height: 295px;
+        padding: 29px 24px 26px;
+      }
+
+      .feature-icon {
+        display: grid;
+        width: 49px;
+        height: 49px;
+        place-items: center;
+        margin-bottom: 28px;
+        color: var(--rose);
+        background: rgba(201, 168, 130, 0.09);
+        border: 1px solid rgba(201, 168, 130, 0.18);
+        border-radius: 14px;
+      }
+
+      .feature-icon svg {
+        width: 24px;
+        height: 24px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 13px;
+        font-size: 1.38rem;
+      }
+
+      .feature-card p {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.72;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 12px;
+        color: var(--gold);
+        background: rgba(201, 168, 130, 0.11);
+        border: 1px solid rgba(201, 168, 130, 0.25);
+        border-radius: 999px;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .feature-badge {
+        position: absolute;
+        top: 29px;
+        right: 23px;
+      }
+
+      /* Pricing */
+      .plans {
+        background:
+          radial-gradient(circle at 50% 48%, rgba(201, 168, 130, 0.065), transparent 36%), #0c0c0c;
+      }
+
+      .pricing-grid {
+        display: grid;
+        max-width: 850px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        margin: 0 auto;
+      }
+
+      .price-card {
+        position: relative;
+        display: flex;
+        min-height: 591px;
+        flex-direction: column;
+        padding: clamp(29px, 4vw, 39px);
+      }
+
+      .price-card.featured {
+        border-color: rgba(201, 168, 130, 0.7);
+        box-shadow:
+          0 25px 75px rgba(0, 0, 0, 0.42),
+          0 0 30px rgba(201, 168, 130, 0.13);
+      }
+
+      .price-card.featured:hover {
+        box-shadow:
+          0 28px 78px rgba(0, 0, 0, 0.43),
+          0 0 36px rgba(201, 168, 130, 0.2);
+      }
+
+      .popular {
+        position: absolute;
+        top: 27px;
+        right: 26px;
+      }
+
+      .plan-label {
+        margin-bottom: 18px;
+        color: var(--rose);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .price {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+
+      .price strong {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(3.05rem, 5vw, 3.48rem);
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .price span {
+        padding-bottom: 7px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .plan-description {
+        min-height: 55px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .plan-features {
+        display: grid;
+        gap: 15px;
+        margin: 28px 0 35px;
+        padding-top: 27px;
+        border-top: 1px solid rgba(139, 115, 85, 0.23);
+      }
+
+      .plan-features li {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        color: #ded5ca;
+        font-size: 0.9rem;
+      }
+
+      .check,
+      .excluded-mark {
+        display: inline-flex;
+        width: 18px;
+        flex-shrink: 0;
+        justify-content: center;
+        color: var(--gold);
+        font-weight: 700;
+      }
+
+      .excluded,
+      .excluded .excluded-mark {
+        color: #766d62 !important;
+      }
+
+      .price-card .btn {
+        width: 100%;
+        margin-top: auto;
+      }
+
+      .fine-print {
+        max-width: 610px;
+        margin: 36px auto 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        text-align: center;
+      }
+
+      /* Trust */
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .testimonial {
+        min-height: 246px;
+        padding: 30px 26px;
+      }
+
+      .testimonial-note {
+        margin-bottom: 22px;
+        color: var(--rose);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .testimonial blockquote {
+        margin: 0 0 26px;
+        color: #dfd5c8;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.08rem;
+        line-height: 1.55;
+      }
+
+      .testimonial-name {
+        display: block;
+        color: var(--cream);
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+
+      .testimonial-type {
+        display: block;
+        color: var(--muted);
+        font-size: 0.77rem;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 930px;
+        margin: clamp(42px, 6vw, 62px) auto 0;
+        padding: clamp(27px, 4vw, 37px) 0;
+        border-top: 1px solid var(--border-soft);
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat + .stat {
+        border-left: 1px solid var(--border-soft);
+      }
+
+      .stat strong {
+        display: block;
+        color: var(--rose);
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(1.55rem, 2.8vw, 2rem);
+        font-weight: 600;
+        line-height: 1.25;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      /* FAQ */
+      .faq {
+        background: #0c0c0c;
+      }
+
+      .faq-list {
+        max-width: 810px;
+        margin: 0 auto;
+        border-top: 1px solid var(--border-soft);
+      }
+
+      .faq-item {
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .faq-question {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        padding: 25px 2px;
+        text-align: left;
+        font-weight: 500;
+      }
+
+      .faq-question:hover {
+        color: var(--gold);
+      }
+
+      .faq-symbol {
+        position: relative;
+        display: block;
+        width: 19px;
+        height: 19px;
+        flex-shrink: 0;
+        color: var(--rose);
+      }
+
+      .faq-symbol::before,
+      .faq-symbol::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 17px;
+        height: 1px;
+        content: '';
+        background: currentColor;
+        transform: translate(-50%, -50%);
+        transition: transform 160ms ease;
+      }
+
+      .faq-symbol::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+
+      .faq-question[aria-expanded='true'] .faq-symbol::after {
+        transform: translate(-50%, -50%) rotate(0);
+      }
+
+      .faq-answer {
+        padding: 0 48px 25px 2px;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.78;
+      }
+
+      /* Final CTA */
+      .closing {
+        overflow: hidden;
+        padding: clamp(82px, 11vw, 126px) 0;
+        text-align: center;
+      }
+
+      .closing::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: min(780px, 95vw);
+        height: 400px;
+        content: '';
+        background: radial-gradient(circle, rgba(201, 168, 130, 0.09), transparent 66%);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .closing .container {
+        position: relative;
+      }
+
+      .closing h2 {
+        max-width: 700px;
+        margin: 0 auto;
+        font-size: clamp(2.35rem, 5vw, 3.65rem);
+      }
+
+      .closing p {
+        margin: 19px auto 37px;
+        color: var(--muted);
+        font-size: clamp(1rem, 1.3vw, 1.1rem);
+      }
+
+      .closing-detail {
+        margin-top: 22px;
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* Footer */
+      .site-footer {
+        padding: 54px 0 31px;
+        background: #080808;
+        border-top: 1px solid rgba(139, 115, 85, 0.2);
+      }
+
+      .footer-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 34px;
+        padding-bottom: 40px;
+      }
+
+      .footer-tagline {
+        margin-top: 17px;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .footer-content {
+        display: flex;
+        align-items: flex-start;
+        gap: clamp(40px, 8vw, 88px);
+      }
+
+      .footer-group p {
+        margin-bottom: 13px;
+        color: var(--muted);
+        font-size: 0.63rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .footer-links {
+        display: grid;
+        gap: 9px;
+        color: #d3c8ba;
+        font-size: 0.88rem;
+      }
+
+      .footer-links a {
+        transition: color 160ms ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding-top: 28px;
+        color: #817564;
+        border-top: 1px solid rgba(139, 115, 85, 0.15);
+        font-size: 0.78rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 1040px) {
+        .hero-grid {
+          grid-template-columns: 1fr 350px;
+          gap: 36px;
+        }
+
+        .features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .feature-card {
+          min-height: 260px;
+        }
+      }
+
+      @media (max-width: 850px) {
+        :root {
+          --nav-height: 75px;
+        }
+
+        .container {
+          width: min(calc(100% - 38px), var(--max));
+        }
+
+        .nav-actions {
+          display: none;
+        }
+
+        .menu-toggle {
+          display: grid;
+        }
+
+        .mobile-menu {
+          position: fixed;
+          top: var(--nav-height);
+          right: 0;
+          left: 0;
+          display: grid;
+          gap: 8px;
+          padding: 18px 19px 24px;
+          background: var(--background);
+          border-bottom: 1px solid var(--border-soft);
+          box-shadow: 0 20px 35px rgba(0, 0, 0, 0.32);
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-12px);
+          transition:
+            opacity 180ms ease,
+            transform 180ms ease,
+            visibility 180ms ease;
+        }
+
+        .mobile-menu.is-open {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        .mobile-menu .nav-link {
+          padding: 12px;
+        }
+
+        .mobile-menu .nav-link::after {
+          display: none;
+        }
+
+        .mobile-menu .btn {
+          margin-top: 9px;
+        }
+
+        .hero {
+          min-height: 0;
+        }
+
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-copy {
+          max-width: 640px;
+        }
+
+        .phone-area {
+          margin-top: 23px;
+        }
+
+        .transition-grid {
+          grid-template-columns: 1fr;
+          max-width: 510px;
+          margin: 0 auto;
+        }
+
+        .transition {
+          transform: rotate(90deg);
+        }
+
+        .steps-grid {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+
+        .steps-grid::before {
+          display: none;
+        }
+
+        .step {
+          max-width: 450px;
+          margin: 0 auto;
+        }
+
+        .pricing-grid,
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+          max-width: 500px;
+        }
+
+        .pricing-grid {
+          margin: 0 auto;
+        }
+
+        .price-card {
+          min-height: 0;
+        }
+
+        .testimonials-grid {
+          margin: 0 auto;
+        }
+
+        .footer-top,
+        .footer-bottom {
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .container {
+          width: min(calc(100% - 32px), var(--max));
+        }
+
+        .logo-bdt {
+          font-size: 1.43rem;
+        }
+
+        .logo-connect {
+          font-size: 0.72rem;
+        }
+
+        .logo-subtitle {
+          font-size: 0.48rem;
+        }
+
+        .hero {
+          padding-top: calc(var(--nav-height) + 44px);
+        }
+
+        .hero-heading {
+          font-size: clamp(2.54rem, 14vw, 3.1rem);
+        }
+
+        .hero-buttons {
+          display: grid;
+        }
+
+        .hero-buttons .btn {
+          width: 100%;
+        }
+
+        .phone-area {
+          padding: 10px 0 0;
+        }
+
+        .phone-screen {
+          min-height: 550px;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .feature-card {
+          min-height: 0;
+        }
+
+        .popular {
+          position: static;
+          margin-bottom: 18px;
+        }
+
+        .price-card.featured .plan-label {
+          margin-top: 0;
+        }
+
+        .stats {
+          grid-template-columns: 1fr;
+          gap: 26px;
+        }
+
+        .stat + .stat {
+          padding-top: 25px;
+          border-top: 1px solid var(--border-soft);
+          border-left: 0;
+        }
+
+        .faq-question {
+          padding: 22px 0;
+          font-size: 0.95rem;
+        }
+
+        .faq-answer {
+          padding-right: 18px;
+        }
+
+        .footer-content {
+          flex-direction: column;
+          gap: 31px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-nav" id="site-nav">
+      <div class="container nav-shell">
+        <a class="logo" href="#top" aria-label="BDT Connect home">
+          <span class="logo-line">
+            <span class="logo-bdt">BDT</span>
+            <span class="logo-connect">CONNECT</span>
+          </span>
+          <span class="logo-subtitle">Subset of BDT Talent Group</span>
+        </a>
+
+        <div class="nav-actions" aria-label="Main navigation">
+          <nav class="nav-links">
+            <a class="nav-link" href="#features">Features</a>
+            <a class="nav-link" href="#plans">Plans</a>
+            <a class="nav-link" href="#contact">Contact</a>
+          </nav>
+          <a class="btn btn-primary nav-cta" href="#plans">Get Started</a>
+        </div>
+
+        <button
+          class="menu-toggle"
+          id="menu-toggle"
+          type="button"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          aria-label="Open navigation menu"
+        >
+          <span></span>
+        </button>
+      </div>
+
+      <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+        <a class="nav-link" href="#features">Features</a>
+        <a class="nav-link" href="#plans">Plans</a>
+        <a class="nav-link" href="#contact">Contact</a>
+        <a class="btn btn-primary" href="#plans">Get Started</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="particles" aria-hidden="true">
+          <span class="particle"></span>
+          <span class="particle"></span>
+          <span class="particle"></span>
+          <span class="particle"></span>
+          <span class="particle"></span>
+          <span class="particle"></span>
+        </div>
+        <div class="container hero-grid">
+          <div class="hero-content">
+            <p class="eyebrow">Your business. Our expertise. One platform.</p>
+            <h1 class="hero-heading">Your Online Presence, Professionally Managed.</h1>
+            <p class="hero-copy">
+              BDT Connect gives local small businesses a professional website and social media
+              presence &mdash; fully managed by our team, for one simple monthly fee.
+            </p>
+            <div class="hero-buttons">
+              <a class="btn btn-primary btn-large" href="#plans">Start Free Trial</a>
+              <a class="btn btn-ghost btn-large" href="#plans">See Plans</a>
+            </div>
+            <p class="hero-note">14-day free trial. No contracts. Cancel anytime.</p>
+          </div>
+
+          <div class="phone-area" aria-label="BDT Connect app preview">
+            <div class="phone-aura" aria-hidden="true"></div>
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="phone-notch" aria-hidden="true"></div>
+                <div class="phone-top">
+                  <div>
+                    <div class="phone-label">BDT Connect</div>
+                    <div class="phone-title">Good morning, Olivia</div>
+                  </div>
+                  <div class="avatar">OC</div>
+                </div>
+                <div class="plan-status">
+                  <div class="status-row">
+                    <span class="status-name">Premium Plan</span>
+                    <span class="status-pill">Active</span>
+                  </div>
+                  <div class="progress-copy">
+                    <span>Website redesign</span>
+                    <span>72%</span>
+                  </div>
+                  <div class="progress-bar" aria-hidden="true"><span></span></div>
+                </div>
+                <div class="screen-heading">Your services</div>
+                <div class="task">
+                  <div class="task-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 5h16v11H4zM9 20h6M12 16v4"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Website refresh</strong>
+                    <small>Design review scheduled today</small>
+                  </div>
+                </div>
+                <div class="task">
+                  <div class="task-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M7 11v6M12 7v10M17 4v13"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Social media</strong>
+                    <small>12 posts planned this month</small>
+                  </div>
+                </div>
+                <div class="message-preview">
+                  <span>BDT Team</span>
+                  Your homepage concepts are ready to review.
+                </div>
+                <div class="screen-tabs">
+                  <span class="active">Home</span>
+                  <span>Projects</span>
+                  <span>Messages</span>
+                  <span>Account</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="problem-solution" aria-label="The BDT Connect difference">
+        <div class="container transition-grid">
+          <div class="comparison negative">
+            <div class="comparison-icon" aria-hidden="true">&times;</div>
+            <div>
+              <h2>The Problem</h2>
+              <p>
+                Your website is outdated.<br />
+                Your social media is inconsistent.<br />
+                You don't have time to fix it.
+              </p>
+            </div>
+          </div>
+
+          <div class="transition" aria-hidden="true">
+            <span class="transition-arrow">&rarr;</span>
+            <span>BDT Connect</span>
+          </div>
+
+          <div class="comparison positive">
+            <div class="comparison-icon" aria-hidden="true">&#10003;</div>
+            <div>
+              <h2>The Solution</h2>
+              <p>
+                We redesign your website.<br />
+                We manage your social media.<br />
+                You focus on your business.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="how-it-works">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">How It Works</p>
+            <h2 class="section-title">Simple as 1, 2, 3</h2>
+          </header>
+
+          <div class="steps-grid">
+            <article class="step">
+              <div class="step-number">1</div>
+              <h3>Download the App</h3>
+              <p>Available on iOS and Android. Sign up in minutes.</p>
+              <!-- TODO: Replace # with real iOS and Google Play app store links at launch. -->
+              <div class="store-links">
+                <a
+                  class="store-link placeholder-link"
+                  href="#"
+                  aria-label="BDT Connect for iOS, coming soon"
+                  >iOS App Store</a
+                >
+                <a
+                  class="store-link placeholder-link"
+                  href="#"
+                  aria-label="BDT Connect for Android, coming soon"
+                  >Google Play</a
+                >
+              </div>
+            </article>
+            <article class="step">
+              <div class="step-number">2</div>
+              <h3>Choose Your Plan</h3>
+              <p>Pick Basic or Premium. Start with a 14-day free trial.</p>
+            </article>
+            <article class="step">
+              <div class="step-number">3</div>
+              <h3>We Get to Work</h3>
+              <p>
+                Our team builds your website and manages your social media. You sit back and grow.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section features" id="features">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">Services</p>
+            <h2 class="section-title">Everything Your Business Needs Online</h2>
+          </header>
+
+          <div class="features-grid">
+            <article class="glass-card feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="13" rx="1.5"></rect>
+                  <path d="M8 21h8M12 17v4"></path>
+                </svg>
+              </div>
+              <h3>Website Redesign</h3>
+              <p>
+                A professionally designed website that represents your brand and converts visitors
+                into customers.
+              </p>
+            </article>
+
+            <article class="glass-card feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M14.7 6.3a4 4 0 0 0-5 5L4 17l3 3 5.7-5.7a4 4 0 0 0 5-5l-2.6 2.6-2.9-2.9z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Website Maintenance</h3>
+              <p>Ongoing updates and fixes so your site stays fast, secure, and current.</p>
+            </article>
+
+            <article class="glass-card feature-card">
+              <span class="pill feature-badge">Premium</span>
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <path d="m8.7 10.7 6.6-4.3M8.7 13.3l6.6 4.3"></path>
+                </svg>
+              </div>
+              <h3>Social Media Management</h3>
+              <p>
+                Full management of all your social platforms &mdash; content, posting, and
+                engagement. Premium plan.
+              </p>
+            </article>
+
+            <article class="glass-card feature-card">
+              <span class="pill feature-badge">Premium</span>
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 20V10M10 20V4M16 20v-8M22 20H2"></path>
+                </svg>
+              </div>
+              <h3>Monthly Reports</h3>
+              <p>
+                Monthly performance updates so you always know how your online presence is growing.
+                Premium plan.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section plans" id="plans">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">Plans</p>
+            <h2 class="section-title">Straightforward Pricing</h2>
+            <p class="section-copy">
+              14-day free trial on all plans. No contracts. Cancel anytime.
+            </p>
+          </header>
+
+          <div class="pricing-grid">
+            <article class="glass-card price-card">
+              <p class="plan-label">Basic</p>
+              <div class="price">
+                <strong>$100</strong>
+                <span>/ month</span>
+              </div>
+              <p class="plan-description">Professional website support for a polished presence.</p>
+              <ul class="plan-features">
+                <li><span class="check">&#10003;</span>Website redesign</li>
+                <li><span class="check">&#10003;</span>Website maintenance</li>
+                <li><span class="check">&#10003;</span>Direct messaging to BDT team</li>
+                <li class="excluded">
+                  <span class="excluded-mark">&times;</span>Social media management
+                </li>
+                <li class="excluded">
+                  <span class="excluded-mark">&times;</span>Monthly performance reports
+                </li>
+                <li class="excluded">
+                  <span class="excluded-mark">&times;</span>Priority response
+                </li>
+              </ul>
+              <a class="btn btn-ghost" href="#plans">Start Free Trial</a>
+            </article>
+
+            <article class="glass-card price-card featured">
+              <span class="pill popular">Most Popular</span>
+              <p class="plan-label">Premium</p>
+              <div class="price">
+                <strong>$175</strong>
+                <span>/ month</span>
+              </div>
+              <p class="plan-description">
+                The complete managed online presence for your business.
+              </p>
+              <ul class="plan-features">
+                <li><span class="check">&#10003;</span>Website redesign</li>
+                <li><span class="check">&#10003;</span>Website maintenance</li>
+                <li><span class="check">&#10003;</span>Full social media management</li>
+                <li><span class="check">&#10003;</span>Monthly performance reports</li>
+                <li><span class="check">&#10003;</span>Priority message response</li>
+                <li><span class="check">&#10003;</span>Direct messaging to BDT team</li>
+              </ul>
+              <a class="btn btn-primary" href="#plans">Start Free Trial</a>
+            </article>
+          </div>
+          <p class="fine-print">
+            Card required to start trial. You won't be charged until day 15. Cancel anytime before
+            then.
+          </p>
+        </div>
+      </section>
+
+      <section class="section trust" id="trust">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">Client Stories</p>
+            <h2 class="section-title">Built for Local Businesses</h2>
+          </header>
+
+          <!-- TODO: Replace the following placeholder cards with approved real client testimonials. -->
+          <div class="testimonials-grid">
+            <article class="glass-card testimonial">
+              <p class="testimonial-note">Testimonial Placeholder</p>
+              <blockquote>
+                &ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Our new presence
+                feels clear and professional.&rdquo;
+              </blockquote>
+              <span class="testimonial-name">Business Name</span>
+              <span class="testimonial-type">Local Restaurant &middot; Placeholder</span>
+            </article>
+            <article class="glass-card testimonial">
+              <p class="testimonial-note">Testimonial Placeholder</p>
+              <blockquote>
+                &ldquo;Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore. The
+                process was simple.&rdquo;
+              </blockquote>
+              <span class="testimonial-name">Business Name</span>
+              <span class="testimonial-type">Wellness Studio &middot; Placeholder</span>
+            </article>
+            <article class="glass-card testimonial">
+              <p class="testimonial-note">Testimonial Placeholder</p>
+              <blockquote>
+                &ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. We can focus on
+                serving our customers.&rdquo;
+              </blockquote>
+              <span class="testimonial-name">Business Name</span>
+              <span class="testimonial-type">Retail Boutique &middot; Placeholder</span>
+            </article>
+          </div>
+
+          <div class="stats" aria-label="BDT Connect benefits">
+            <div class="stat">
+              <strong>14-day</strong>
+              <span>Free trial</span>
+            </div>
+            <div class="stat">
+              <strong>Anytime</strong>
+              <span>Cancel anytime</span>
+            </div>
+            <div class="stat">
+              <strong>Local</strong>
+              <span>Businesses served</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq" id="faq">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">FAQ</p>
+            <h2 class="section-title">Common Questions</h2>
+          </header>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <button
+                class="faq-question"
+                type="button"
+                aria-expanded="true"
+                aria-controls="answer-1"
+              >
+                <span>How does the free trial work?</span>
+                <span class="faq-symbol" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" id="answer-1">
+                You'll enter your card when you sign up, but nothing is charged for 14 days. Cancel
+                anytime before day 15 and you won't pay a thing.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button
+                class="faq-question"
+                type="button"
+                aria-expanded="false"
+                aria-controls="answer-2"
+              >
+                <span>What happens after I sign up?</span>
+                <span class="faq-symbol" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" id="answer-2" hidden>
+                Our team will reach out within 24 hours to get started on your website and discuss
+                your goals.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button
+                class="faq-question"
+                type="button"
+                aria-expanded="false"
+                aria-controls="answer-3"
+              >
+                <span>Can I upgrade or downgrade my plan?</span>
+                <span class="faq-symbol" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" id="answer-3" hidden>
+                Yes &mdash; you can change your plan anytime directly from the app.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button
+                class="faq-question"
+                type="button"
+                aria-expanded="false"
+                aria-controls="answer-4"
+              >
+                <span>What social media platforms do you manage?</span>
+                <span class="faq-symbol" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" id="answer-4" hidden>
+                Instagram, Facebook, TikTok, and several others.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button
+                class="faq-question"
+                type="button"
+                aria-expanded="false"
+                aria-controls="answer-5"
+              >
+                <span>How do I contact the BDT team?</span>
+                <span class="faq-symbol" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" id="answer-5" hidden>
+                Through the in-app messaging feature. We respond within 24 hours (Basic) or same
+                business day (Premium).
+              </div>
+            </div>
+            <div class="faq-item">
+              <button
+                class="faq-question"
+                type="button"
+                aria-expanded="false"
+                aria-controls="answer-6"
+              >
+                <span>Is there a contract?</span>
+                <span class="faq-symbol" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" id="answer-6" hidden>
+                No contracts. Month-to-month only. Cancel anytime from the app.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section closing">
+        <div class="container">
+          <p class="eyebrow">Get Started Today</p>
+          <h2>Ready to grow your business online?</h2>
+          <p>Join local businesses already working with BDT Talent Group.</p>
+          <a class="btn btn-primary btn-large" href="#plans">Start Your Free Trial</a>
+          <div class="closing-detail">
+            14-day free trial &middot; No contracts &middot; Cancel anytime
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container">
+        <div class="footer-top">
+          <div>
+            <a class="logo" href="#top" aria-label="BDT Connect home">
+              <span class="logo-line">
+                <span class="logo-bdt">BDT</span>
+                <span class="logo-connect">CONNECT</span>
+              </span>
+              <span class="logo-subtitle">Subset of BDT Talent Group</span>
+            </a>
+            <p class="footer-tagline">A BDT Talent Group platform</p>
+          </div>
+          <div class="footer-content">
+            <!-- TODO: Replace placeholder legal URLs and confirm production domain/contact info before launch. -->
+            <div class="footer-group">
+              <p>Explore</p>
+              <div class="footer-links">
+                <a class="placeholder-link" href="#">Privacy Policy</a>
+                <a class="placeholder-link" href="#">Terms of Service</a>
+                <a href="mailto:BDTTalentGroup@yahoo.com">Contact</a>
+              </div>
+            </div>
+            <div class="footer-group">
+              <p>Contact</p>
+              <div class="footer-links">
+                <a href="mailto:BDTTalentGroup@yahoo.com">BDTTalentGroup@yahoo.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2025 BDT Talent Group. All rights reserved.</span>
+          <span>BDT Connect is available on iOS and Google Play</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (() => {
+        const nav = document.getElementById('site-nav');
+        const toggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        const updateNavigation = () => {
+          nav.classList.toggle('is-scrolled', window.scrollY > 12);
+        };
+
+        const closeMenu = () => {
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Open navigation menu');
+          mobileMenu.classList.remove('is-open');
+          document.body.classList.remove('menu-open');
+        };
+
+        toggle.addEventListener('click', () => {
+          const open = toggle.getAttribute('aria-expanded') === 'true';
+          toggle.setAttribute('aria-expanded', String(!open));
+          toggle.setAttribute(
+            'aria-label',
+            open ? 'Open navigation menu' : 'Close navigation menu',
+          );
+          mobileMenu.classList.toggle('is-open', !open);
+          document.body.classList.toggle('menu-open', !open);
+        });
+
+        document.querySelectorAll('.mobile-menu a').forEach((link) => {
+          link.addEventListener('click', closeMenu);
+        });
+
+        window.addEventListener('scroll', updateNavigation, { passive: true });
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 850) {
+            closeMenu();
+          }
+        });
+        updateNavigation();
+
+        const faqQuestions = document.querySelectorAll('.faq-question');
+
+        faqQuestions.forEach((question) => {
+          question.addEventListener('click', () => {
+            const answer = document.getElementById(question.getAttribute('aria-controls'));
+            const expanded = question.getAttribute('aria-expanded') === 'true';
+
+            if (!expanded) {
+              faqQuestions.forEach((otherQuestion) => {
+                if (otherQuestion !== question) {
+                  otherQuestion.setAttribute('aria-expanded', 'false');
+                  document.getElementById(otherQuestion.getAttribute('aria-controls')).hidden =
+                    true;
+                }
+              });
+            }
+
+            question.setAttribute('aria-expanded', String(!expanded));
+            answer.hidden = expanded;
+          });
+        });
+
+        document.querySelectorAll('.placeholder-link').forEach((link) => {
+          link.addEventListener('click', (event) => event.preventDefault());
+        });
+      })();
+    </script>
+  </body>
+</html>

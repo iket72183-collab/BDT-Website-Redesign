@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": "src",
+    "lib": ["ES2022"],
+    "types": ["node"],
+    // The API is a deployable application, not a library that other packages
+    // import — it emits no `.d.ts`. This also avoids TS2742 "inferred type
+    // cannot be named" noise from Express's deep pnpm-hashed type paths.
+    "declaration": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

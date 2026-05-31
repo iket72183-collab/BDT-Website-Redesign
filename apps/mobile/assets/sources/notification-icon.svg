@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!--
+    Android notification icon. MUST be monochrome white on transparent;
+    Android tints with the color set in app.json plugins/expo-notifications.
+    Bold weight + no thin strokes so it stays legible in the small system tray.
+  -->
+  <text x="48" y="68" text-anchor="middle"
+        font-family="Georgia, serif" font-weight="700"
+        font-size="64" letter-spacing="-2"
+        fill="#ffffff">B</text>
+</svg>

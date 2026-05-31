@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel any in-flight runs for the same ref when a new commit lands. Saves
+# minutes and keeps the actions queue honest.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Default environment values used by the API at compile/test time. These are
+# all dummy values — the test suite mocks Prisma + external services, so no
+# real connections are made. Keep in sync with the manual invocations in
+# `apps/api/package.json` scripts.
+env:
+  DATABASE_URL: postgresql://x:x@localhost:5432/x
+  JWT_SECRET: ci-jwt-secret-1234567890abcdef1234567890abcdef1234
+  STRIPE_SECRET_KEY: sk_test_ci
+  STRIPE_WEBHOOK_SECRET: whsec_ci
+
+jobs:
+  install:
+    name: Install (cached)
+    runs-on: ubuntu-latest
+    outputs:
+      pnpm-store: ${{ steps.cache.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+
+      - name: pnpm install
+        run: pnpm install --frozen-lockfile
+
+  api:
+    name: API · typecheck + tests + build
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # `prisma generate` writes the typed client into node_modules — must
+      # run before tsc or any test that imports `@prisma/client`.
+      - name: Prisma generate
+        run: pnpm --filter @bdt/api db:generate
+
+      - name: Typecheck
+        run: pnpm --filter @bdt/api typecheck
+
+      - name: Tests
+        run: pnpm --filter @bdt/api test
+
+      - name: Build
+        run: pnpm --filter @bdt/api build
+
+  admin:
+    name: Admin · typecheck + build
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm --filter @bdt/admin typecheck
+
+      - name: Next build
+        # Build needs a value for the public API URL, even at build time, so
+        # the bundler can inline it. Use a placeholder — Vercel sets the real
+        # value via its own env config.
+        env:
+          NEXT_PUBLIC_API_URL: https://ci.placeholder.invalid
+        run: pnpm --filter @bdt/admin build
+
+  mobile:
+    name: Mobile · typecheck
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm --filter @bdt/mobile typecheck

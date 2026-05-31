@@ -1,0 +1,34 @@
+node_modules/
+dist/
+build/
+.next/
+.expo/
+.turbo/
+coverage/
+
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Firebase / FCM — keep out of the repo (EAS supplies them at build/submit time).
+# google-services.json         → Android Firebase config (place at apps/mobile/)
+# google-service-account*.json → FCM V1 push key + Play Console submit key (PRIVATE key — true secret)
+google-services.json
+google-service-account*.json
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+ios/
+android/
+*.iml
+
+apps/mobile/web-build/

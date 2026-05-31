@@ -1,0 +1,46 @@
+# =============================================================================
+# Railway config for the API + worker services.
+#
+# Two services share this codebase + dependencies. They differ only in the
+# start command. Provision them as two separate Railway services in the
+# same project, both pointing at this repo with `apps/api` as the root.
+#
+# Service: "api"
+#   Start command: pnpm start
+#   Health check:  /health  (Railway pings it after a deploy)
+#
+# Service: "worker"
+#   Start command: pnpm --filter @bdt/api worker
+#   (uses tsx, which is in devDependencies and installed by the build step
+#    above — no compile pass needed for the worker since it's a single
+#    long-running process with no public surface to optimize).
+#   No public networking; no health check.
+#
+# The shared build runs Prisma generate + tsc + applies migrations. Putting
+# `db:migrate` in the build step means a deploy with a new migration only
+# goes live AFTER the schema is in place — services restarting against an
+# old schema can't happen.
+# =============================================================================
+
+[build]
+  builder = "NIXPACKS"
+  buildCommand = "pnpm install --frozen-lockfile && pnpm --filter @bdt/api db:migrate && pnpm --filter @bdt/api build"
+
+[deploy]
+  # Override per-service via Railway's UI:
+  #   api    → pnpm --filter @bdt/api start
+  #   worker → pnpm --filter @bdt/api worker
+  startCommand = "pnpm --filter @bdt/api start"
+  restartPolicyType = "ON_FAILURE"
+  restartPolicyMaxRetries = 10
+
+  # Railway hits this URL on every deploy. If it doesn't return 2xx within
+  # the timeout, the deploy is rolled back automatically.
+  healthcheckPath = "/health"
+  healthcheckTimeout = 60
+
+[nixpacks]
+  # Nixpacks auto-detects the Node version from package.json#engines, but
+  # we pin it here too so an `engines` bump doesn't accidentally change the
+  # build image.
+  nodeVersion = "20"

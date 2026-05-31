@@ -1,0 +1,523 @@
+// =============================================================================
+// BDT Connect — Prisma schema
+//
+// Agency client portal. BDT Talent Group's clients install the mobile app,
+// pick a Basic ($100/mo) or Premium ($175/mo) subscription, and use it to
+// track work the agency is doing for them and message the team. Tenant rows
+// exist per-client; multi-tenancy isolation still applies via the Prisma
+// extension in `src/lib/db.ts` (auto-injects `WHERE tenantId = ?`).
+//
+// Money: Int cents, never floats. Timestamps: timestamptz. UUIDs for all PKs.
+// =============================================================================
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgcrypto]
+}
+
+// -----------------------------------------------------------------------------
+// Enums
+// -----------------------------------------------------------------------------
+
+enum BusinessType {
+  salon
+  barbershop
+  gym
+  spa
+  studio
+  clinic
+  other
+}
+
+enum SubscriptionTier {
+  basic
+  premium
+}
+
+enum SubscriptionStatus {
+  incomplete
+  active
+  trialing
+  past_due
+  cancelled
+}
+
+enum UserRole {
+  client
+  platform_admin
+}
+
+enum PlatformAdminRole {
+  superadmin
+  support
+}
+
+enum MessageStatus {
+  unread
+  read
+  archived
+}
+
+enum EmailDeliveryStatus {
+  pending
+  sent
+  failed
+}
+
+enum NotificationType {
+  message_reply
+  account_update
+  payment_received
+}
+
+enum RequestType {
+  website_update
+  social_media
+  general
+  file_upload
+}
+
+enum RequestStatus {
+  pending
+  in_progress
+  completed
+  cancelled
+}
+
+enum SocialPlatform {
+  instagram
+  facebook
+  tiktok
+  google_business
+  x_twitter
+  youtube
+  linkedin
+  other
+}
+
+enum SocialAccessMethod {
+  delegated
+  credentials
+  create_for_me
+}
+
+enum SocialAccountStatus {
+  pending
+  access_granted
+  active
+  revoked
+  needs_attention
+}
+
+// =============================================================================
+// PLATFORM LEVEL
+// =============================================================================
+
+model Tenant {
+  id                   String              @id @default(uuid()) @db.Uuid
+  slug                 String              @unique
+  businessName         String              @map("business_name")
+  /// Useful context for the agency (gym vs salon vs other) — optional.
+  businessType         BusinessType?       @map("business_type")
+  /// Nullable: avoids the user-tenant chicken-and-egg at creation. App code
+  /// patches this immediately after creating the client user in the same
+  /// transaction.
+  ownerId              String?             @map("owner_id") @db.Uuid
+  logoUrl              String?             @map("logo_url")
+  brandColor           String?             @map("brand_color") @db.VarChar(7)
+
+  // Physical location — optional, useful for the agency's records.
+  address              String?
+  city                 String?
+  state                String?
+  zipCode              String?             @map("zip_code")
+
+  // Client's online presence — BDT updates these as work progresses; the
+  // dashboard surfaces them so the client sees the agency's deliverables.
+  websiteUrl           String?             @map("website_url")
+  instagramUrl         String?             @map("instagram_url")
+  facebookUrl          String?             @map("facebook_url")
+  tiktokUrl            String?             @map("tiktok_url")
+  googleBusinessUrl    String?             @map("google_business_url")
+
+  // Billing (BDT-collected subscription)
+  stripeCustomerId     String?             @unique @map("stripe_customer_id")
+  stripeSubscriptionId String?             @unique @map("stripe_subscription_id")
+  subscriptionTier     SubscriptionTier    @default(basic) @map("subscription_tier")
+  subscriptionStatus   SubscriptionStatus  @default(incomplete) @map("subscription_status")
+  pendingTier          SubscriptionTier?   @map("pending_tier")
+  pendingTierEffectiveAt DateTime?         @map("pending_tier_effective_at") @db.Timestamptz
+  subscriptionProvisioningAt DateTime?     @map("subscription_provisioning_at") @db.Timestamptz
+
+  isActive             Boolean             @default(true) @map("is_active")
+
+  /// Becomes true once the client picks a plan + provides payment. Gates
+  /// access to the dashboard so half-finished signups can be resumed.
+  onboardingCompleted   Boolean            @default(false) @map("onboarding_completed")
+  onboardingCompletedAt DateTime?          @map("onboarding_completed_at") @db.Timestamptz
+
+  /// Internal BDT notes about this client — never exposed to the client.
+  notes                String?
+
+  createdAt            DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime            @updatedAt @map("updated_at") @db.Timestamptz
+
+  owner                User?               @relation("TenantOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+
+  users                User[]              @relation("TenantUsers")
+  messages             Message[]
+  subscriptionEvents   SubscriptionEvent[]
+  notifications        Notification[]
+  notificationPreferences NotificationPreference[]
+  platformEvents       PlatformEvent[]
+  requests             ServiceRequest[]
+  socialAccounts       SocialAccount[]
+
+  @@index([subscriptionStatus])
+  @@index([isActive])
+  @@map("tenants")
+}
+
+model PlatformAdmin {
+  id        String            @id @default(uuid()) @db.Uuid
+  userId    String            @unique @map("user_id") @db.Uuid
+  role      PlatformAdminRole @default(support)
+  createdAt DateTime          @default(now()) @map("created_at") @db.Timestamptz
+
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("platform_admins")
+}
+
+// =============================================================================
+// USERS & AUTH
+// =============================================================================
+
+model User {
+  /// WARNING: This model is NOT auto-scoped by
+  /// the Prisma tenant extension. Always include
+  /// tenantId in queries. See userService.ts.
+  id              String     @id @default(uuid()) @db.Uuid
+  /// Nullable: platform admins live outside any tenant. App-level rule:
+  /// tenantId IS NULL ⇔ role = platform_admin.
+  tenantId        String?    @map("tenant_id") @db.Uuid
+  email           String
+  phone           String?
+  passwordHash    String     @map("password_hash")
+  firstName       String     @map("first_name")
+  lastName        String     @map("last_name")
+  avatarUrl       String?    @map("avatar_url")
+  role            UserRole
+  isActive        Boolean    @default(true) @map("is_active")
+  emailVerifiedAt DateTime?  @map("email_verified_at") @db.Timestamptz
+  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz
+
+  tenant          Tenant?    @relation("TenantUsers", fields: [tenantId], references: [id], onDelete: Cascade)
+  ownedTenants    Tenant[]   @relation("TenantOwner")
+  platformAdmin   PlatformAdmin?
+
+  messages              Message[]
+  notifications         Notification[]
+  notificationPreference NotificationPreference?
+  devicePushTokens      DevicePushToken[]
+  platformEvents        PlatformEvent[]
+  refreshTokens         RefreshToken[]
+  authTokens            AuthToken[]
+
+  /// Email uniqueness is per-tenant — same person can have separate accounts
+  /// across tenants if the agency onboards them for multiple businesses.
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([role])
+  @@index([email])
+  @@map("users")
+}
+
+// =============================================================================
+// MESSAGING — client → BDT
+// =============================================================================
+
+/// Inbound messages from a client (business owner) to the BDT agency team.
+/// Sending a message ALSO dispatches an email to BDTTalentGroup@yahoo.com so
+/// the team responds from their existing inbox. `status` tracks the agency's
+/// view (unread / read / archived) — toggled by platform admins.
+model Message {
+  id          String        @id @default(uuid()) @db.Uuid
+  tenantId    String        @map("tenant_id") @db.Uuid
+  userId      String        @map("user_id") @db.Uuid
+  subject     String?
+  body        String
+  status      MessageStatus @default(unread)
+  emailDeliveryStatus EmailDeliveryStatus @default(pending) @map("email_delivery_status")
+  emailDeliveredAt DateTime?     @map("email_delivered_at") @db.Timestamptz
+  emailLastError   String?       @map("email_last_error")
+  sentAt      DateTime      @default(now()) @map("sent_at") @db.Timestamptz
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz
+
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([status])
+  @@map("messages")
+}
+
+/// Service requests a client submits to the BDT agency (website update, social
+/// media, general, or file upload). Creating one emails BDTTalentGroup@yahoo.com
+/// and pushes the platform admins (see requestNotificationService). Monthly
+/// volume is capped per plan — `requestsPerMonth` in src/lib/plans.ts
+/// (Basic 5 / Premium 20). Display-only after submission; status is updated by
+/// platform admins. Model name is ServiceRequest to avoid colliding with the
+/// global/Express `Request` type; the table is `requests`.
+model ServiceRequest {
+  id          String        @id @default(uuid()) @db.Uuid
+  tenantId    String        @map("tenant_id") @db.Uuid
+  type        RequestType
+  title       String
+  description String
+  status      RequestStatus @default(pending)
+  /// Array of { name, url, size } attachment descriptors. Files themselves
+  /// live in external storage; we persist metadata only.
+  attachments Json          @default("[]")
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([status])
+  @@index([tenantId, createdAt(sort: Desc)])
+  @@map("requests")
+}
+
+/// A client's social-media account that BDT manages. One row per tenant per
+/// platform. `accessMethod` records HOW BDT gets in: `delegated` (client grants
+/// access via the platform's own partner tools — preferred), `create_for_me`
+/// (BDT creates + owns it), or `credentials` (client hands over a login — the
+/// fallback). For `credentials`, `secretCiphertext` holds an AES-256-GCM
+/// envelope (see src/lib/crypto.ts) of `username:password` — NEVER select it by
+/// default and NEVER return it to a client; only platform admins decrypt it,
+/// and every reveal is audit-logged.
+model SocialAccount {
+  id               String              @id @default(uuid()) @db.Uuid
+  tenantId         String              @map("tenant_id") @db.Uuid
+  platform         SocialPlatform
+  /// Public @username — not a secret.
+  handle           String?
+  accessMethod     SocialAccessMethod  @map("access_method")
+  status           SocialAccountStatus @default(pending)
+  /// AES-256-GCM envelope of `username:password`. Only set when
+  /// accessMethod = credentials. Excluded from all default selects.
+  secretCiphertext String?             @map("secret_ciphertext")
+  secretUpdatedAt  DateTime?           @map("secret_updated_at") @db.Timestamptz
+  notes            String?
+  createdAt        DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime            @updatedAt @map("updated_at") @db.Timestamptz
+
+  tenant           Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, platform])
+  @@index([tenantId])
+  @@map("social_accounts")
+}
+
+// =============================================================================
+// SUBSCRIPTIONS
+// =============================================================================
+
+enum SubscriptionEventType {
+  created
+  upgraded
+  downgraded
+  cancelled
+  reactivated
+  trial_started
+  trial_ending
+  payment_failed
+  payment_succeeded
+}
+
+/// Audit log of subscription state changes. Lets us answer "what tier was
+/// tenant X on in February" or "when did churn happen." `stripeEventId` is
+/// UNIQUE so a webhook redelivery never double-writes the same business event.
+model SubscriptionEvent {
+  id                    String                @id @default(uuid()) @db.Uuid
+  tenantId              String                @map("tenant_id") @db.Uuid
+  eventType             SubscriptionEventType @map("event_type")
+  fromTier              SubscriptionTier?     @map("from_tier")
+  toTier                SubscriptionTier?     @map("to_tier")
+  stripeSubscriptionId  String?               @map("stripe_subscription_id")
+  /// Idempotency: webhook redeliveries with the same Stripe event id are skipped.
+  stripeEventId         String                @unique @map("stripe_event_id")
+  createdAt             DateTime              @default(now()) @map("created_at") @db.Timestamptz
+
+  tenant                Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, createdAt(sort: Desc)])
+  @@map("subscription_events")
+}
+
+/// Inbound-webhook idempotency. `/api/webhooks/stripe` INSERTs here first
+/// (keyed by `stripeEventId`); a P2002 unique-violation means "we already
+/// processed this delivery, ack and skip." Stripe retries every event up to
+/// 3 days — without this, every retry would re-run the handler.
+model ProcessedStripeEvent {
+  id             String   @id @default(uuid()) @db.Uuid
+  stripeEventId  String   @unique @map("stripe_event_id")
+  eventType      String   @map("event_type")
+  endpoint       String
+  /// Lifecycle: 'pending' once we've claimed the row, 'succeeded' after the
+  /// handler returns normally, 'failed' if it threw. A 'failed' row gets
+  /// upserted-back-to-pending on retry (the webhook handler key is the
+  /// stripeEventId), so we don't ack-and-skip failures.
+  status         String   @default("succeeded")
+  /// Captured error message when status='failed'. Bounded for safety.
+  error          String?
+  processedAt    DateTime @default(now()) @map("processed_at") @db.Timestamptz
+
+  @@index([processedAt])
+  @@index([status])
+  @@map("processed_stripe_events")
+}
+
+// =============================================================================
+// NOTIFICATIONS
+// =============================================================================
+
+model Notification {
+  id            String           @id @default(uuid()) @db.Uuid
+  tenantId      String           @map("tenant_id") @db.Uuid
+  userId        String           @map("user_id") @db.Uuid
+  type          NotificationType
+  title         String
+  body          String
+  isRead        Boolean          @default(false) @map("is_read")
+  readAt        DateTime?        @map("read_at") @db.Timestamptz
+  referenceType String?          @map("reference_type")
+  referenceId   String?          @map("reference_id") @db.Uuid
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz
+
+  tenant        Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([userId, isRead, createdAt(sort: Desc)])
+  @@index([referenceType, referenceId])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id                   String   @id @default(uuid()) @db.Uuid
+  tenantId             String   @map("tenant_id") @db.Uuid
+  userId               String   @unique @map("user_id") @db.Uuid
+  emailEnabled         Boolean  @default(true)  @map("email_enabled")
+  smsEnabled           Boolean  @default(false) @map("sms_enabled")
+  pushEnabled          Boolean  @default(true)  @map("push_enabled")
+  marketing            Boolean  @default(false) @map("marketing")
+
+  tenant               Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("notification_preferences")
+}
+
+/// Expo push tokens — one row per (user, device). `isActive` flips false (not
+/// deleted) when Expo reports `DeviceNotRegistered` so the row stays for audit.
+/// `tenantId` is nullable: platform admins have no tenant.
+model DevicePushToken {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  tenantId    String?  @map("tenant_id") @db.Uuid
+  token       String   @unique
+  platform    String
+  deviceName  String?  @map("device_name")
+  isActive    Boolean  @default(true) @map("is_active")
+  lastSeenAt  DateTime @default(now()) @map("last_seen_at") @db.Timestamptz
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, token])
+  @@index([userId])
+  @@index([tenantId])
+  @@map("device_push_tokens")
+}
+
+// =============================================================================
+// PLATFORM ANALYTICS
+// =============================================================================
+
+model PlatformEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String?  @map("tenant_id") @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  eventType String   @map("event_type")
+  payload   Json?    @db.JsonB
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([eventType, createdAt(sort: Desc)])
+  @@index([tenantId, createdAt(sort: Desc)])
+  @@map("platform_events")
+}
+
+// =============================================================================
+// AUTH TOKENS
+// =============================================================================
+
+/// Server-side allowlist for refresh tokens. Rotation flow: verify JWT,
+/// look up by `jti`, mint a new jti, revoke the old. Reuse detection: a
+/// presented jti with `revokedAt` set revokes ALL of the user's refresh tokens.
+model RefreshToken {
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String    @map("user_id") @db.Uuid
+  /// Null for platform admins.
+  tenantId      String?   @map("tenant_id") @db.Uuid
+  jti           String    @unique
+  expiresAt     DateTime  @map("expires_at") @db.Timestamptz
+  revokedAt     DateTime? @map("revoked_at") @db.Timestamptz
+  replacedByJti String?   @map("replaced_by_jti")
+  userAgent     String?   @map("user_agent")
+  ip            String?
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+enum AuthTokenPurpose {
+  password_reset
+  email_verify
+}
+
+/// One-time action tokens — password reset, email verify.
+model AuthToken {
+  id         String           @id @default(uuid()) @db.Uuid
+  userId     String           @map("user_id") @db.Uuid
+  purpose    AuthTokenPurpose
+  tokenHash  String           @unique @map("token_hash")
+  expiresAt  DateTime         @map("expires_at") @db.Timestamptz
+  consumedAt DateTime?        @map("consumed_at") @db.Timestamptz
+  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz
+
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose])
+  @@index([expiresAt])
+  @@map("auth_tokens")
+}

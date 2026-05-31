@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#8B7355"/>
+      <stop offset="35%"  stop-color="#C9A882"/>
+      <stop offset="55%"  stop-color="#E8D4A8"/>
+      <stop offset="75%"  stop-color="#D4AF7A"/>
+      <stop offset="100%" stop-color="#8B7355"/>
+    </linearGradient>
+  </defs>
+  <!--
+    Android adaptive icon foreground. The launcher mask crops to the inner
+    66% (≈672×672 centered), so all visible content lives inside that box.
+    Background is provided via app.json `adaptiveIcon.backgroundColor`.
+  -->
+  <text x="512" y="600" text-anchor="middle"
+        font-family="Playfair Display, Georgia, serif" font-weight="700"
+        font-size="500" letter-spacing="-16"
+        fill="url(#metal)">B</text>
+</svg>

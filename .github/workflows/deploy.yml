@@ -1,0 +1,34 @@
+name: Deploy
+
+# Fires after CI passes on a push to main. Triggers Railway redeploy for the
+# API + worker services. Vercel auto-deploys via its native GitHub integration
+# — no action needed here for the admin app.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy-api:
+    name: Railway · API + worker
+    # Only run if CI passed AND the trigger was a push to main (not a PR).
+    if: |
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      # Triggers a redeploy of every service in the project tied to this
+      # repo. The Railway project is detected via RAILWAY_TOKEN (project-
+      # scoped). Each service runs the build/start commands from railway.toml.
+      - name: Trigger Railway redeploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service api --detach && railway up --service worker --detach

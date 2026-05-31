@@ -1,0 +1,58 @@
+/* BDT Connect — design tokens as CSS custom properties.
+   Mirrors tokens.js. Prefer Tailwind utilities; reach for these only when
+   you need to use a token inside an inline style or arbitrary CSS rule. */
+
+:root {
+  /* Surfaces */
+  --bdt-bg-base:    #0A0A0A;
+  --bdt-bg-surface: #111111;
+  --bdt-bg-raised:  #161616;
+  --bdt-bg-inset:   #080808;
+
+  /* Brand metals */
+  --bdt-metal-rose:      #C9A882;
+  --bdt-metal-champagne: #D4AF7A;
+  --bdt-metal-border:    #8B7355;
+  --bdt-metal-deep:      #6B5640;
+  --bdt-metal-glow:      #C9A88240;
+
+  /* Text */
+  --bdt-text-primary:  #F5F0E8;
+  --bdt-text-muted:    #A89880;
+  --bdt-text-subtle:   #6B5F4F;
+  --bdt-text-on-metal: #0A0A0A;
+
+  /* Status */
+  --bdt-status-danger:       #8B2020;
+  --bdt-status-danger-soft:  #8B202022;
+  --bdt-status-success:      #2D5A3D;
+  --bdt-status-success-soft: #2D5A3D22;
+  --bdt-status-warning:      #A8761F;
+
+  /* Typography */
+  --bdt-font-display: "Playfair Display", Georgia, serif;
+  --bdt-font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Radius */
+  --bdt-radius-sm: 4px;
+  --bdt-radius-md: 8px;
+  --bdt-radius-lg: 12px;
+  --bdt-radius-xl: 16px;
+  --bdt-radius-2xl: 24px;
+
+  /* Shadows / glows */
+  --bdt-shadow-card:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 8px 24px rgba(0,0,0,0.5);
+  --bdt-shadow-card-hover:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 12px 36px rgba(0,0,0,0.6),
+    0 0 0 1px #8B735540;
+  --bdt-shadow-glow:        0 0 12px var(--bdt-metal-glow);
+  --bdt-shadow-glow-strong: 0 0 24px #C9A88255, 0 0 48px #C9A88222;
+  --bdt-shadow-frame:       inset 0 0 0 1px #8B735580;
+
+  /* Motion */
+  --bdt-ease-base:  cubic-bezier(0.22, 1, 0.36, 1);
+  --bdt-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
