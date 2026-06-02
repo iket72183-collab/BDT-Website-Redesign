@@ -58,7 +58,6 @@
       "typedRoutes": true
     },
     "extra": {
-      "_easProjectIdNote": "PLACEHOLDER — run `eas init` in apps/mobile/ to populate this with the real project id before any EAS build. apps/mobile/app.config.ts refuses to build with the placeholder under APP_ENV=production.",
       "eas": {
         "projectId": "1f285fac-f332-43f2-9ee5-27e7f1c5caa2"
       }
