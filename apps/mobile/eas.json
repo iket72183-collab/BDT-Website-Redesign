@@ -31,8 +31,8 @@
     "production": {
       "ios": {
         "appleId": "REPLACE_ME@example.com",
-        "ascAppId": "REPLACE_ME",
-        "appleTeamId": "REPLACE_ME"
+        "ascAppId": "6775680378",
+        "appleTeamId": "HZVNY29Y5U"
       },
       "android": {
         "serviceAccountKeyPath": "./google-service-account.json",
@@ -42,8 +42,8 @@
     "internal": {
       "ios": {
         "appleId": "REPLACE_ME@example.com",
-        "ascAppId": "REPLACE_ME",
-        "appleTeamId": "REPLACE_ME"
+        "ascAppId": "6775680378",
+        "appleTeamId": "HZVNY29Y5U"
       },
       "android": {
         "serviceAccountKeyPath": "./google-service-account.json",

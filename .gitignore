@@ -11,11 +11,21 @@ coverage/
 .env.*.local
 !.env.example
 
-# Firebase / FCM — keep out of the repo (EAS supplies them at build/submit time).
-# google-services.json         → Android Firebase config (place at apps/mobile/)
-# google-service-account*.json → FCM V1 push key + Play Console submit key (PRIVATE key — true secret)
+# Firebase / FCM / APNs / Apple keys — keep out of the repo (true secrets;
+# EAS / the host secret manager supply them at build/submit time).
+# google-services.json          → Android Firebase config (place at apps/mobile/)
+# google-service-account*.json  → FCM V1 push key + Play Console submit key
+# *.p8 / .apns-key.p8           → APNs auth key (Apple push private key)
+# .fcm-service-account.json     → FCM V1 service-account private key
+# GoogleService-Info.plist      → iOS Firebase config (this app does NOT use it — see IOS_LAUNCH §1)
+# .firebase-sha-fingerprints.txt / .apns-metadata.txt → captured credential metadata
 google-services.json
 google-service-account*.json
+*.p8
+.fcm-service-account.json
+GoogleService-Info.plist
+.firebase-sha-fingerprints.txt
+.apns-metadata.txt
 
 *.log
 npm-debug.log*

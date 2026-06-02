@@ -374,3 +374,36 @@ approved.
   and for screenshots.
 - **Stripe setup** — [../../DEPLOYMENT.md](../../DEPLOYMENT.md) §3c. Until the
   bank account is open, ship the Stripe-optional build (the no-card trial).
+
+---
+
+## §7 — App Store Connect Record
+
+- **Status:** Created ✅
+- **Bundle ID:** `com.bdt.connect` (App ID registered at developer.apple.com with Push Notifications capability)
+- **SKU:** `com-bdt-connect`
+- **ascAppId (numeric App Store Connect id):** `6775680378` → set in `eas.json` (`submit.*.ios.ascAppId`)
+- **Apple Team ID:** `HZVNY29Y5U` → set in `eas.json` (`submit.*.ios.appleTeamId`)
+- ⚠️ `eas.json` `submit.*.ios.appleId` still needs your Apple ID login email.
+- **Privacy questionnaire:** Complete + **Published** ✅ — declared (all "App Functionality",
+  linked to identity, **not** used for tracking, **not** sold): Name, Email Address,
+  Phone Number, Payment Info (via Stripe), Product Interaction (usage).
+- **Date:** 2026-06-01
+
+> Note: Apple's own definition would let Stripe-handled Payment Info that the
+> developer never accesses go undeclared; we declared it anyway, consistent with §5c.
+
+## §8 — Firebase Setup
+
+Per §1/§7, **iOS does not use Firebase** — so the iOS-Firebase steps from the
+account-setup task were intentionally skipped:
+
+- **Firebase project:** `bdt-connect` (exists)
+- **iOS:** ❌ **no `GoogleService-Info.plist`, no `ios.googleServicesFile`** — correct;
+  iOS push runs through the Expo Push service via the **EAS-managed APNs key** (see §4/§7).
+- **APNs Auth Key:** EAS-managed (`eas credentials` → iOS → Push Key), **not** hand-created
+  and uploaded to Firebase. ⏳ pending `eas credentials` (see EAS_CREDENTIALS_SUMMARY.md).
+- **Android side (FYI):** `google-services.json` placed + referenced in `app.json`;
+  FCM V1 service-account key already uploaded to EAS — see [ANDROID_LAUNCH.md](ANDROID_LAUNCH.md) §8.
+- **Sensitive files** (`*.p8`, `.fcm-service-account.json`, fingerprint/metadata `.txt`) covered by `.gitignore` ✅.
+- **Date:** 2026-06-01

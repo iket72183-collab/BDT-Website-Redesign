@@ -285,3 +285,19 @@ Reading order for executing this checklist:
 5. Section 5 (first build) → 6 (listing) → 7 (submit) → 8 (verify)
 
 Items 1 and 4 are independent of 3 and can be done in parallel while 3 lands.
+
+---
+
+## §8 — Firebase Setup
+
+- **Firebase project:** `bdt-connect` ✅
+- **Android:** `google-services.json` placed at `apps/mobile/google-services.json` and
+  referenced in `app.json` → `android.googleServicesFile` ✅
+- **SHA fingerprints** (EAS upload keystore) captured to `.firebase-sha-fingerprints.txt`
+  (SHA-1 `27:A3:…:E2:61`, SHA-256 `AD:49:…:7D:00`). Not required for FCM, kept for reference.
+- **FCM V1 service account key:** ✅ already uploaded to **EAS** as a service credential
+  (`firebase-adminsdk-fbsvc@bdt-connect.iam.gserviceaccount.com`). This is the functional
+  location Expo's push service reads from — no separate `FCM_SERVICE_ACCOUNT_KEY` EAS *secret*
+  was created (it would be redundant + require generating a duplicate private key).
+- **Sensitive files** (`*.p8`, `.fcm-service-account.json`, fingerprint/metadata `.txt`) covered by `.gitignore` ✅.
+- **Date:** 2026-06-01
