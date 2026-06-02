@@ -178,7 +178,7 @@ export function SiteNav() {
                 className="block"
               >
                 <Button asAnchor variant="primary" size="lg" className="w-full">
-                  See Plans
+                  Get Started
                 </Button>
               </Link>
             </li>

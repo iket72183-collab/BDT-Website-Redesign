@@ -2,40 +2,40 @@ import { Card, CardBody, CardEyebrow, CardTitle } from '../ui/Card';
 
 const services = [
   {
-    eyebrow: 'Web presence',
-    title: 'Website setup or redesign',
+    eyebrow: 'Promote',
+    title: 'Social Media Management',
     body:
-      'A polished, mobile-first site that explains what you do, earns trust, and gives customers a clear next step.',
+      'We handle your posting, content, and engagement across all your platforms.',
   },
   {
-    eyebrow: 'Brand polish',
-    title: 'Social profile cleanup',
+    eyebrow: 'Maintain',
+    title: 'Website Maintenance & Redesign',
     body:
-      'Sharper bios, links, profile visuals, highlights, and content direction so your public profiles feel current.',
+      'Updates, fixes, and full redesigns handled for you, whenever you need it.',
   },
   {
-    eyebrow: 'Ongoing support',
-    title: 'Monthly content help',
+    eyebrow: 'Create',
+    title: 'AI Creative Assets',
     body:
-      'Planned updates, light campaign support, and practical content assistance so the business does not sit still online.',
+      'Professional flyers, promos, and graphics created with AI tools by our team.',
   },
   {
-    eyebrow: 'Visibility',
-    title: 'Reporting and next steps',
+    eyebrow: 'Connect',
+    title: 'Unlimited Requests',
     body:
-      'Simple monthly reporting, progress notes, and clear recommendations instead of scattered vendor updates.',
+      'Send us files, ideas, or briefs anytime through the BDT Connect app.',
   },
   {
-    eyebrow: 'Communication',
-    title: 'Direct team messaging',
+    eyebrow: 'Support',
+    title: '24/7 AI Support',
     body:
-      'Use the BDT Connect app to send requests, review deliverables, and keep the work moving in one thread.',
+      'Get instant answers any time of day or night.',
   },
   {
-    eyebrow: 'Operations',
-    title: 'A cleaner digital system',
+    eyebrow: 'Report',
+    title: 'Monthly Performance Reports',
     body:
-      'Bring website, social, support, and recurring maintenance into one retainer instead of five disconnected tools.',
+      'See how your social media and website are growing every month.',
   },
 ];
 
@@ -54,9 +54,8 @@ export function ServicePreview() {
             What BDT Connect will handle.
           </h2>
           <p className="mt-4 font-body text-body-sm leading-relaxed text-ink-muted sm:mt-5 sm:text-body-lg">
-            Before subscription checkout goes live, this is the shape of the service:
-            a practical digital support layer for businesses that need their website,
-            social presence, and monthly updates handled with care.
+            One Premium plan gives your business the website, social media, creative,
+            support, and reporting services it needs online.
           </p>
         </div>
 

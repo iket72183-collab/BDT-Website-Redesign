@@ -3,6 +3,7 @@ import { ProblemSolution } from '@/components/landing/ProblemSolution';
 import { ServicePreview } from '@/components/landing/ServicePreview';
 import { Features } from '@/components/landing/Features';
 import { Pricing } from '@/components/landing/Pricing';
+import { Contact } from '@/components/landing/Contact';
 import { Footer } from '@/components/landing/Footer';
 import { SiteNav } from '@/components/landing/SiteNav';
 import { MobileStickyCTA } from '@/components/landing/MobileStickyCTA';
@@ -17,6 +18,7 @@ export default function LandingPage() {
         <ServicePreview />
         <Features />
         <Pricing />
+        <Contact />
         <Footer />
       </main>
       <MobileStickyCTA />

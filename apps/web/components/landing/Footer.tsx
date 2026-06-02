@@ -65,12 +65,9 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-metal-border/15">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center sm:flex-row sm:px-10 sm:text-left">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-center px-6 py-6 text-center sm:px-10">
           <div className="font-body text-caption uppercase tracking-label text-ink-subtle">
             © {new Date().getFullYear()} BDT Talent Group · All rights reserved
-          </div>
-          <div className="font-body text-caption uppercase tracking-label text-metal">
-            Crafted with care
           </div>
         </div>
       </div>

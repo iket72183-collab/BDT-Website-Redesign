@@ -27,7 +27,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'BDT Connect — Your online presence, professionally delivered.',
   description:
-    'BDT Talent Group designs, maintains, and promotes your business online — delivered through a private client app. 14-day free trial.',
+    'BDT Talent Group manages your social media, website, and creative assets for $150/month — delivered through a private client app.',
   metadataBase: new URL('https://bdttalentgroup.com/connect/'),
   alternates: {
     canonical: '/',

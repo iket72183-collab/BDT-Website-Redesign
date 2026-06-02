@@ -41,10 +41,10 @@ export default function TermsPage() {
         <section className={SECTION}>
           <h2 className={H2}>1. What you get</h2>
           <p className={P}>
-            Depending on your plan, BDT delivers a combination of website design, ongoing website
-            maintenance, social media management, monthly performance reporting, and direct
-            messaging with our team — all accessible from the BDT Connect mobile app. Current plans
-            and what they include are listed at{' '}
+            With Premium, BDT delivers website design, ongoing website maintenance, social media
+            management, AI-generated creative assets, unlimited service requests, 24/7 AI-powered
+            support, monthly performance reporting, and direct messaging with our team — all
+            accessible from the BDT Connect mobile app. Current plan details are listed at{' '}
             <Link href="/#plans" className="text-metal-rose">
               bdttalentgroup.com/connect
             </Link>
@@ -53,12 +53,11 @@ export default function TermsPage() {
         </section>
 
         <section className={SECTION}>
-          <h2 className={H2}>2. Subscription, trial, and billing</h2>
+          <h2 className={H2}>2. Subscription and billing</h2>
           <ul className={UL}>
-            <li>Each new account gets a 14-day free trial. No payment is taken during the trial.</li>
             <li>
-              After the trial, the monthly subscription fee for your plan is billed automatically
-              to the payment method on file via Stripe.
+              Service starts when you sign up. The $150 monthly Premium subscription fee is billed
+              automatically to the payment method on file via Stripe.
             </li>
             <li>
               You can cancel at any time from the in-app billing portal. Cancellation takes effect

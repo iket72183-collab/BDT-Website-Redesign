@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
 
 export function Hero() {
   return (
@@ -32,15 +31,9 @@ export function Hero() {
 
       {/* Hero content. Padding is tighter on mobile so CTAs sit above the fold. */}
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pb-12 pt-6 text-center xs:pb-16 xs:pt-8 sm:px-10 sm:pb-24 sm:pt-12">
-        <Badge tone="metal" className="animate-fade-up">
-          <span className="size-1.5 rounded-full bg-metal-rose shadow-glow" />
-          <span className="hidden xs:inline">By BDT Talent Group · Agency on retainer</span>
-          <span className="xs:hidden">By BDT Talent Group</span>
-        </Badge>
-
         <h1
-          className="mt-5 font-display font-bold leading-[1.03] animate-fade-up
-                     text-[2.18rem] xs:mt-6 xs:text-[2.5rem] sm:mt-8 sm:text-display-xl lg:text-display-2xl"
+          className="font-display font-bold leading-[1.03] animate-fade-up
+                     text-[2.18rem] xs:text-[2.5rem] sm:text-display-xl lg:text-display-2xl"
           style={{ animationDelay: '80ms' }}
         >
           <span className="text-ink-primary">Your online presence,</span>
@@ -53,12 +46,12 @@ export function Hero() {
           style={{ animationDelay: '160ms' }}
         >
           <span className="xs:hidden">
-            Websites, social, and support managed by BDT Talent Group in one private client app.
+            Your entire online presence — social media, website, and creative assets — fully
+            managed for $150/month.
           </span>
           <span className="hidden xs:inline">
-            BDT Talent Group designs, maintains, and promotes your business online — and
-            gives you a beautifully designed app to see every deliverable and message the
-            team. One retainer. One app. No agency chaos.
+            Your entire online presence — social media, website, and creative assets — fully
+            managed for $150/month.
           </span>
         </p>
 
@@ -67,16 +60,15 @@ export function Hero() {
           style={{ animationDelay: '220ms' }}
         >
           <div className="font-body text-caption uppercase tracking-label text-metal-rose">
-            In progress
+            Premium service
           </div>
           <p className="mt-2 font-body text-body-sm leading-relaxed text-ink-muted sm:text-body-md">
             <span className="xs:hidden">
-              Stripe checkout is being set up. Preview the service now; paid plans open when billing is ready.
+              Sign up for Premium and your service starts right away.
             </span>
             <span className="hidden xs:inline">
-              BDT Connect is being prepared for client onboarding while Stripe payments
-              and subscription checkout are set up. You can preview the service now;
-              paid plans will open once billing is ready.
+              Sign up for Premium and your service starts right away. Send requests and
+              stay connected with the team through the BDT Connect app.
             </span>
           </p>
         </div>
@@ -88,7 +80,7 @@ export function Hero() {
         >
           <Link href="#plans" className="block w-full sm:inline-block sm:w-auto">
             <Button asAnchor size="lg" variant="primary" className="w-full sm:w-auto">
-              See Plans
+              Get Started
             </Button>
           </Link>
           <Link href="#how" className="block w-full sm:inline-block sm:w-auto">
@@ -102,7 +94,7 @@ export function Hero() {
           className="mt-5 max-w-xs font-body text-caption uppercase tracking-label text-ink-subtle animate-fade-up xs:mt-6 sm:mt-8 sm:max-w-none"
           style={{ animationDelay: '380ms' }}
         >
-          14-day free trial · Cancel anytime · No long-term contract
+          Service starts on signup · Cancel anytime · No long-term contract
         </p>
       </div>
 

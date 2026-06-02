@@ -50,7 +50,7 @@ const features = [
     eyebrow: 'Design',
     title: 'A website that fits your brand',
     body:
-      'We rebuild your site from the ground up — fast, mobile-first, written in your voice. Included on every plan.',
+      'We rebuild your site from the ground up — fast, mobile-first, written in your voice.',
   },
   {
     icon: <ShieldIcon />,
@@ -64,7 +64,7 @@ const features = [
     eyebrow: 'Promote',
     title: 'Social presence, delivered',
     body:
-      'On-brand posts to Instagram, Facebook, and TikTok every week. Included on Premium — never another empty grid.',
+      'On-brand posts to Instagram, Facebook, and TikTok every week — never another empty grid.',
   },
   {
     icon: <InboxIcon />,
@@ -92,7 +92,7 @@ export function Features() {
         {features.map((f) => (
           <Card key={f.title} hover className="flex flex-col">
             <div
-              className="flex size-12 items-center justify-center rounded-lg
+              className="mx-auto flex size-12 items-center justify-center rounded-lg
                          bg-metal-rose/[0.08] text-metal-rose ring-1 ring-metal-border/40"
             >
               {f.icon}

@@ -16,16 +16,15 @@ export function MobileStickyCTA() {
   useEffect(() => {
     const onScroll = () => {
       const past = window.scrollY > window.innerHeight * 0.7;
-      // Hide ONLY while the plans section is currently in the viewport —
-      // i.e. its in-page CTA is doing the work. Reappear once it's scrolled away
-      // (footer, etc.) so the action is always one tap away.
-      const plans = document.getElementById('plans');
-      let inViewport = false;
-      if (plans) {
-        const r = plans.getBoundingClientRect();
-        inViewport = r.top < window.innerHeight - 80 && r.bottom > 80;
-      }
-      setShow(past && !inViewport);
+      // Hide while an in-page action is already doing the work. Reappear once
+      // those sections scroll away so the action stays one tap away elsewhere.
+      const inActionSection = ['plans', 'connect-contact'].some((id) => {
+        const section = document.getElementById(id);
+        if (!section) return false;
+        const r = section.getBoundingClientRect();
+        return r.top < window.innerHeight - 80 && r.bottom > 80;
+      });
+      setShow(past && !inActionSection);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -49,7 +48,7 @@ export function MobileStickyCTA() {
       <div className="relative border-t border-metal-border/25 bg-bg-base/90 px-5 py-3 backdrop-blur-md">
         <Link href="#plans" tabIndex={show ? 0 : -1} className="block">
           <Button asAnchor variant="primary" size="md" className="w-full">
-            See Plans
+            Get Started
           </Button>
         </Link>
       </div>

@@ -57,14 +57,13 @@ export default function PrivacyPage() {
           <h3 className={H3}>Billing</h3>
           <p className={P}>
             Payment card details are collected and stored by Stripe, not by us. We retain only the
-            Stripe customer and subscription identifiers, your current plan, status, and trial
-            window.
+            Stripe customer and subscription identifiers, your current plan, and billing status.
           </p>
 
           <h3 className={H3}>Device and usage</h3>
           <p className={P}>
             With your permission we register a push-notification token so we can deliver replies
-            and account alerts. We log basic request metadata (IP, user-agent, timestamp) for
+            and account alerts. We log standard request metadata (IP, user-agent, timestamp) for
             security, debugging, and abuse prevention.
           </p>
         </section>
