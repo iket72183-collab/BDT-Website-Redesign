@@ -26,7 +26,7 @@ export interface SocialAccountRow {
   status: AccountStatus;
   secretUpdatedAt: string | null;
   createdAt: string;
-  tenant: { id: string; businessName: string; subscriptionTier: 'basic' | 'premium' } | null;
+  tenant: { id: string; businessName: string; subscriptionTier: 'premium' } | null;
 }
 
 interface Props {
@@ -164,9 +164,7 @@ export function SocialAccountsTable(props: Props) {
                   </td>
                   <td className="px-4 py-3">
                     {r.tenant ? (
-                      <Badge tone={r.tenant.subscriptionTier}>
-                        {r.tenant.subscriptionTier === 'premium' ? 'Premium' : 'Basic'}
-                      </Badge>
+                      <Badge tone={r.tenant.subscriptionTier}>Premium</Badge>
                     ) : (
                       '—'
                     )}

@@ -11,14 +11,22 @@ import {
 import { router } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { RequestAttachment, RequestType, RequestUsage, SocialAccount } from '@bdt/shared-types';
+import type { RequestAttachment, RequestType, SocialAccount } from '@bdt/shared-types';
 import { RNBadge, RNButton, RNCard, RNInput, Icon } from '@/components/ui';
-import { api, ApiError, uploadRequestAttachment } from '@/api/client';
+import { api, uploadRequestAttachment } from '@/api/client';
 import { palette, radius, space, typography } from '@/styles/appTokens';
-import { TYPE_BLURB, TYPE_ICON, TYPE_LABEL, formatResetDate } from './requestMeta';
+import { TYPE_BLURB, TYPE_ICON, TYPE_LABEL } from './requestMeta';
 import { PLATFORM_ICON, PLATFORM_LABEL } from '../socialAccounts/socialMeta';
 
-const TYPE_ORDER: RequestType[] = ['website_update', 'social_media', 'general', 'file_upload'];
+// Single Premium plan = unlimited requests, so no usage/limit UI.
+const TYPE_ORDER: RequestType[] = [
+  'website_update',
+  'social_media',
+  'ai_creative',
+  'report_request',
+  'general',
+  'file_upload',
+];
 const TITLE_MAX = 100;
 const DESC_MAX = 1000;
 
@@ -41,21 +49,12 @@ export function NewRequestScreen() {
   const [accountStepDone, setAccountStepDone] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<SocialAccount | null>(null);
 
-  const usage = useQuery({
-    queryKey: ['requests', 'usage'],
-    queryFn: () => api<{ data: RequestUsage }>('/api/requests/usage'),
-    select: (r) => r.data,
-  });
-
   const socialAccounts = useQuery({
     queryKey: ['social-accounts'],
     queryFn: () => api<{ data: SocialAccount[] }>('/api/social-accounts'),
     select: (r) => r.data,
     enabled: type === 'social_media',
   });
-
-  const limitReached = usage.data ? usage.data.used >= usage.data.limit : false;
-  const isBasic = usage.data?.limit === 5; // Basic = 5/mo; Premium = 20/mo.
 
   const mutation = useMutation({
     mutationFn: (body: CreateBody) =>
@@ -66,22 +65,7 @@ export function NewRequestScreen() {
       Alert.alert('Request submitted!', "We'll be in touch soon.");
     },
     onError: (err) => {
-      if (err instanceof ApiError && err.status === 429) {
-        Alert.alert(
-          'Monthly limit reached',
-          usage.data
-            ? `You've used all ${usage.data.limit} requests this month. Resets ${formatResetDate(usage.data.resetsAt)}.`
-            : "You've reached your monthly request limit.",
-          isBasic
-            ? [
-                { text: 'Not now', style: 'cancel' },
-                { text: 'Upgrade plan', onPress: () => router.push('/(client)/plan' as never) },
-              ]
-            : [{ text: 'OK' }],
-        );
-      } else {
-        Alert.alert('Something went wrong', err instanceof Error ? err.message : 'Please try again.');
-      }
+      Alert.alert('Something went wrong', err instanceof Error ? err.message : 'Please try again.');
     },
   });
 
@@ -140,7 +124,6 @@ export function NewRequestScreen() {
     !!type &&
     title.trim().length > 0 &&
     description.trim().length > 0 &&
-    !limitReached &&
     uploading.length === 0;
 
   const submit = () => {
@@ -239,16 +222,6 @@ export function NewRequestScreen() {
         onBack={type === 'social_media' ? () => setAccountStepDone(false) : () => setType(null)}
         title={TYPE_LABEL[type]}
       />
-
-      {limitReached && usage.data && (
-        <View style={styles.limitBanner}>
-          <Icon name="alert-circle" size="sm" color={palette.status.warning} />
-          <Text style={styles.limitText}>
-            You've used all {usage.data.limit} requests this month. Resets{' '}
-            {formatResetDate(usage.data.resetsAt)}.
-          </Text>
-        </View>
-      )}
 
       <RNInput
         label="Title"

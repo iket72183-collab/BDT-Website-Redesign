@@ -23,24 +23,19 @@ interface QueueHealth {
  * of `apps/api/src/lib/plans.ts`. Keep in sync — there's no fetch endpoint
  * because the prices don't change at runtime.
  */
-// Two headline services across both tiers: Website Maintenance + Social Media
-// Management. Display-only mirror of the mobile plan copy.
+// Single-plan model. Display-only mirror of apps/api/src/lib/plans.ts.
 const PLAN_DISPLAY = [
-  {
-    id: 'basic',
-    name: 'Basic',
-    price: 100,
-    features: ['Website Maintenance', 'Social Media Management', 'Up to 5 service requests / month'],
-  },
   {
     id: 'premium',
     name: 'Premium',
-    price: 175,
+    price: 150,
     features: [
-      'Website Maintenance',
-      'Social Media Management',
-      'Up to 20 service requests / month',
-      'Priority turnaround',
+      'Social media management',
+      'Website maintenance & redesign',
+      'AI-generated flyers & promo assets',
+      'Unlimited service requests',
+      '24/7 AI support',
+      'Monthly performance reports',
     ],
   },
 ] as const;
@@ -106,7 +101,6 @@ export default async function SettingsPage() {
                 <div className="mb-2 flex items-baseline justify-between">
                   <div className="flex items-center gap-2">
                     <Badge tone={plan.id}>{plan.name}</Badge>
-                    <span className="text-sm text-ink-muted">14-day trial</span>
                   </div>
                   <p className="font-display text-2xl font-bold text-metal-rose">
                     {formatUSD(plan.price)}<span className="ml-1 text-xs text-ink-muted">/mo</span>
@@ -121,9 +115,8 @@ export default async function SettingsPage() {
             ))}
           </ul>
           <p className="mt-4 text-xs text-ink-subtle">
-            To change prices, update both the Stripe product price IDs
-            (<code className="font-mono">STRIPE_BASIC_PRICE_ID</code> /{' '}
-            <code className="font-mono">STRIPE_PREMIUM_PRICE_ID</code>) and{' '}
+            To change the price, update the Stripe product price ID
+            (<code className="font-mono">STRIPE_PREMIUM_PRICE_ID</code>) and{' '}
             <code className="font-mono">apps/api/src/lib/plans.ts</code>.
           </p>
         </Card>

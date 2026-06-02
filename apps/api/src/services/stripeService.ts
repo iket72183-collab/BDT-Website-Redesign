@@ -6,15 +6,15 @@ import { HttpError } from '../middleware/error.js';
 import { getTenantId, runAsTenant } from '../lib/tenantContext.js';
 import { logEvent } from './platformEventService.js';
 import type { SubscriptionTier } from '@prisma/client';
-import { PLANS, TRIAL_DAYS, TIER_RANK } from '../lib/plans.js';
+import { PLANS } from '../lib/plans.js';
 
 /**
  * THE single Stripe SDK call surface. Nothing outside this file should import
  * `stripe` or `Stripe`.
  *
- * BDT collects monthly subscriptions from agency clients (Basic / Premium).
- * 14-day free trial — no charge until the trial ends. No Stripe Connect:
- * we are not a marketplace.
+ * BDT collects a single monthly subscription from agency clients — the Premium
+ * plan ($150/mo). No free trial: the card is captured up front and billed
+ * immediately. No Stripe Connect: we are not a marketplace.
  */
 
 // =============================================================================
@@ -71,9 +71,10 @@ interface CreateSubscriptionInput {
 }
 
 /**
- * Create a Stripe subscription with a 14-day free trial only after Stripe has
- * confirmed card setup. Subscription creation is claimed in the database
- * before the external write so competing taps cannot create orphaned bills.
+ * Create a Stripe subscription (billed immediately — no trial) only after
+ * Stripe has confirmed card setup. Subscription creation is claimed in the
+ * database before the external write so competing taps cannot create orphaned
+ * bills.
  *
  * A stale claim is recoverable: Stripe's tenant-level idempotency key returns
  * the same initial subscription if the API crashed after creating it.
@@ -153,7 +154,6 @@ export async function createSubscription(
       {
         customer: customerId,
         items: [{ price: priceIdForTier(input.tier) }],
-        trial_period_days: TRIAL_DAYS,
         default_payment_method: paymentMethodId,
         metadata: { tenantId: input.tenantId, tier: input.tier },
       },
@@ -201,167 +201,6 @@ export async function createSubscription(
     status: subscription.status,
     trialEnd: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
   };
-}
-
-/**
- * Start a 14-day trial without capturing a card up front. Two paths:
- *
- * 1. Billing configured → calls `stripe.subscriptions.create` with
- *    `trial_period_days` but no `default_payment_method`. Stripe will move
- *    the subscription to `incomplete` when the trial ends and fire
- *    `customer.subscription.trial_will_end` 3 days prior so we can prompt
- *    the client to add a card.
- * 2. Billing NOT configured (`config.billingEnabled === false`) → DB-only
- *    trial. Tenant is marked `trialing` with no Stripe linkage so the
- *    client can still sign up and use messaging while Stripe is being set
- *    up. When billing is wired later, the tenant's first card-capture call
- *    promotes the trial into a real subscription.
- */
-export async function startTrialWithoutCard(input: {
-  tenantId: string;
-  tier: SubscriptionTier;
-}): Promise<{ subscriptionId: string | null; status: string; trialEnd: Date | null }> {
-  const tenant = await rawPrisma.tenant.findUnique({
-    where: { id: input.tenantId },
-    include: { owner: { select: { email: true } } },
-  });
-  if (!tenant) throw new HttpError(404, 'tenant_not_found');
-  if (tenant.stripeSubscriptionId || tenant.onboardingCompleted) {
-    throw new HttpError(409, 'subscription_exists', 'subscription_exists');
-  }
-
-  if (!config.billingEnabled) {
-    // DB-only path. Mirror the shape Stripe would have produced so the
-    // dashboard and trial banner code don't need a special case.
-    const trialEnd = new Date(Date.now() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
-    await rawPrisma.tenant.update({
-      where: { id: input.tenantId },
-      data: {
-        subscriptionTier: input.tier,
-        subscriptionStatus: 'trialing',
-        onboardingCompleted: true,
-        onboardingCompletedAt: new Date(),
-      },
-    });
-    await logEvent('subscription.created', {
-      tenantId: input.tenantId,
-      tier: input.tier,
-      trialEnd: Math.floor(trialEnd.getTime() / 1000),
-      billingEnabled: false,
-    });
-    return { subscriptionId: null, status: 'trialing', trialEnd };
-  }
-
-  const customerId = await createOrRetrieveCustomer({
-    id: tenant.id,
-    slug: tenant.slug,
-    businessName: tenant.businessName,
-    stripeCustomerId: tenant.stripeCustomerId,
-    owner: tenant.owner ? { email: tenant.owner.email } : null,
-  });
-  const subscription = await stripe.subscriptions.create(
-    {
-      customer: customerId,
-      items: [{ price: priceIdForTier(input.tier) }],
-      trial_period_days: TRIAL_DAYS,
-      metadata: { tenantId: input.tenantId, tier: input.tier, noCard: 'true' },
-    },
-    { idempotencyKey: `sub:create-no-card:${input.tenantId}` },
-  );
-  await rawPrisma.tenant.update({
-    where: { id: input.tenantId },
-    data: {
-      subscriptionTier: input.tier,
-      subscriptionStatus: mapStripeSubStatus(subscription.status),
-      stripeSubscriptionId: subscription.id,
-      onboardingCompleted: true,
-      onboardingCompletedAt: new Date(),
-    },
-  });
-  await logEvent('subscription.created', {
-    tenantId: input.tenantId,
-    tier: input.tier,
-    trialEnd: subscription.trial_end,
-    noCard: true,
-  });
-  return {
-    subscriptionId: subscription.id,
-    status: subscription.status,
-    trialEnd: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
-  };
-}
-
-/**
- * Change the tier on an active subscription. Upgrades take effect immediately
- * (with proration); downgrades apply at the end of the current period so we
- * don't refund mid-month.
- */
-export async function updateSubscription(
-  tenantId: string,
-  subscriptionId: string,
-  newTier: SubscriptionTier,
-): Promise<{
-  subscription: Stripe.Subscription;
-  pendingTier: SubscriptionTier | null;
-  pendingTierEffectiveAt: Date | null;
-}> {
-  const newPrice = priceIdForTier(newTier);
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-  const item = subscription.items.data[0];
-  if (!item) throw new HttpError(500, 'subscription_corrupt', 'subscription_corrupt');
-
-  const isUpgrade = tierRank(newTier) > priceIdToTierRank(item.price.id);
-  const isDowngrade = tierRank(newTier) < priceIdToTierRank(item.price.id);
-
-  if (isDowngrade) {
-    const schedule =
-      typeof subscription.schedule === 'string'
-        ? await stripe.subscriptionSchedules.retrieve(subscription.schedule)
-        : subscription.schedule ??
-          await stripe.subscriptionSchedules.create({ from_subscription: subscriptionId });
-
-    await stripe.subscriptionSchedules.update(schedule.id, {
-      end_behavior: 'release',
-      phases: [
-        {
-          start_date: subscription.current_period_start,
-          end_date: subscription.current_period_end,
-          items: subscription.items.data.map((currentItem) => ({
-            price: currentItem.price.id,
-            ...(currentItem.quantity ? { quantity: currentItem.quantity } : {}),
-          })),
-        },
-        {
-          start_date: subscription.current_period_end,
-          items: [{ price: newPrice }],
-          metadata: { ...subscription.metadata, tier: newTier },
-        },
-      ],
-    });
-    const effectiveAt = new Date(subscription.current_period_end * 1000);
-    await rawPrisma.tenant.update({
-      where: { id: tenantId },
-      data: { pendingTier: newTier, pendingTierEffectiveAt: effectiveAt },
-    });
-    return { subscription, pendingTier: newTier, pendingTierEffectiveAt: effectiveAt };
-  }
-
-  if (subscription.schedule) {
-    const scheduleId =
-      typeof subscription.schedule === 'string' ? subscription.schedule : subscription.schedule.id;
-    await stripe.subscriptionSchedules.release(scheduleId);
-  }
-
-  const updated = isUpgrade ? await stripe.subscriptions.update(subscriptionId, {
-    items: [{ id: item.id, price: newPrice }],
-    proration_behavior: 'create_prorations',
-    metadata: { ...subscription.metadata, tier: newTier },
-  }) : subscription;
-  await rawPrisma.tenant.update({
-    where: { id: tenantId },
-    data: { pendingTier: null, pendingTierEffectiveAt: null },
-  });
-  return { subscription: updated, pendingTier: null, pendingTierEffectiveAt: null };
 }
 
 /**
@@ -449,25 +288,10 @@ export function mapStripeSubStatus(
   }
 }
 
-export function tierRank(t: SubscriptionTier): number {
-  return TIER_RANK[t];
-}
-
-function priceIdToTierRank(currentPriceId: string): number {
-  const ids = config.stripe.priceIds;
-  if (currentPriceId === ids.basic) return TIER_RANK.basic;
-  if (currentPriceId === ids.premium) return TIER_RANK.premium;
-  // Unrecognized price id (legacy) — treat as the lowest so any change is an
-  // upgrade. Safer than holding access back.
-  return 0;
-}
-
-/** Reverse map a Stripe price id back to a SubscriptionTier. */
+/** Reverse map a Stripe price id back to a SubscriptionTier (premium-only). */
 export function tierFromPriceId(priceId: string | undefined): SubscriptionTier | null {
   if (!priceId) return null;
-  const ids = config.stripe.priceIds;
-  if (priceId === ids.basic) return 'basic';
-  if (priceId === ids.premium) return 'premium';
+  if (priceId === config.stripe.priceIds.premium) return 'premium';
   return null;
 }
 

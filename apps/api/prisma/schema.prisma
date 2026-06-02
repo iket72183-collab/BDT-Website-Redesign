@@ -2,7 +2,7 @@
 // BDT Connect — Prisma schema
 //
 // Agency client portal. BDT Talent Group's clients install the mobile app,
-// pick a Basic ($100/mo) or Premium ($175/mo) subscription, and use it to
+// subscribe to the single Premium plan ($150/mo), and use it to
 // track work the agency is doing for them and message the team. Tenant rows
 // exist per-client; multi-tenancy isolation still applies via the Prisma
 // extension in `src/lib/db.ts` (auto-injects `WHERE tenantId = ?`).
@@ -35,8 +35,9 @@ enum BusinessType {
   other
 }
 
+// Single-plan model. `basic` was removed (2026-05 migration
+// simplify_to_single_premium_plan); only `premium` ($150/mo) remains.
 enum SubscriptionTier {
-  basic
   premium
 }
 
@@ -81,6 +82,8 @@ enum RequestType {
   social_media
   general
   file_upload
+  ai_creative
+  report_request
 }
 
 enum RequestStatus {
@@ -149,7 +152,7 @@ model Tenant {
   // Billing (BDT-collected subscription)
   stripeCustomerId     String?             @unique @map("stripe_customer_id")
   stripeSubscriptionId String?             @unique @map("stripe_subscription_id")
-  subscriptionTier     SubscriptionTier    @default(basic) @map("subscription_tier")
+  subscriptionTier     SubscriptionTier    @default(premium) @map("subscription_tier")
   subscriptionStatus   SubscriptionStatus  @default(incomplete) @map("subscription_status")
   pendingTier          SubscriptionTier?   @map("pending_tier")
   pendingTierEffectiveAt DateTime?         @map("pending_tier_effective_at") @db.Timestamptz
@@ -271,10 +274,11 @@ model Message {
 }
 
 /// Service requests a client submits to the BDT agency (website update, social
-/// media, general, or file upload). Creating one emails BDTTalentGroup@yahoo.com
-/// and pushes the platform admins (see requestNotificationService). Monthly
-/// volume is capped per plan — `requestsPerMonth` in src/lib/plans.ts
-/// (Basic 5 / Premium 20). Display-only after submission; status is updated by
+/// media, general, file upload, AI creative, or report request). Creating one
+/// emails BDTTalentGroup@yahoo.com and pushes the platform admins (see
+/// requestNotificationService). The single Premium plan allows effectively
+/// unlimited requests (`requestsPerMonth` in src/lib/plans.ts). Display-only
+/// after submission; status is updated by
 /// platform admins. Model name is ServiceRequest to avoid colliding with the
 /// global/Express `Request` type; the table is `requests`.
 model ServiceRequest {

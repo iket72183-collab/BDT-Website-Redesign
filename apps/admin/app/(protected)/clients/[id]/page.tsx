@@ -12,7 +12,7 @@ interface ClientDetail {
   id: string;
   businessName: string;
   slug: string;
-  subscriptionTier: 'basic' | 'premium';
+  subscriptionTier: 'premium';
   subscriptionStatus: 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled';
   stripeCustomerId: string | null;
   stripeSubscriptionId: string | null;

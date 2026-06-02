@@ -1,21 +1,12 @@
 import { z } from 'zod';
 
-export const tierSchema = z.enum(['basic', 'premium']);
+// Single-plan model — only `premium` exists.
+export const tierSchema = z.enum(['premium']);
 
 export const createSubscriptionSchema = z.object({
-  tier: tierSchema,
-  /** The backend retrieves and validates this SetupIntent before starting a trial. */
+  tier: tierSchema.default('premium'),
+  /** The backend retrieves and validates this SetupIntent before subscribing. */
   setupIntentId: z.string().startsWith('seti_'),
-});
-
-/** No-card trial start. Used when Stripe isn't configured yet (soft launch) or
- *  when the client elects to defer card capture until day 15. */
-export const startTrialSchema = z.object({
-  tier: tierSchema,
-});
-
-export const upgradeSubscriptionSchema = z.object({
-  tier: tierSchema,
 });
 
 /** Used by `POST /billing-portal` — where Stripe sends the user back. */

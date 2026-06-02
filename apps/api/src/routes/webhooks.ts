@@ -9,7 +9,7 @@ import { logger } from '../lib/logger.js';
 import { runAsTenant } from '../lib/tenantContext.js';
 import { logEvent } from '../services/platformEventService.js';
 import { notify } from '../services/notificationService.js';
-import { mapStripeSubStatus, tierFromPriceId, tierRank } from '../services/stripeService.js';
+import { mapStripeSubStatus, tierFromPriceId } from '../services/stripeService.js';
 import { webhookLimiter } from '../middleware/rateLimiter.js';
 
 /** Duck-type check for Prisma's "unique constraint violation" code. */
@@ -260,9 +260,7 @@ async function onSubscriptionChanged(event: Stripe.Event): Promise<void> {
   const eventType = (() => {
     if (event.type === 'customer.subscription.deleted') return 'cancelled' as const;
     if (event.type === 'customer.subscription.created') return 'created' as const;
-    if (newTier && fromTier && newTier !== fromTier) {
-      return tierRank(newTier) > tierRank(fromTier) ? 'upgraded' : 'downgraded';
-    }
+    // Single-plan model: no tier upgrades/downgrades. Only cancel/reactivate.
     if (prev?.cancel_at_period_end === false && sub.cancel_at_period_end) return 'cancelled' as const;
     if (prev?.cancel_at_period_end === true && !sub.cancel_at_period_end) return 'reactivated' as const;
     return null;
@@ -358,8 +356,8 @@ async function onInvoicePaymentFailed(eventInv: Stripe.Invoice): Promise<void> {
 // ============================================================================
 
 function tierFromSubscription(sub: Stripe.Subscription): SubscriptionTier | null {
-  const meta = sub.metadata?.tier as SubscriptionTier | undefined;
-  if (meta === 'basic' || meta === 'premium') return meta;
+  const meta = sub.metadata?.tier;
+  if (meta === 'premium') return 'premium';
   return tierFromPriceId(sub.items.data[0]?.price.id);
 }
 

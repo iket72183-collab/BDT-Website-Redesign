@@ -3,9 +3,20 @@
 
 export type UserRole = 'platform_admin' | 'client';
 
+// --- Subscription plan ------------------------------------------------------
+// Single-plan model: one "Premium" plan at $150/mo. (Was Basic/Premium tiers.)
+
+export type PlanId = 'premium';
+
 // --- Client service requests (submitted to the BDT agency) -----------------
 
-export type RequestType = 'website_update' | 'social_media' | 'general' | 'file_upload';
+export type RequestType =
+  | 'website_update'
+  | 'social_media'
+  | 'general'
+  | 'file_upload'
+  | 'ai_creative'
+  | 'report_request';
 
 export type RequestStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 

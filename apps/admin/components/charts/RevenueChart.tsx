@@ -13,7 +13,6 @@ import {
 
 export interface RevenuePoint {
   month: string;   // ISO date — first of the month
-  basic: number;
   premium: number;
   total: number;
 }
@@ -23,7 +22,6 @@ interface RevenueChartProps {
 }
 
 const ROSE = '#C9A882';
-const CHAMPAGNE = '#D4AF7A';
 const BORDER = 'rgba(139, 115, 85, 0.25)';
 
 function formatMonth(iso: string) {
@@ -62,17 +60,8 @@ export function RevenueChart({ data }: RevenueChartProps) {
           <Legend wrapperStyle={{ fontSize: 12, color: '#A89880' }} />
           <Line
             type="monotone"
-            dataKey="basic"
-            name="Basic"
-            stroke={CHAMPAGNE}
-            strokeWidth={2}
-            dot={{ r: 3, fill: CHAMPAGNE }}
-            activeDot={{ r: 5 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="premium"
-            name="Premium"
+            dataKey="total"
+            name="MRR"
             stroke={ROSE}
             strokeWidth={2}
             dot={{ r: 3, fill: ROSE }}

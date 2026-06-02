@@ -4,8 +4,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
  * Client request service + admin request service tests.
  *
  * Coverage (per the feature spec):
- *   - createRequest success on Basic + Premium → persists, notifies BDT, logs.
- *   - createRequest 429 when the monthly limit is hit.
+ *   - createRequest success on the single Premium plan → persists, notifies BDT, logs.
+ *   - createRequest 429 when the (effectively unlimited, 999) monthly cap is hit.
  *   - monthly window: count is scoped to the current calendar month (so the
  *     quota resets on a new month).
  *   - listRequests returns rows + total ordered newest-first, paginated.
@@ -56,18 +56,18 @@ vi.mock('../platformEventService.js', () => ({ logEvent: eventMock }));
 import { createRequest, listRequests, getRequest, getUsage } from '../requestService.js';
 import { adminListRequests, adminUpdateRequestStatus } from '../adminRequestService.js';
 
-const TENANT_BASIC = {
+// Single-plan model: every tenant is on Premium (999 = effectively unlimited).
+const TENANT = {
   id: 'tenant_test_id',
   businessName: 'Acme Salon',
-  subscriptionTier: 'basic' as const,
+  subscriptionTier: 'premium' as const,
 };
-const TENANT_PREMIUM = { ...TENANT_BASIC, subscriptionTier: 'premium' as const };
 
 const CREATED = new Date('2026-05-29T12:00:00Z');
 function makeRequest(over: Record<string, unknown> = {}) {
   return {
     id: 'req_1',
-    tenantId: TENANT_BASIC.id,
+    tenantId: TENANT.id,
     type: 'general',
     title: 'Need a homepage tweak',
     description: 'Please update the hero text.',
@@ -101,15 +101,15 @@ beforeEach(() => {
   eventMock.mockReset().mockResolvedValue(undefined);
   loggerMock.error.mockReset();
 
-  rawPrismaMock.tenant.findUnique.mockResolvedValue(TENANT_BASIC);
+  rawPrismaMock.tenant.findUnique.mockResolvedValue(TENANT);
   dbMock.serviceRequest.count.mockResolvedValue(0);
   dbMock.serviceRequest.create.mockResolvedValue(makeRequest());
 });
 
 describe('createRequest', () => {
-  it('creates a request on the Basic plan, notifies BDT, and logs the event', async () => {
+  it('creates a request on the Premium plan, notifies BDT, and logs the event', async () => {
     const result = await createRequest({
-      tenantId: TENANT_BASIC.id,
+      tenantId: TENANT.id,
       type: 'general',
       title: 'Need a homepage tweak',
       description: 'Please update the hero text.',
@@ -118,17 +118,17 @@ describe('createRequest', () => {
     expect(result.id).toBe('req_1');
     expect(dbMock.serviceRequest.create).toHaveBeenCalledWith({
       data: {
-        tenantId: TENANT_BASIC.id,
+        tenantId: TENANT.id,
         type: 'general',
         title: 'Need a homepage tweak',
         description: 'Please update the hero text.',
         attachments: [],
       },
     });
-    expect(notifyMock).toHaveBeenCalledWith(expect.objectContaining({ id: 'req_1' }), TENANT_BASIC);
+    expect(notifyMock).toHaveBeenCalledWith(expect.objectContaining({ id: 'req_1' }), TENANT);
     expect(eventMock).toHaveBeenCalledWith(
       'request.created',
-      expect.objectContaining({ requestId: 'req_1', tenantId: TENANT_BASIC.id }),
+      expect.objectContaining({ requestId: 'req_1', tenantId: TENANT.id }),
     );
   });
 
@@ -137,7 +137,7 @@ describe('createRequest', () => {
       { name: 'logo.png', size: 2048, path: 'requests/tenant_basic/1700000000000-logo.png' },
     ];
     await createRequest({
-      tenantId: TENANT_BASIC.id,
+      tenantId: TENANT.id,
       type: 'file_upload',
       title: 'Logo',
       description: 'Use this logo',
@@ -148,11 +148,10 @@ describe('createRequest', () => {
     });
   });
 
-  it('allows creation on Premium when under the higher limit (10 of 20)', async () => {
-    rawPrismaMock.tenant.findUnique.mockResolvedValue(TENANT_PREMIUM);
-    dbMock.serviceRequest.count.mockResolvedValue(10);
+  it('allows creation well under the unlimited Premium cap (e.g. 100 this month)', async () => {
+    dbMock.serviceRequest.count.mockResolvedValue(100);
     const result = await createRequest({
-      tenantId: TENANT_PREMIUM.id,
+      tenantId: TENANT.id,
       type: 'social_media',
       title: 'New post',
       description: 'Promote the sale',
@@ -161,11 +160,11 @@ describe('createRequest', () => {
     expect(dbMock.serviceRequest.create).toHaveBeenCalled();
   });
 
-  it('throws 429 REQUEST_LIMIT_REACHED when the Basic monthly limit (5) is hit', async () => {
-    dbMock.serviceRequest.count.mockResolvedValue(5);
+  it('throws 429 REQUEST_LIMIT_REACHED only at the unlimited Premium cap (999)', async () => {
+    dbMock.serviceRequest.count.mockResolvedValue(999);
     await expect(
       createRequest({
-        tenantId: TENANT_BASIC.id,
+        tenantId: TENANT.id,
         type: 'general',
         title: 'One too many',
         description: 'nope',
@@ -173,21 +172,21 @@ describe('createRequest', () => {
     ).rejects.toMatchObject({
       status: 429,
       code: 'REQUEST_LIMIT_REACHED',
-      details: { limit: 5, used: 5 },
+      details: { limit: 999, used: 999 },
     });
     expect(dbMock.serviceRequest.create).not.toHaveBeenCalled();
   });
 
-  it('throws 429 on Premium only at 20', async () => {
-    rawPrismaMock.tenant.findUnique.mockResolvedValue(TENANT_PREMIUM);
-    dbMock.serviceRequest.count.mockResolvedValue(20);
-    await expect(
-      createRequest({ tenantId: TENANT_PREMIUM.id, type: 'general', title: 'x', description: 'y' }),
-    ).rejects.toMatchObject({ status: 429, details: { limit: 20, used: 20 } });
+  it('accepts the new ai_creative and report_request types', async () => {
+    await createRequest({ tenantId: TENANT.id, type: 'ai_creative', title: 'Flyer', description: 'spring promo' });
+    await createRequest({ tenantId: TENANT.id, type: 'report_request', title: 'Report', description: 'May numbers' });
+    expect(dbMock.serviceRequest.create).toHaveBeenCalledTimes(2);
+    expect(dbMock.serviceRequest.create.mock.calls[0]![0].data.type).toBe('ai_creative');
+    expect(dbMock.serviceRequest.create.mock.calls[1]![0].data.type).toBe('report_request');
   });
 
   it('counts only requests from the current calendar month (quota resets monthly)', async () => {
-    await createRequest({ tenantId: TENANT_BASIC.id, type: 'general', title: 'x', description: 'y' });
+    await createRequest({ tenantId: TENANT.id, type: 'general', title: 'x', description: 'y' });
     const countArg = dbMock.serviceRequest.count.mock.calls[0]![0];
     expect(countArg.where.createdAt.gte.getTime()).toBe(startOfCurrentMonthUTC().getTime());
   });
@@ -195,7 +194,7 @@ describe('createRequest', () => {
   it('still succeeds when BDT notification fails (best-effort)', async () => {
     notifyMock.mockRejectedValueOnce(new Error('resend down'));
     const result = await createRequest({
-      tenantId: TENANT_BASIC.id,
+      tenantId: TENANT.id,
       type: 'general',
       title: 'x',
       description: 'y',
@@ -258,21 +257,14 @@ describe('getRequest', () => {
 });
 
 describe('getUsage', () => {
-  it('returns used / limit / resetsAt for the caller plan', async () => {
+  it('returns used / limit / resetsAt for the Premium plan (unlimited = 999)', async () => {
     dbMock.serviceRequest.count.mockResolvedValue(3);
     const usage = await getUsage();
     expect(usage).toEqual({
       used: 3,
-      limit: 5,
+      limit: 999,
       resetsAt: startOfNextMonthUTC().toISOString(),
     });
-  });
-
-  it('reflects the Premium limit', async () => {
-    rawPrismaMock.tenant.findUnique.mockResolvedValue(TENANT_PREMIUM);
-    dbMock.serviceRequest.count.mockResolvedValue(0);
-    const usage = await getUsage();
-    expect(usage.limit).toBe(20);
   });
 });
 

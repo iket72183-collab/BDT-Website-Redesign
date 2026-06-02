@@ -10,6 +10,8 @@ export const TYPE_ICON: Record<RequestType, IconName> = {
   social_media: 'share-2',
   general: 'file-text',
   file_upload: 'paperclip',
+  ai_creative: 'image',
+  report_request: 'bar-chart-2',
 };
 
 export const TYPE_LABEL: Record<RequestType, string> = {
@@ -17,6 +19,8 @@ export const TYPE_LABEL: Record<RequestType, string> = {
   social_media: 'Social Media',
   general: 'General Request',
   file_upload: 'File Upload',
+  ai_creative: 'AI Creative',
+  report_request: 'Monthly Report',
 };
 
 export const TYPE_BLURB: Record<RequestType, string> = {
@@ -24,6 +28,8 @@ export const TYPE_BLURB: Record<RequestType, string> = {
   social_media: 'New post, caption, or content request',
   general: 'Anything else you need from BDT',
   file_upload: 'Send logos, photos, or documents',
+  ai_creative: 'Flyers, promos, graphics, and social assets',
+  report_request: 'Request your performance report',
 };
 
 /**

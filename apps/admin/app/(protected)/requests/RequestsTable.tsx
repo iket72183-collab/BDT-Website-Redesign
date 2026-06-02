@@ -6,7 +6,13 @@ import { Badge, type BadgeTone } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { formatDate } from '@/lib/format';
 
-type RequestType = 'website_update' | 'social_media' | 'general' | 'file_upload';
+type RequestType =
+  | 'website_update'
+  | 'social_media'
+  | 'general'
+  | 'file_upload'
+  | 'ai_creative'
+  | 'report_request';
 type RequestStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
 export interface RequestRow {
@@ -15,9 +21,9 @@ export interface RequestRow {
   title: string;
   description: string;
   status: RequestStatus;
-  attachments: { name: string; url: string; size: number }[];
+  attachments: { name: string; size: number; path: string }[];
   createdAt: string;
-  tenant: { id: string; businessName: string; subscriptionTier: 'basic' | 'premium' } | null;
+  tenant: { id: string; businessName: string; subscriptionTier: 'premium' } | null;
 }
 
 interface Props {
@@ -36,6 +42,8 @@ const TYPE_LABEL: Record<RequestType, string> = {
   social_media: 'Social Media',
   general: 'General',
   file_upload: 'File Upload',
+  ai_creative: 'AI Creative',
+  report_request: 'Monthly Report',
 };
 
 // Map request status to an existing BadgeTone (no new tones introduced).
@@ -120,6 +128,8 @@ export function RequestsTable(props: Props) {
             { value: '', label: 'All types' },
             { value: 'website_update', label: 'Website' },
             { value: 'social_media', label: 'Social' },
+            { value: 'ai_creative', label: 'AI Creative' },
+            { value: 'report_request', label: 'Monthly Report' },
             { value: 'general', label: 'General' },
             { value: 'file_upload', label: 'File Upload' },
           ]}
@@ -154,9 +164,7 @@ export function RequestsTable(props: Props) {
                   </td>
                   <td className="px-4 py-3">
                     {r.tenant ? (
-                      <Badge tone={r.tenant.subscriptionTier}>
-                        {r.tenant.subscriptionTier === 'premium' ? 'Premium' : 'Basic'}
-                      </Badge>
+                      <Badge tone={r.tenant.subscriptionTier}>Premium</Badge>
                     ) : (
                       '—'
                     )}

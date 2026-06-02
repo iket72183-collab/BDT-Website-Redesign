@@ -9,34 +9,23 @@ import {
   View,
 } from 'react-native';
 import { router } from 'expo-router';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { RNButton, RNCard } from '@/components/ui';
 import { api } from '@/api/client';
 import { palette, radius, space, typography } from '@/styles/appTokens';
 
 const MAX_BODY = 2000;
 
-interface TenantTier {
-  subscriptionTier: 'basic' | 'premium';
-}
-
 /**
- * Compose form. On success we replace the form with a confirmation block
- * that includes the SLA copy (24h premium / 48h basic) — feeds the user
- * expectations about when BDT will respond.
+ * Compose form. On success we replace the form with a confirmation block that
+ * includes the SLA copy — Premium clients get a 24-hour response window.
  */
 export function MessageScreen() {
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
   const [sentTo, setSentTo] = useState<string | null>(null);
 
-  const { data: tenant } = useQuery({
-    queryKey: ['tenant'],
-    queryFn: () => api<{ data: TenantTier }>('/api/tenant'),
-    select: (r) => r.data,
-  });
-  const isPremium = tenant?.subscriptionTier === 'premium';
-  const slaText = isPremium ? 'within 24 hours' : 'within 48 hours';
+  const slaText = 'within 24 hours';
 
   const sendMutation = useMutation({
     mutationFn: (input: { subject?: string; body: string }) =>

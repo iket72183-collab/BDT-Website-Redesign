@@ -3,7 +3,7 @@
  *
  * Creates a starter dataset for the agency client portal:
  *   - 1 platform admin (BDT team)
- *   - 2 demo tenants (agency clients) — one Basic, one Premium
+ *   - 2 demo tenants (agency clients) — both on the single Premium plan
  *   - per tenant: 1 client user + a couple of sample messages
  *
  * Idempotent: re-running wipes the seeded data first.
@@ -55,12 +55,12 @@ async function main() {
     },
   });
 
-  // -- Tenant 1: Vale Strength Studio (Basic) --------------------------------
+  // -- Tenant 1: Vale Strength Studio (Premium) ------------------------------
   console.log('🏋️  creating Vale Strength Studio…');
   await seedTenant({
     slug: 'vale-strength',
     businessName: 'Vale Strength Studio',
-    tier: 'basic',
+    tier: 'premium',
     owner: { first: 'Marcus', last: 'Vale', email: 'marcus@vale-strength.com' },
     websiteUrl: 'https://vale-strength.com',
     instagramUrl: 'https://instagram.com/valestrength',
@@ -91,7 +91,7 @@ async function main() {
 interface SeedTenantInput {
   slug: string;
   businessName: string;
-  tier: 'basic' | 'premium';
+  tier: 'premium';
   owner: { first: string; last: string; email: string };
   websiteUrl?: string;
   instagramUrl?: string;

@@ -6,7 +6,7 @@ import { ClientsTable } from './ClientsTable';
 interface ClientRow {
   id: string;
   businessName: string;
-  subscriptionTier: 'basic' | 'premium';
+  subscriptionTier: 'premium';
   subscriptionStatus: 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled';
   createdAt: string;
   mrr: number;
@@ -17,7 +17,7 @@ interface ClientRow {
 type SearchParams = {
   page?: string;
   search?: string;
-  plan?: 'basic' | 'premium';
+  plan?: 'premium';
   status?: 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled';
   sort?: 'joined' | 'mrr' | 'name';
   order?: 'asc' | 'desc';

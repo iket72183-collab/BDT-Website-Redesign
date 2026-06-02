@@ -62,10 +62,11 @@ beforeEach(() => {
   eventMock.mockReset().mockResolvedValue(undefined);
 });
 
-const TENANT_BASIC = {
+// Single-plan model: every tenant is Premium.
+const TENANT_A = {
   id: 't_1',
   businessName: 'Acme',
-  subscriptionTier: 'basic' as const,
+  subscriptionTier: 'premium' as const,
   subscriptionStatus: 'active' as const,
   isActive: true,
   createdAt: new Date('2026-05-01'),
@@ -73,25 +74,24 @@ const TENANT_BASIC = {
   _count: { messages: 3 },
 };
 
-const TENANT_PREMIUM = {
-  ...TENANT_BASIC,
+const TENANT_B = {
+  ...TENANT_A,
   id: 't_2',
   businessName: 'Beta',
-  subscriptionTier: 'premium' as const,
 };
 
 describe('listClients', () => {
   it('returns rows + total with MRR decoration', async () => {
-    dbMock.tenant.findMany.mockResolvedValue([TENANT_BASIC, TENANT_PREMIUM]);
+    dbMock.tenant.findMany.mockResolvedValue([TENANT_A, TENANT_B]);
     dbMock.tenant.count.mockResolvedValue(2);
 
     const result = await listClients({ page: 1, limit: 20 });
 
     expect(result.total).toBe(2);
     expect(result.rows).toHaveLength(2);
-    expect(result.rows[0]!.mrr).toBe(100);
-    expect(result.rows[0]!.planName).toBe('Basic');
-    expect(result.rows[1]!.mrr).toBe(175);
+    expect(result.rows[0]!.mrr).toBe(150);
+    expect(result.rows[0]!.planName).toBe('Premium');
+    expect(result.rows[1]!.mrr).toBe(150);
     expect(result.rows[1]!.planName).toBe('Premium');
   });
 
@@ -148,13 +148,13 @@ describe('getClient', () => {
   });
 
   it('decorates and includes recent messages + subscription events', async () => {
-    dbMock.tenant.findUnique.mockResolvedValue(TENANT_PREMIUM);
+    dbMock.tenant.findUnique.mockResolvedValue(TENANT_B);
     dbMock.message.findMany.mockResolvedValue([{ id: 'm_1' }]);
     dbMock.subscriptionEvent.findMany.mockResolvedValue([{ id: 'se_1' }]);
 
     const result = await getClient('t_2');
 
-    expect(result.mrr).toBe(175);
+    expect(result.mrr).toBe(150);
     expect(result.messages).toEqual([{ id: 'm_1' }]);
     expect(result.subscriptionEvents).toEqual([{ id: 'se_1' }]);
   });
@@ -168,7 +168,7 @@ describe('updateClient', () => {
 
   it('writes the update and logs an audit event', async () => {
     dbMock.tenant.findUnique.mockResolvedValue({ id: 't_1', isActive: true, notes: null });
-    dbMock.tenant.update.mockResolvedValue(TENANT_BASIC);
+    dbMock.tenant.update.mockResolvedValue(TENANT_A);
 
     const result = await updateClient('t_1', { notes: 'high touch' });
 
@@ -179,7 +179,7 @@ describe('updateClient', () => {
       'admin.client_updated',
       expect.objectContaining({ clientId: 't_1' }),
     );
-    expect(result.mrr).toBe(100);
+    expect(result.mrr).toBe(150);
   });
 });
 
@@ -220,14 +220,12 @@ describe('markMessageRead', () => {
 });
 
 describe('revenueOverview', () => {
-  it('computes MRR from counts × PLAN price', async () => {
-    dbMock.tenant.count
-      .mockResolvedValueOnce(10)  // basicCount
-      .mockResolvedValueOnce(5);  // premiumCount
-    
+  it('computes MRR from the single Premium plan (premiumCount × $150)', async () => {
+    dbMock.tenant.count.mockResolvedValueOnce(5); // premiumCount (all paying tenants)
+
     dbMock.subscriptionEvent.count
       .mockResolvedValueOnce(1)  // churnThisMonth
-      .mockResolvedValueOnce(2); // trialConversionsThisMonth
+      .mockResolvedValueOnce(2); // conversionsThisMonth
 
     const now = new Date();
     const currentMonth = new Date(now);
@@ -235,23 +233,19 @@ describe('revenueOverview', () => {
     currentMonth.setUTCHours(0, 0, 0, 0);
 
     dbMock.$queryRaw.mockResolvedValue([
-      { month: currentMonth, tier: 'basic', count: 10n },
-      { month: currentMonth, tier: 'premium', count: 5n },
+      { month: currentMonth, count: 5n },
     ]);
 
     const result = await revenueOverview();
 
-    expect(result.basicCount).toBe(10);
     expect(result.premiumCount).toBe(5);
-    expect(result.basicMRR).toBe(1000);  // 10 x $100
-    expect(result.premiumMRR).toBe(875); // 5 x $175
-    expect(result.currentMRR).toBe(1875);
+    expect(result.premiumMRR).toBe(750); // 5 x $150
+    expect(result.currentMRR).toBe(750);
     expect(result.churnThisMonth).toBe(1);
     expect(result.trialConversionsThisMonth).toBe(2);
     expect(result.mrrByMonth).toHaveLength(6);
-    // Last month (the current month, idx 0 in our iteration: i = monthCount-1 going down)
-    // produced 10 basic + 5 premium -> $1000 + $875 = $1875.
-    expect(result.mrrByMonth.at(-1)!.total).toBe(1875);
+    // Current month produced 5 premium -> 5 x $150 = $750.
+    expect(result.mrrByMonth.at(-1)!.total).toBe(750);
   });
 });
 

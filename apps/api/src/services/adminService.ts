@@ -35,9 +35,9 @@ interface ListClientsInput {
 
 /**
  * Admin client list with search, plan + status filters, sort + pagination.
- * `mrr` sort is implemented as a sort on `subscriptionTier` (basic < premium)
- * — the actual MRR is `PLANS[tier].price` so the tier ordering is the same
- * thing.
+ * Single-plan model: every tenant is Premium, so the `mrr` sort (on
+ * `subscriptionTier`) is effectively a no-op and `createdAt` is the practical
+ * order.
  */
 export async function listClients(input: ListClientsInput) {
   const where: Prisma.TenantWhereInput = {
@@ -200,16 +200,13 @@ export async function markMessageRead(id: string) {
 
 export interface MRRSnapshot {
   month: string;             // ISO date — first of the month, UTC
-  basic: number;             // dollars
-  premium: number;
+  premium: number;           // dollars
   total: number;
 }
 
 export interface RevenueOverview {
   currentMRR: number;
-  basicMRR: number;
   premiumMRR: number;
-  basicCount: number;
   premiumCount: number;
   churnThisMonth: number;
   trialConversionsThisMonth: number;
@@ -217,22 +214,16 @@ export interface RevenueOverview {
 }
 
 /**
- * Active-paying definition: subscription_status IN (active, trialing). Trial
- * users count toward MRR because once they convert they're at full rate —
- * surfacing them separately would understate the runway.
+ * Single-plan revenue. Active-paying definition: subscription_status IN
+ * (active, trialing) — every paying tenant is on the Premium plan, so MRR is
+ * simply premiumCount × the Premium price.
  */
 export async function revenueOverview(): Promise<RevenueOverview> {
   const now = new Date();
   const monthStart = startOfMonthUTC(now);
 
-  const [basicCount, premiumCount, churnThisMonth, trialConversionsThisMonth] =
+  const [premiumCount, churnThisMonth, trialConversionsThisMonth] =
     await rawPrisma.$transaction([
-      rawPrisma.tenant.count({
-        where: {
-          subscriptionTier: 'basic',
-          subscriptionStatus: { in: ['active', 'trialing'] },
-        },
-      }),
       rawPrisma.tenant.count({
         where: {
           subscriptionTier: 'premium',
@@ -242,22 +233,18 @@ export async function revenueOverview(): Promise<RevenueOverview> {
       rawPrisma.subscriptionEvent.count({
         where: { eventType: 'cancelled', createdAt: { gte: monthStart } },
       }),
-      // "Trial conversion" = a trialing tenant moves to active. We approximate
-      // by counting `payment_succeeded` events this month — when Stripe bills
-      // the first invoice after trial-end, that's the conversion signal.
+      // Conversions = first `payment_succeeded` events this month (a tenant
+      // moving from any non-paying state to paid).
       rawPrisma.subscriptionEvent.count({
         where: { eventType: 'payment_succeeded', createdAt: { gte: monthStart } },
       }),
     ]);
 
-  const basicMRR = basicCount * PLANS.basic.price;
   const premiumMRR = premiumCount * PLANS.premium.price;
 
   return {
-    currentMRR: basicMRR + premiumMRR,
-    basicMRR,
+    currentMRR: premiumMRR,
     premiumMRR,
-    basicCount,
     premiumCount,
     churnThisMonth,
     trialConversionsThisMonth,
@@ -280,22 +267,19 @@ async function mrrByMonth(now: Date, monthCount: number): Promise<MRRSnapshot[]>
   const queryResult = await rawPrisma.$queryRaw<
     Array<{
       month: Date;
-      tier: string;
       count: bigint;
     }>
   >`
     SELECT
       date_trunc('month', created_at) AS month,
-      subscription_tier AS tier,
       COUNT(*) AS count
     FROM tenants
     WHERE
       created_at >= NOW() - INTERVAL '6 months'
       AND subscription_status IN ('active', 'trialing')
-      AND subscription_tier IN ('basic', 'premium')
+      AND subscription_tier = 'premium'
     GROUP BY
-      date_trunc('month', created_at),
-      subscription_tier
+      date_trunc('month', created_at)
     ORDER BY
       month ASC
   `;
@@ -310,19 +294,16 @@ async function mrrByMonth(now: Date, monthCount: number): Promise<MRRSnapshot[]>
       (r) => r.month.toISOString().slice(0, 10) === monthStr
     );
 
-    let basicCount = 0;
     let premiumCount = 0;
-
     for (const row of matchingRows) {
-      if (row.tier === 'basic') basicCount += Number(row.count);
-      if (row.tier === 'premium') premiumCount += Number(row.count);
+      premiumCount += Number(row.count);
     }
 
+    const premiumMRR = premiumCount * PLANS.premium.price;
     out.push({
       month: monthStr,
-      basic: basicCount * PLANS.basic.price,
-      premium: premiumCount * PLANS.premium.price,
-      total: basicCount * PLANS.basic.price + premiumCount * PLANS.premium.price,
+      premium: premiumMRR,
+      total: premiumMRR,
     });
   }
 

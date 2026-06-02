@@ -1,5 +1,5 @@
 /** Format a whole-dollar number as `$1,000`. Plan prices are already in
- *  whole dollars (PLANS.basic.price === 100), so no conversion needed. */
+ *  whole dollars (PLANS.premium.price === 150), so no conversion needed. */
 export function formatUSD(n: number): string {
   return n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 }

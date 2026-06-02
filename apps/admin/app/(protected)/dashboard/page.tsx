@@ -20,9 +20,7 @@ interface Stats {
 
 interface Revenue {
   currentMRR: number;
-  basicMRR: number;
   premiumMRR: number;
-  basicCount: number;
   premiumCount: number;
   churnThisMonth: number;
   trialConversionsThisMonth: number;
@@ -32,7 +30,7 @@ interface Revenue {
 interface ClientRow {
   id: string;
   businessName: string;
-  subscriptionTier: 'basic' | 'premium';
+  subscriptionTier: 'premium';
   subscriptionStatus: 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled';
   createdAt: string;
   mrr: number;
@@ -82,9 +80,8 @@ async function loadDashboard(): Promise<{
   const growth: GrowthPoint[] = revenue.data.mrrByMonth.map((m, i, all) => {
     if (i === 0) return { month: m.month, newClients: 0 };
     const prev = all[i - 1]!;
-    const basicDelta   = Math.max(0, (m.basic   / 100) - (prev.basic   / 100));
-    const premiumDelta = Math.max(0, (m.premium / 175) - (prev.premium / 175));
-    return { month: m.month, newClients: basicDelta + premiumDelta };
+    const premiumDelta = Math.max(0, (m.premium / 150) - (prev.premium / 150));
+    return { month: m.month, newClients: premiumDelta };
   });
 
   return {
@@ -115,7 +112,7 @@ export default async function DashboardPage() {
         <StatCard
           label="Monthly Recurring Revenue"
           value={formatUSD(revenue.currentMRR)}
-          hint={`Basic ${formatUSD(revenue.basicMRR)} · Premium ${formatUSD(revenue.premiumMRR)}`}
+          hint={`${revenue.premiumCount} Premium client${revenue.premiumCount === 1 ? '' : 's'} × $150`}
           emphasis
         />
         <StatCard
@@ -139,18 +136,10 @@ export default async function DashboardPage() {
 
         <Card title="Plan Breakdown">
           <PlanBreakdownRow
-            name="Basic"
-            count={revenue.basicCount}
-            mrr={revenue.basicMRR}
-            unitPrice={100}
-            tone="basic"
-          />
-          <div className="my-4 h-px bg-metal-deep/30" />
-          <PlanBreakdownRow
             name="Premium"
             count={revenue.premiumCount}
             mrr={revenue.premiumMRR}
-            unitPrice={175}
+            unitPrice={150}
             tone="premium"
           />
           <div className="my-4 h-px bg-metal-deep/30" />

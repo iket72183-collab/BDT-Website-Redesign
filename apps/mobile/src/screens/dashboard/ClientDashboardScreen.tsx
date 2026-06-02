@@ -3,19 +3,18 @@ import { router } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { RNBadge, RNButton, RNCard, RNSectionHeader } from '@/components/ui';
 import { api } from '@/api/client';
-import { palette, radius, space, typography } from '@/styles/appTokens';
+import { palette, space, typography } from '@/styles/appTokens';
 
 interface PlanShape {
-  id: 'basic' | 'premium';
+  id: 'premium';
   name: string;
   features: readonly string[];
-  notIncluded: readonly string[];
 }
 
 interface TenantDetail {
   id: string;
   businessName: string;
-  subscriptionTier: 'basic' | 'premium';
+  subscriptionTier: 'premium';
   subscriptionStatus: 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled';
   websiteUrl: string | null;
   instagramUrl: string | null;
@@ -23,12 +22,12 @@ interface TenantDetail {
   tiktokUrl: string | null;
   googleBusinessUrl: string | null;
   plan: PlanShape;
-  trialEnd: string | null;
 }
 
 /**
- * Client home — shows plan summary, current website status, social presence
- * (premium-only), and a prominent CTA into the messaging tab.
+ * Client home — full offering hero, plan summary, website status, social
+ * presence, and a prominent CTA into the messaging tab. Single-plan model:
+ * every client is Premium, so there's no upgrade path or locked features.
  */
 export function ClientDashboardScreen() {
   const { data, isLoading, isError, refetch } = useQuery({
@@ -54,10 +53,6 @@ export function ClientDashboardScreen() {
     );
   }
 
-  const isPremium = data.subscriptionTier === 'premium';
-  const isTrialing = data.subscriptionStatus === 'trialing';
-  const trialDaysLeft = data.trialEnd ? daysUntil(data.trialEnd) : null;
-
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       {/* --- Header --------------------------------------------------- */}
@@ -69,21 +64,13 @@ export function ClientDashboardScreen() {
         <RNBadge label={data.plan.name} tone="confirmed" />
       </View>
 
-      {isTrialing && trialDaysLeft !== null && (
-        <View style={styles.trialBanner}>
-          <Text style={styles.trialText}>
-            Your free trial ends in {trialDaysLeft} {trialDaysLeft === 1 ? 'day' : 'days'}
-          </Text>
-          {!isPremium && (
-            <RNButton
-              label="Upgrade to Premium"
-              variant="ghost"
-              size="sm"
-              onPress={() => router.push('/(client)/plan' as never)}
-            />
-          )}
-        </View>
-      )}
+      {/* --- Hero ----------------------------------------------------- */}
+      <View style={styles.hero}>
+        <Text style={styles.heroTitle}>Your Digital Presence, Managed.</Text>
+        <Text style={styles.heroSubtext}>
+          Social media, website, creative assets and more — all in one place.
+        </Text>
+      </View>
 
       {/* --- Your Plan ------------------------------------------------ */}
       <RNSectionHeader title="Your Plan" />
@@ -91,23 +78,9 @@ export function ClientDashboardScreen() {
         <Text style={styles.eyebrow}>WHAT'S INCLUDED</Text>
         <View style={{ gap: space[2], marginTop: space[3] }}>
           {data.plan.features.map((f) => (
-            <FeatureLine key={f} text={f} included />
-          ))}
-          {data.plan.notIncluded.map((f) => (
-            <FeatureLine key={f} text={f} included={false} />
+            <FeatureLine key={f} text={f} />
           ))}
         </View>
-        {!isPremium && (
-          <View style={{ marginTop: space[5] }}>
-            <RNButton
-              label="Upgrade"
-              variant="primary"
-              size="lg"
-              fullWidth
-              onPress={() => router.push('/(client)/plan' as never)}
-            />
-          </View>
-        )}
       </RNCard>
 
       {/* --- Your Website -------------------------------------------- */}
@@ -126,30 +99,19 @@ export function ClientDashboardScreen() {
             </View>
           </>
         ) : (
-          <Text style={styles.muted}>
-            Website coming soon — we're working on it!
-          </Text>
+          <Text style={styles.muted}>Website coming soon — we're working on it!</Text>
         )}
       </RNCard>
 
-      {/* --- Social Media (premium only) ----------------------------- */}
+      {/* --- Social Media -------------------------------------------- */}
       <RNSectionHeader title="Social Media" />
       <RNCard>
-        {isPremium ? (
-          <View style={{ gap: space[3] }}>
-            <SocialLink label="Instagram" url={data.instagramUrl} />
-            <SocialLink label="Facebook" url={data.facebookUrl} />
-            <SocialLink label="TikTok" url={data.tiktokUrl} />
-            <SocialLink label="Google Business" url={data.googleBusinessUrl} />
-          </View>
-        ) : (
-          <View style={styles.lockedCard}>
-            <Text style={styles.lockedTitle}>🔒 Premium feature</Text>
-            <Text style={styles.muted}>
-              Upgrade to Premium to unlock social media management.
-            </Text>
-          </View>
-        )}
+        <View style={{ gap: space[3] }}>
+          <SocialLink label="Instagram" url={data.instagramUrl} />
+          <SocialLink label="Facebook" url={data.facebookUrl} />
+          <SocialLink label="TikTok" url={data.tiktokUrl} />
+          <SocialLink label="Google Business" url={data.googleBusinessUrl} />
+        </View>
       </RNCard>
 
       {/* --- CTA ------------------------------------------------------ */}
@@ -168,11 +130,11 @@ export function ClientDashboardScreen() {
   );
 }
 
-function FeatureLine({ text, included }: { text: string; included: boolean }) {
+function FeatureLine({ text }: { text: string }) {
   return (
     <View style={styles.featureRow}>
-      <Text style={included ? styles.check : styles.cross}>{included ? '✓' : '✗'}</Text>
-      <Text style={included ? styles.featureIn : styles.featureOut}>{text}</Text>
+      <Text style={styles.check}>✓</Text>
+      <Text style={styles.featureIn}>{text}</Text>
     </View>
   );
 }
@@ -187,11 +149,6 @@ function SocialLink({ label, url }: { label: string; url: string | null }) {
       <RNButton label="Open" size="sm" variant="ghost" onPress={() => void Linking.openURL(url)} />
     </View>
   );
-}
-
-function daysUntil(iso: string): number {
-  const ms = new Date(iso).getTime() - Date.now();
-  return Math.max(0, Math.ceil(ms / 86_400_000));
 }
 
 const styles = StyleSheet.create({
@@ -229,23 +186,17 @@ const styles = StyleSheet.create({
     fontSize: typography.size.displayLG,
     color: palette.ink.primary,
   },
-  trialBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space[3],
-    backgroundColor: palette.bg.surface,
-    borderRadius: radius.lg,
-    borderWidth: 0.5,
-    borderColor: palette.metal.border,
-    paddingHorizontal: space[4],
-    paddingVertical: space[3],
+  hero: { gap: space[2] },
+  heroTitle: {
+    fontFamily: typography.family.displayBold,
+    fontSize: typography.size.displayMD,
+    color: palette.ink.primary,
   },
-  trialText: {
-    flex: 1,
-    fontFamily: typography.family.bodyMedium,
+  heroSubtext: {
+    fontFamily: typography.family.body,
     fontSize: typography.size.bodyMD,
-    color: palette.metal.rose,
+    color: palette.ink.muted,
+    lineHeight: typography.size.bodyMD * typography.lineHeight.relaxed,
   },
   eyebrow: {
     fontFamily: typography.family.bodySemibold,
@@ -260,23 +211,10 @@ const styles = StyleSheet.create({
     fontSize: typography.size.bodyLG,
     width: 14,
   },
-  cross: {
-    color: palette.ink.subtle,
-    fontFamily: typography.family.bodySemibold,
-    fontSize: typography.size.bodyLG,
-    width: 14,
-  },
   featureIn: {
     fontFamily: typography.family.body,
     fontSize: typography.size.bodyMD,
     color: palette.ink.primary,
-    flex: 1,
-  },
-  featureOut: {
-    fontFamily: typography.family.body,
-    fontSize: typography.size.bodyMD,
-    color: palette.ink.subtle,
-    textDecorationLine: 'line-through',
     flex: 1,
   },
   url: {
@@ -294,12 +232,6 @@ const styles = StyleSheet.create({
   socialLabel: {
     fontFamily: typography.family.bodyMedium,
     fontSize: typography.size.bodyMD,
-    color: palette.ink.primary,
-  },
-  lockedCard: { gap: space[2] },
-  lockedTitle: {
-    fontFamily: typography.family.bodySemibold,
-    fontSize: typography.size.bodyLG,
     color: palette.ink.primary,
   },
 });

@@ -21,6 +21,8 @@ const TYPE_LABELS: Record<ServiceRequest['type'], string> = {
   social_media: 'Social Media',
   general: 'General Request',
   file_upload: 'File Upload',
+  ai_creative: 'AI Creative',
+  report_request: 'Monthly Report',
 };
 
 /** Human-readable request type for subjects / push bodies. */
@@ -38,6 +40,8 @@ const CLIENT_TYPE_LABELS: Record<ServiceRequest['type'], string> = {
   social_media: 'social media',
   general: 'general',
   file_upload: 'file upload',
+  ai_creative: 'AI creative',
+  report_request: 'monthly report',
 };
 
 /**

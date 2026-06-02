@@ -14,7 +14,7 @@ export interface MessageRow {
   status: 'unread' | 'read' | 'archived';
   emailDeliveryStatus: 'pending' | 'sent' | 'failed';
   sentAt: string;
-  tenant: { id: string; businessName: string; subscriptionTier: 'basic' | 'premium' };
+  tenant: { id: string; businessName: string; subscriptionTier: 'premium' };
   user: { id: string; email: string; firstName: string; lastName: string };
 }
 
@@ -24,7 +24,6 @@ interface Props {
 }
 
 const PLAN_TONE: Record<MessageRow['tenant']['subscriptionTier'], BadgeTone> = {
-  basic: 'basic',
   premium: 'premium',
 };
 
@@ -195,9 +194,7 @@ function MessageDetail({ message }: { message: MessageRow }) {
       <header className="flex items-start justify-between gap-4">
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <Badge tone={PLAN_TONE[message.tenant.subscriptionTier]}>
-              {message.tenant.subscriptionTier === 'premium' ? 'Premium' : 'Basic'}
-            </Badge>
+            <Badge tone={PLAN_TONE[message.tenant.subscriptionTier]}>Premium</Badge>
             <Badge tone={message.status === 'unread' ? 'unread' : 'read'}>
               {message.status}
             </Badge>

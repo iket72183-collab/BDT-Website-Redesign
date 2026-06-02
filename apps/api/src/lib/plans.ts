@@ -1,61 +1,34 @@
 /**
- * Plan definitions — single source of truth.
+ * Plan definition — single source of truth.
  *
- * Backend reads PLANS to surface features in tenant responses, validate tier
- * inputs, and reason about upgrade/downgrade paths. The mobile app should
- * import the same constant (via a thin re-export from shared-types if/when
- * we extract it) so plan UI never drifts from billing reality.
+ * BDT Connect is a single-plan product: one "Premium" plan at $150/month.
+ * (Was a Basic/Premium two-tier model; collapsed to one plan with no free
+ * trial — clients sign up, pay, and work starts immediately.)
  *
- * Pricing here is INFORMATIONAL — Stripe is the source of truth for actual
- * billing. The numbers below are mirrored for display only.
+ * Backend reads PLANS to surface features in tenant responses and validate
+ * tier inputs. Pricing here is INFORMATIONAL — Stripe is the source of truth
+ * for actual billing. The number below is mirrored for display only.
  */
 
 export const PLANS = {
-  basic: {
-    id: 'basic',
-    name: 'Basic',
-    price: 100,
-    currency: 'usd',
-    interval: 'month',
-    trialDays: 14,
-    requestsPerMonth: 5,
-    features: [
-      'Website redesign',
-      'Website maintenance',
-      'Direct messaging to BDT team',
-    ],
-    notIncluded: [
-      'Social media management',
-      'Monthly performance report',
-      'Priority message response',
-    ],
-  },
   premium: {
     id: 'premium',
     name: 'Premium',
-    price: 175,
+    price: 150,
     currency: 'usd',
     interval: 'month',
-    trialDays: 14,
-    requestsPerMonth: 20,
+    requestsPerMonth: 999, // effectively unlimited
     features: [
-      'Website redesign',
-      'Website maintenance',
-      'Full social media management (all platforms)',
-      'Monthly performance report',
-      'Priority message response',
-      'Direct messaging to BDT team',
+      'Social media management',
+      'Website maintenance & redesign',
+      'AI-generated flyers & promo assets',
+      'Unlimited service requests',
+      '24/7 AI support',
+      'Monthly performance reports',
     ],
-    notIncluded: [] as string[],
+    description: 'Full-service digital presence management',
   },
 } as const;
 
 export type PlanId = keyof typeof PLANS;
 export type Plan = (typeof PLANS)[PlanId];
-
-export const TRIAL_DAYS = 14;
-
-export const TIER_RANK: Record<PlanId, number> = {
-  basic: 1,
-  premium: 2,
-};

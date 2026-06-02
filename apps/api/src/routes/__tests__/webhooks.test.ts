@@ -108,7 +108,7 @@ function makeEvent(type: string, overrides: Record<string, unknown> = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  prismaMock.tenant.findFirst.mockResolvedValue({ id: 't1', subscriptionTier: 'basic' });
+  prismaMock.tenant.findFirst.mockResolvedValue({ id: 't1', subscriptionTier: 'premium' });
   prismaMock.tenant.findUnique.mockResolvedValue({ ownerId: 'u1' });
   prismaMock.tenant.update.mockResolvedValue({});
   prismaMock.subscriptionEvent.create.mockResolvedValue({});
@@ -120,7 +120,7 @@ beforeEach(() => {
     id: 'sub_123',
     customer: 'cus_x',
     status: 'active',
-    items: { data: [{ price: { id: 'price_basic' } }] }
+    items: { data: [{ price: { id: 'price_premium' } }] }
   });
 });
 
@@ -240,10 +240,10 @@ describe('handlePlatformWebhook', () => {
       id: 'sub_123',
       customer: 'cus_x',
       status: 'active', // fresh state
-      items: { data: [{ price: { id: 'price_basic' } }] }
+      items: { data: [{ price: { id: 'price_premium' } }] }
     });
     
-    prismaMock.tenant.findFirst.mockResolvedValue({ id: 't1', subscriptionTier: 'basic' });
+    prismaMock.tenant.findFirst.mockResolvedValue({ id: 't1', subscriptionTier: 'premium' });
     
     const req = mockReq({ 'stripe-signature': 'ok' });
     const res = mockRes();
@@ -269,7 +269,7 @@ describe('handlePlatformWebhook', () => {
     stripeMock.webhooks.constructEvent.mockReturnValue(makeEvent('customer.subscription.created'));
     prismaMock.tenant.findFirst.mockResolvedValue({
       id: 't1',
-      subscriptionTier: 'basic',
+      subscriptionTier: 'premium',
       pendingTier: null,
       onboardingCompleted: false,
     });

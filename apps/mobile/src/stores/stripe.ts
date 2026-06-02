@@ -3,20 +3,37 @@ import * as WebBrowser from 'expo-web-browser';
 import { api } from '@/api/client';
 
 /**
- * Subscription state. Mirrors `/api/tenant/subscription` (+ trial end) so
- * the Plan tab can render without an extra round trip. Connect / payouts
- * are gone with the pivot — BDT is not a marketplace.
+ * Subscription state. Mirrors `/api/tenant/subscription` so the Plan tab can
+ * render without an extra round trip. Single-plan model: one "Premium" plan at
+ * $150/mo, no free trial, no tier upgrades. Connect / payouts are gone with the
+ * pivot — BDT is not a marketplace.
  */
 
-export type Tier = 'basic' | 'premium';
+export type Tier = 'premium';
+
+/**
+ * Premium plan copy, mirrored from the API's `apps/api/src/lib/plans.ts`.
+ * The mobile app can't import across the API package, so this is the
+ * mobile-side source of truth for the plan price + feature list.
+ */
+export const PREMIUM_PLAN = {
+  name: 'Premium',
+  price: 150,
+  features: [
+    'Social media management',
+    'Website maintenance & redesign',
+    'AI-generated flyers & promo assets',
+    'Unlimited service requests',
+    '24/7 AI support',
+    'Monthly performance reports',
+  ],
+} as const;
 
 export interface SubscriptionInfo {
   tier: Tier | null;
+  // `trialing` is retained as a legacy status (no new trials are created).
   status: 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled' | null;
-  trialEnd: string | null;
   cancelAt: string | null;
-  pendingTier: Tier | null;
-  pendingTierEffectiveAt: string | null;
 }
 
 interface StripeState {
@@ -25,23 +42,16 @@ interface StripeState {
   error: string | null;
 
   fetchSubscription: () => Promise<void>;
-  upgradeTo: (tier: Tier) => Promise<void>;
   cancelSubscription: () => Promise<string | null>;
   openBillingPortal: () => Promise<void>;
-  createSubscription: (input: { tier: Tier; setupIntentId: string }) => Promise<void>;
+  createSubscription: (input: { setupIntentId: string }) => Promise<void>;
   createSetupIntent: () => Promise<{ clientSecret: string }>;
-  /** Start a 14-day trial without capturing a card. Works whether or not the
-   *  backend has Stripe configured — see apps/api/.../stripeService.startTrialWithoutCard. */
-  startTrialWithoutCard: (tier: Tier) => Promise<void>;
 }
 
 const EMPTY: SubscriptionInfo = {
   tier: null,
   status: null,
-  trialEnd: null,
   cancelAt: null,
-  pendingTier: null,
-  pendingTierEffectiveAt: null,
 };
 
 export const useStripeStore = create<StripeState>((set, get) => ({
@@ -56,33 +66,19 @@ export const useStripeStore = create<StripeState>((set, get) => ({
         data: {
           subscriptionTier: Tier;
           subscriptionStatus: SubscriptionInfo['status'];
-          trialEnd: string | null;
-          pendingTier: Tier | null;
-          pendingTierEffectiveAt: string | null;
         };
       }>('/api/tenant/subscription');
       set({
         subscription: {
           tier: res.data.subscriptionTier,
           status: res.data.subscriptionStatus,
-          trialEnd: res.data.trialEnd,
           cancelAt: null,
-          pendingTier: res.data.pendingTier,
-          pendingTierEffectiveAt: res.data.pendingTierEffectiveAt,
         },
         isLoading: false,
       });
     } catch (err) {
       set({ isLoading: false, error: (err as Error).message });
     }
-  },
-
-  upgradeTo: async (tier) => {
-    await api('/api/stripe/subscription/upgrade', {
-      method: 'POST',
-      body: JSON.stringify({ tier }),
-    });
-    await get().fetchSubscription();
   },
 
   cancelSubscription: async () => {
@@ -116,13 +112,5 @@ export const useStripeStore = create<StripeState>((set, get) => ({
       body: JSON.stringify({}),
     });
     return res.data;
-  },
-
-  startTrialWithoutCard: async (tier) => {
-    await api('/api/stripe/subscription/start-trial', {
-      method: 'POST',
-      body: JSON.stringify({ tier }),
-    });
-    await get().fetchSubscription();
   },
 }));

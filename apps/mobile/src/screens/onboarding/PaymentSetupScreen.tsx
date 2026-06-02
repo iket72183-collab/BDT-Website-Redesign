@@ -1,42 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { useStripe } from '@stripe/stripe-react-native';
 import Constants from 'expo-constants';
 import { RNButton, RNCard } from '@/components/ui';
-import { useStripeStore, type Tier } from '@/stores/stripe';
+import { useStripeStore, PREMIUM_PLAN } from '@/stores/stripe';
 import { palette, space, typography } from '@/styles/appTokens';
 
 /**
- * Onboarding step 2 of 2.
+ * Onboarding step 2 of 2 — card capture.
  *
- * Two modes, selected at runtime from the Stripe publishable key:
- *
- * 1. **Card-up-front** (key present): SetupIntent + PaymentSheet tokenizes a
- *    card, then `POST /api/stripe/subscription/create { tier, setupIntentId }`
- *    starts the 14-day trial. The card is billed on day 15.
- *
- * 2. **No-card trial** (key empty — Stripe not wired yet): single tap of
- *    "Start My Free Trial" calls `POST /api/stripe/subscription/start-trial`.
- *    The backend either creates an incomplete Stripe subscription
- *    (when its own STRIPE_SECRET_KEY is configured) or a DB-only trial
- *    (when it isn't). User is prompted to add a card before day 15.
- *
- * The card-up-front screen also offers a secondary "Start without card"
- * action so a client can defer payment even when billing is fully wired.
+ * Single-plan model, no free trial: the SetupIntent + PaymentSheet tokenizes a
+ * card, then `POST /api/stripe/subscription/create { setupIntentId }` creates
+ * the Premium subscription and bills it immediately. Work starts right away.
  */
 export function PaymentSetupScreen() {
-  const { tier } = useLocalSearchParams<{ tier: Tier }>();
-  const selectedTier: Tier = tier === 'premium' ? 'premium' : 'basic';
-  const planName = selectedTier === 'premium' ? 'Premium' : 'Basic';
-  const planPrice = selectedTier === 'premium' ? 175 : 100;
-
   const stripePublishableKey =
     (Constants.expoConfig?.extra?.stripePublishableKey as string | undefined) ?? '';
   const cardCaptureAvailable = stripePublishableKey.length > 0;
 
   const { initPaymentSheet, presentPaymentSheet, retrieveSetupIntent } = useStripe();
-  const { createSubscription, createSetupIntent, startTrialWithoutCard } = useStripeStore();
+  const { createSubscription, createSetupIntent } = useStripeStore();
 
   const [sheetReady, setSheetReady] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -77,10 +61,7 @@ export function PaymentSetupScreen() {
         return;
       }
       if (!setupIntentSecret) {
-        Alert.alert(
-          'Card required',
-          'Payment setup expired. Please try adding your card again.',
-        );
+        Alert.alert('Card required', 'Payment setup expired. Please try adding your card again.');
         return;
       }
       const retrieved = await retrieveSetupIntent(setupIntentSecret);
@@ -88,7 +69,7 @@ export function PaymentSetupScreen() {
         Alert.alert('Payment setup failed', retrieved.error?.message ?? 'Please try again.');
         return;
       }
-      await createSubscription({ tier: selectedTier, setupIntentId: retrieved.setupIntent.id });
+      await createSubscription({ setupIntentId: retrieved.setupIntent.id });
       router.replace('/(client)/home' as never);
     } catch (err) {
       Alert.alert('Something went wrong', (err as Error).message);
@@ -97,71 +78,42 @@ export function PaymentSetupScreen() {
     }
   };
 
-  const handleNoCardTrial = async () => {
-    setSubmitting(true);
-    try {
-      await startTrialWithoutCard(selectedTier);
-      router.replace('/(client)/home' as never);
-    } catch (err) {
-      Alert.alert('Could not start trial', (err as Error).message);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
-      <Text style={styles.title}>{cardCaptureAvailable ? 'Set Up Payment' : 'Start Your Trial'}</Text>
+      <Text style={styles.title}>Set Up Payment</Text>
       <Text style={styles.subtitle}>
-        {cardCaptureAvailable
-          ? "14-day free trial. We'll charge your card on day 15 — cancel anytime before then."
-          : "14-day free trial. No card needed to start — we'll prompt you to add one before day 15."}
+        Billed today, then ${PREMIUM_PLAN.price}/month. Cancel anytime.
       </Text>
 
       <RNCard>
-        <Text style={styles.eyebrow}>SELECTED PLAN</Text>
+        <Text style={styles.eyebrow}>YOUR PLAN</Text>
         <View style={styles.summaryRow}>
-          <Text style={styles.planName}>{planName}</Text>
+          <Text style={styles.planName}>{PREMIUM_PLAN.name}</Text>
           <Text style={styles.price}>
-            ${planPrice}
+            ${PREMIUM_PLAN.price}
             <Text style={styles.perMo}>/mo</Text>
           </Text>
         </View>
       </RNCard>
 
       {cardCaptureAvailable ? (
-        <>
-          <RNButton
-            label={submitting ? 'Working…' : 'Start My Free Trial'}
-            variant="primary"
-            size="lg"
-            fullWidth
-            loading={submitting}
-            disabled={!sheetReady || submitting}
-            onPress={handlePay}
-          />
-          <RNButton
-            label="Skip — add card later"
-            variant="ghost"
-            fullWidth
-            disabled={submitting}
-            onPress={handleNoCardTrial}
-          />
-        </>
-      ) : (
         <RNButton
-          label={submitting ? 'Working…' : 'Start My Free Trial'}
+          label={submitting ? 'Working…' : `Get Started — $${PREMIUM_PLAN.price}/mo`}
           variant="primary"
           size="lg"
           fullWidth
           loading={submitting}
-          disabled={submitting}
-          onPress={handleNoCardTrial}
+          disabled={!sheetReady || submitting}
+          onPress={handlePay}
         />
+      ) : (
+        <Text style={styles.subtitle}>
+          Payment isn’t available yet. Please reach out to BDT to get set up.
+        </Text>
       )}
 
       <RNButton
-        label="← Back to plans"
+        label="← Back"
         variant="text"
         onPress={() => router.back()}
         disabled={submitting}

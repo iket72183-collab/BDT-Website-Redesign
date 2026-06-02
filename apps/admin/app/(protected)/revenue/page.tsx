@@ -11,9 +11,7 @@ import { formatDateTime, formatUSD } from '@/lib/format';
 
 interface Revenue {
   currentMRR: number;
-  basicMRR: number;
   premiumMRR: number;
-  basicCount: number;
   premiumCount: number;
   churnThisMonth: number;
   trialConversionsThisMonth: number;
@@ -23,10 +21,10 @@ interface Revenue {
 interface SubscriptionEventRow {
   id: string;
   eventType: string;
-  fromTier: 'basic' | 'premium' | null;
-  toTier: 'basic' | 'premium' | null;
+  fromTier: 'premium' | null;
+  toTier: 'premium' | null;
   createdAt: string;
-  tenant: { id: string; businessName: string; subscriptionTier: 'basic' | 'premium' };
+  tenant: { id: string; businessName: string; subscriptionTier: 'premium' };
 }
 
 /**
@@ -39,10 +37,8 @@ function buildAddVsChurn(mrrByMonth: RevenuePoint[]) {
   return mrrByMonth.map((m, i, all) => {
     if (i === 0) return { month: m.month, newClients: 0 };
     const prev = all[i - 1]!;
-    const prevCount =
-      Math.round(prev.basic / 100) + Math.round(prev.premium / 175);
-    const thisCount =
-      Math.round(m.basic / 100) + Math.round(m.premium / 175);
+    const prevCount = Math.round(prev.premium / 150);
+    const thisCount = Math.round(m.premium / 150);
     const delta = thisCount - prevCount;
     return {
       month: m.month,
@@ -75,20 +71,15 @@ export default async function RevenuePage() {
   return (
     <PageWrapper
       title="Revenue"
-      subtitle={`${formatUSD(revenue.data.currentMRR)} MRR · ${revenue.data.basicCount + revenue.data.premiumCount} paying clients`}
+      subtitle={`${formatUSD(revenue.data.currentMRR)} MRR · ${revenue.data.premiumCount} paying clients`}
       user={user}
     >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Current MRR" value={formatUSD(revenue.data.currentMRR)} emphasis />
-        <StatCard
-          label="Basic MRR"
-          value={formatUSD(revenue.data.basicMRR)}
-          hint={`${revenue.data.basicCount} client${revenue.data.basicCount === 1 ? '' : 's'} × $100`}
-        />
         <StatCard
           label="Premium MRR"
           value={formatUSD(revenue.data.premiumMRR)}
-          hint={`${revenue.data.premiumCount} client${revenue.data.premiumCount === 1 ? '' : 's'} × $175`}
+          hint={`${revenue.data.premiumCount} client${revenue.data.premiumCount === 1 ? '' : 's'} × $150`}
         />
         <StatCard
           label="Churn This Month"

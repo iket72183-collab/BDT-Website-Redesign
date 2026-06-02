@@ -25,7 +25,7 @@ const schema = z.object({
   STRIPE_SECRET_KEY: z.string().min(1).optional(),
   STRIPE_PUBLISHABLE_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
-  STRIPE_BASIC_PRICE_ID: z.string().optional(),
+  // Single-plan model: only the Premium price is needed.
   STRIPE_PREMIUM_PRICE_ID: z.string().optional(),
 
   // Email (Resend). Optional in dev — sendEmail() falls back to logging.
@@ -135,7 +135,6 @@ if (env.NODE_ENV === 'production') {
   const stripeKeys: Array<keyof typeof env> = [
     'STRIPE_SECRET_KEY',
     'STRIPE_WEBHOOK_SECRET',
-    'STRIPE_BASIC_PRICE_ID',
     'STRIPE_PREMIUM_PRICE_ID',
   ];
   const stripeSet = stripeKeys.filter((k) => env[k]);
@@ -175,16 +174,13 @@ export const config = {
     publishableKey: env.STRIPE_PUBLISHABLE_KEY,
     webhookSecret: env.STRIPE_WEBHOOK_SECRET,
     priceIds: {
-      basic:   env.STRIPE_BASIC_PRICE_ID,
       premium: env.STRIPE_PREMIUM_PRICE_ID,
     },
   },
   /** True when all the Stripe config needed to run real billing is present.
-   *  Routes that hit Stripe gate on this and return 503 when false; the
-   *  start-trial-without-card path works either way. */
+   *  Routes that hit Stripe gate on this and return 503 when false. */
   billingEnabled: Boolean(
     env.STRIPE_SECRET_KEY &&
-    env.STRIPE_BASIC_PRICE_ID &&
     env.STRIPE_PREMIUM_PRICE_ID,
   ),
   resend: {

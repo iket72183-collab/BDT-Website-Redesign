@@ -10,7 +10,7 @@ import { formatDate, formatUSD } from '@/lib/format';
 interface ClientRow {
   id: string;
   businessName: string;
-  subscriptionTier: 'basic' | 'premium';
+  subscriptionTier: 'premium';
   subscriptionStatus: 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled';
   createdAt: string;
   mrr: number;
@@ -86,17 +86,6 @@ export function ClientsTable(props: Props) {
             className="w-full rounded-lg border border-metal-deep/40 bg-bg-inset px-4 py-2 text-sm text-ink-primary placeholder-ink-subtle focus:border-metal-rose focus:outline-none"
           />
         </form>
-
-        <Select
-          label="Plan"
-          value={props.plan}
-          onChange={(v) => update({ plan: v || null })}
-          options={[
-            { value: '', label: 'All plans' },
-            { value: 'basic', label: 'Basic' },
-            { value: 'premium', label: 'Premium' },
-          ]}
-        />
 
         <Select
           label="Status"
