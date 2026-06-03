@@ -22,6 +22,8 @@ export interface RequestRow {
   description: string;
   status: RequestStatus;
   attachments: { name: string; size: number; path: string }[];
+  /** True when submitted as a paid $25 over-limit add-on (invoice separately). */
+  addOn: boolean;
   createdAt: string;
   tenant: { id: string; businessName: string; subscriptionTier: 'premium' } | null;
 }
@@ -150,6 +152,7 @@ export function RequestsTable(props: Props) {
                 <Th>Business</Th>
                 <Th>Plan</Th>
                 <Th>Type</Th>
+                <Th>Add-on</Th>
                 <Th>Title</Th>
                 <Th>Status</Th>
                 <Th>Submitted</Th>
@@ -170,6 +173,13 @@ export function RequestsTable(props: Props) {
                     )}
                   </td>
                   <td className="px-4 py-3 text-ink-muted">{TYPE_LABEL[r.type]}</td>
+                  <td className="px-4 py-3">
+                    {r.addOn ? (
+                      <Badge tone="addon">$25 Add-on</Badge>
+                    ) : (
+                      <span className="text-ink-subtle">In plan</span>
+                    )}
+                  </td>
                   <td className="max-w-[280px] truncate px-4 py-3 text-ink-primary" title={r.title}>
                     {r.title}
                   </td>

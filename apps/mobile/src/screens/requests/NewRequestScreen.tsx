@@ -11,14 +11,23 @@ import {
 import { router } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { RequestAttachment, RequestType, SocialAccount } from '@bdt/shared-types';
+import {
+  ADDON_PRICE_USD,
+  LIMITED_REQUEST_TYPES,
+  type LimitedRequestType,
+  type RequestAttachment,
+  type RequestType,
+  type RequestUsage,
+  type SocialAccount,
+} from '@bdt/shared-types';
 import { RNBadge, RNButton, RNCard, RNInput, Icon } from '@/components/ui';
-import { api, uploadRequestAttachment } from '@/api/client';
+import { api, ApiError, uploadRequestAttachment } from '@/api/client';
 import { palette, radius, space, typography } from '@/styles/appTokens';
 import { TYPE_BLURB, TYPE_ICON, TYPE_LABEL } from './requestMeta';
 import { PLATFORM_ICON, PLATFORM_LABEL } from '../socialAccounts/socialMeta';
 
-// Single Premium plan = unlimited requests, so no usage/limit UI.
+// Limited types (ai_creative / social_media / website_update / report_request)
+// have a monthly cap; general / file_upload are uncapped.
 const TYPE_ORDER: RequestType[] = [
   'website_update',
   'social_media',
@@ -35,6 +44,7 @@ interface CreateBody {
   title: string;
   description: string;
   attachments: RequestAttachment[];
+  addOn?: boolean;
 }
 
 export function NewRequestScreen() {
@@ -48,6 +58,15 @@ export function NewRequestScreen() {
   // social_media flow: optional account selection before the details form.
   const [accountStepDone, setAccountStepDone] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<SocialAccount | null>(null);
+  // Set when the user opts into a paid $25 over-limit add-on.
+  const [addOn, setAddOn] = useState(false);
+
+  const usage = useQuery({
+    queryKey: ['requests', 'usage'],
+    queryFn: () => api<{ data: RequestUsage }>('/api/requests/usage'),
+    select: (r) => r.data,
+    enabled: !!type,
+  });
 
   const socialAccounts = useQuery({
     queryKey: ['social-accounts'],
@@ -56,15 +75,54 @@ export function NewRequestScreen() {
     enabled: type === 'social_media',
   });
 
+  // Per-type usage for the selected type. Uncapped types have no usage entry.
+  const isLimitedType = !!type && (LIMITED_REQUEST_TYPES as readonly string[]).includes(type);
+  const typeUsage = isLimitedType ? usage.data?.[type as LimitedRequestType] : undefined;
+  const atLimit = !!typeUsage && typeUsage.used >= typeUsage.limit;
+
+  const buildBody = (withAddOn: boolean): CreateBody => {
+    let finalDescription = description.trim();
+    if (selectedAccount) {
+      // Simple approach (no schema change): prepend the referenced account.
+      const handle = selectedAccount.handle ?? '';
+      finalDescription =
+        `Account: ${PLATFORM_LABEL[selectedAccount.platform]} ${handle}`.trim() +
+        '\n\n' +
+        finalDescription;
+    }
+    return { type: type!, title: title.trim(), description: finalDescription, attachments, addOn: withAddOn };
+  };
+
   const mutation = useMutation({
     mutationFn: (body: CreateBody) =>
       api('/api/requests', { method: 'POST', body: JSON.stringify(body) }),
     onSuccess: () => {
+      // Prefix match invalidates both the list and the usage query.
       qc.invalidateQueries({ queryKey: ['requests'] });
       router.back();
       Alert.alert('Request submitted!', "We'll be in touch soon.");
     },
     onError: (err) => {
+      // Edge case: usage was stale and the API enforced the cap. Offer the
+      // add-on path inline rather than dead-ending the user.
+      if (err instanceof ApiError && err.code === 'monthly_limit_reached') {
+        const d = err.details as { limit?: number; addon_price?: number } | undefined;
+        Alert.alert(
+          'Monthly limit reached',
+          "You've reached your monthly limit for this request type.",
+          [
+            { text: 'Not now', style: 'cancel' },
+            {
+              text: `Add one more for $${d?.addon_price ?? ADDON_PRICE_USD}`,
+              onPress: () => {
+                setAddOn(true);
+                mutation.mutate(buildBody(true));
+              },
+            },
+          ],
+        );
+        return;
+      }
       Alert.alert('Something went wrong', err instanceof Error ? err.message : 'Please try again.');
     },
   });
@@ -124,20 +182,13 @@ export function NewRequestScreen() {
     !!type &&
     title.trim().length > 0 &&
     description.trim().length > 0 &&
-    uploading.length === 0;
+    uploading.length === 0 &&
+    // At the per-type limit, the user must opt into the $25 add-on to submit.
+    (!atLimit || addOn);
 
   const submit = () => {
     if (!type || !canSubmit) return;
-    let finalDescription = description.trim();
-    if (selectedAccount) {
-      // Simple approach (no schema change): prepend the referenced account.
-      const handle = selectedAccount.handle ?? '';
-      finalDescription =
-        `Account: ${PLATFORM_LABEL[selectedAccount.platform]} ${handle}`.trim() +
-        '\n\n' +
-        finalDescription;
-    }
-    mutation.mutate({ type, title: title.trim(), description: finalDescription, attachments });
+    mutation.mutate(buildBody(addOn));
   };
 
   // Step 1 — type selector.
@@ -147,7 +198,13 @@ export function NewRequestScreen() {
         <Header onBack={() => router.back()} title="New Request" />
         <Text style={styles.prompt}>What do you need?</Text>
         {TYPE_ORDER.map((t) => (
-          <Pressable key={t} onPress={() => setType(t)}>
+          <Pressable
+            key={t}
+            onPress={() => {
+              setType(t);
+              setAddOn(false);
+            }}
+          >
             <RNCard padding="md" style={styles.typeCard}>
               <View style={styles.typeIcon}>
                 <Icon name={TYPE_ICON[t]} size="lg" color={palette.metal.rose} />
@@ -222,6 +279,30 @@ export function NewRequestScreen() {
         onBack={type === 'social_media' ? () => setAccountStepDone(false) : () => setType(null)}
         title={TYPE_LABEL[type]}
       />
+
+      {atLimit && !addOn && (
+        <>
+          <View style={styles.limitBanner}>
+            <Icon name="alert-circle" size="sm" color={palette.metal.rose} />
+            <Text style={styles.limitText}>
+              You've used all {typeUsage!.limit} {TYPE_LABEL[type]} requests this month.
+            </Text>
+          </View>
+          <RNButton
+            label={`Add one more for $${ADDON_PRICE_USD}`}
+            variant="ghost"
+            onPress={() => setAddOn(true)}
+          />
+        </>
+      )}
+      {addOn && (
+        <View style={styles.limitBanner}>
+          <Icon name="check-circle" size="sm" color={palette.metal.rose} />
+          <Text style={styles.limitText}>
+            Add-on request — ${ADDON_PRICE_USD} will be invoiced separately by BDT.
+          </Text>
+        </View>
+      )}
 
       <RNInput
         label="Title"

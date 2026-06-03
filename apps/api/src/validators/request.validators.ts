@@ -25,6 +25,9 @@ export const createRequestSchema = z.object({
   title: z.string().trim().min(1, 'Title is required').max(100),
   description: z.string().trim().min(1, 'Description is required').max(1000),
   attachments: z.array(attachmentSchema).max(5, 'Up to 5 files per request').optional(),
+  // Set true to submit an over-limit request as a paid $25 add-on. Bypasses
+  // the monthly per-type cap; BDT invoices for it separately.
+  addOn: z.boolean().optional(),
 });
 
 export const listRequestsQuerySchema = paginationSchema.extend({

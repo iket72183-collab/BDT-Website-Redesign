@@ -20,6 +20,41 @@ export type RequestType =
 
 export type RequestStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
+// --- Per-type monthly limits (single Premium plan) -------------------------
+// Each "limited" request type has a monthly cap. Requests beyond the cap are
+// available as a flat $25 add-on (billed separately by BDT). `general` and
+// `file_upload` are uncapped, so they're absent from PLAN_LIMITS.
+//
+// NOTE: the API ships compiled JS and cannot import this source package at
+// runtime, so apps/api/src/lib/plans.ts mirrors these values — keep them in
+// sync if either side changes.
+
+export type LimitedRequestType =
+  | 'ai_creative'
+  | 'social_media'
+  | 'website_update'
+  | 'report_request';
+
+export const LIMITED_REQUEST_TYPES: readonly LimitedRequestType[] = [
+  'ai_creative',
+  'social_media',
+  'website_update',
+  'report_request',
+];
+
+export const PLAN_LIMITS = {
+  premium: {
+    ai_creative: 4,
+    social_media: 12,
+    website_update: 4,
+    report_request: 1,
+    addon_price_cents: 2500,
+  },
+} as const;
+
+/** Dollar price of one over-limit add-on request (derived from cents). */
+export const ADDON_PRICE_USD = PLAN_LIMITS.premium.addon_price_cents / 100;
+
 export interface RequestAttachment {
   name: string;
   size: number;
@@ -41,11 +76,14 @@ export interface ClientRequest {
   updatedAt: string;
 }
 
-export interface RequestUsage {
+export interface RequestTypeUsage {
   used: number;
   limit: number;
-  resetsAt: string;
 }
+
+/** Current calendar-month usage vs. limit for each limited request type —
+ *  the shape returned by `GET /api/requests/usage`. */
+export type RequestUsage = Record<LimitedRequestType, RequestTypeUsage>;
 
 // --- Social accounts (BDT-managed social media) ----------------------------
 

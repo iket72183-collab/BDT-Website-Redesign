@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { PLANS } from '../plans.js';
+import { PLANS, PLAN_LIMITS, LIMITED_REQUEST_TYPES, monthlyLimitFor } from '../plans.js';
 
 /**
- * Single-plan model: there is exactly one plan, "premium", at $150/mo with
- * effectively unlimited requests.
+ * Single-plan model: one plan, "premium", at $150/mo. Each limited request
+ * type has its own monthly cap (PLAN_LIMITS); over-limit requests are $25
+ * add-ons.
  */
 describe('PLANS', () => {
   it('exposes exactly one plan: premium', () => {
@@ -17,13 +18,49 @@ describe('PLANS', () => {
     expect(PLANS.premium.name).toBe('Premium');
   });
 
-  it('allows effectively unlimited requests', () => {
-    expect(PLANS.premium.requestsPerMonth).toBe(999);
+  it('lists the per-type limits in the feature copy', () => {
+    expect(PLANS.premium.features).toEqual([
+      '4 AI-generated creative assets per month (flyers, promos, graphics)',
+      '12 social media requests per month (posting, content, engagement)',
+      '4 website update requests per month (fixes, edits, maintenance)',
+      '1 monthly performance report',
+      'Additional requests available at $25 each',
+      'Direct messaging to BDT team',
+    ]);
+  });
+});
+
+describe('PLAN_LIMITS', () => {
+  it('defines the monthly per-type caps and the add-on price', () => {
+    expect(PLAN_LIMITS.premium).toEqual({
+      ai_creative: 4,
+      social_media: 12,
+      website_update: 4,
+      report_request: 1,
+      addon_price_cents: 2500,
+    });
   });
 
-  it('lists the full Premium feature set', () => {
-    expect(PLANS.premium.features).toContain('Social media management');
-    expect(PLANS.premium.features).toContain('AI-generated flyers & promo assets');
-    expect(PLANS.premium.features).toContain('Monthly performance reports');
+  it('lists the four limited request types', () => {
+    expect([...LIMITED_REQUEST_TYPES]).toEqual([
+      'ai_creative',
+      'social_media',
+      'website_update',
+      'report_request',
+    ]);
+  });
+});
+
+describe('monthlyLimitFor', () => {
+  it('returns the cap for each limited type', () => {
+    expect(monthlyLimitFor('premium', 'ai_creative')).toBe(4);
+    expect(monthlyLimitFor('premium', 'social_media')).toBe(12);
+    expect(monthlyLimitFor('premium', 'website_update')).toBe(4);
+    expect(monthlyLimitFor('premium', 'report_request')).toBe(1);
+  });
+
+  it('returns null for uncapped types', () => {
+    expect(monthlyLimitFor('premium', 'general')).toBeNull();
+    expect(monthlyLimitFor('premium', 'file_upload')).toBeNull();
   });
 });

@@ -30,6 +30,7 @@ requestsRouter.post(
       title: req.body.title,
       description: req.body.description,
       attachments: req.body.attachments,
+      addOn: req.body.addOn,
     });
     created(res, request);
   }),

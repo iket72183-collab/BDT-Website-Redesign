@@ -291,6 +291,9 @@ model ServiceRequest {
   /// Array of { name, url, size } attachment descriptors. Files themselves
   /// live in external storage; we persist metadata only.
   attachments Json          @default("[]")
+  /// True when the request was submitted as a paid over-limit add-on ($25,
+  /// invoiced separately). Lets BDT staff spot billable requests in the admin.
+  addOn       Boolean       @default(false) @map("add_on")
   createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz
 

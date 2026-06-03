@@ -39,6 +39,7 @@ const baseRequest: ServiceRequest = {
   description: 'Please refresh the hero copy.',
   status: 'pending',
   attachments: [],
+  addOn: false,
   createdAt: new Date('2026-05-29T12:00:00Z'),
   updatedAt: new Date('2026-05-29T12:00:00Z'),
 };

@@ -10,12 +10,12 @@ const tiers = [
     price: 150,
     tagline: 'Everything your business needs online',
     features: [
-      'Social media management',
-      'Website maintenance & redesign',
-      'AI-generated flyers & creative assets',
-      'Unlimited service requests',
-      '24/7 AI-powered support',
-      'Monthly performance reports',
+      '4 AI-generated creative assets per month (flyers, promos, graphics)',
+      '12 social media requests per month (posting, content, engagement)',
+      '4 website update requests per month (fixes, edits, maintenance)',
+      '1 monthly performance report',
+      'Additional requests available at $25 each',
+      'Direct messaging to BDT team',
     ],
   },
 ];

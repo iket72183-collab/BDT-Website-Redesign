@@ -5,12 +5,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
  *
  * Coverage (per the feature spec):
  *   - createRequest success on the single Premium plan → persists, notifies BDT, logs.
- *   - createRequest 429 when the (effectively unlimited, 999) monthly cap is hit.
- *   - monthly window: count is scoped to the current calendar month (so the
- *     quota resets on a new month).
+ *   - createRequest 429 at a per-type monthly cap; addOn:true bypasses the cap.
+ *   - uncapped types (general / file_upload) skip the count entirely.
+ *   - monthly window: count is scoped to type + the current calendar month.
  *   - listRequests returns rows + total ordered newest-first, paginated.
  *   - getRequest 404 when the id resolves to nothing for this tenant.
- *   - getUsage returns used/limit/resetsAt with the right reset date.
+ *   - getUsage returns per-type used/limit for the current month.
  *   - adminUpdateRequestStatus updates + logs; adminListRequests builds the
  *     cross-tenant filter + join.
  *
@@ -56,7 +56,7 @@ vi.mock('../platformEventService.js', () => ({ logEvent: eventMock }));
 import { createRequest, listRequests, getRequest, getUsage } from '../requestService.js';
 import { adminListRequests, adminUpdateRequestStatus } from '../adminRequestService.js';
 
-// Single-plan model: every tenant is on Premium (999 = effectively unlimited).
+// Single-plan model: every tenant is on Premium; limits are per request type.
 const TENANT = {
   id: 'tenant_test_id',
   businessName: 'Acme Salon',
@@ -73,6 +73,7 @@ function makeRequest(over: Record<string, unknown> = {}) {
     description: 'Please update the hero text.',
     status: 'pending',
     attachments: [],
+    addOn: false,
     createdAt: CREATED,
     updatedAt: CREATED,
     ...over,
@@ -82,9 +83,6 @@ function makeRequest(over: Record<string, unknown> = {}) {
 // Mirror the service's month math for assertions.
 function startOfCurrentMonthUTC(now = new Date()) {
   return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-}
-function startOfNextMonthUTC(now = new Date()) {
-  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
 }
 
 beforeEach(() => {
@@ -123,6 +121,7 @@ describe('createRequest', () => {
         title: 'Need a homepage tweak',
         description: 'Please update the hero text.',
         attachments: [],
+        addOn: false,
       },
     });
     expect(notifyMock).toHaveBeenCalledWith(expect.objectContaining({ id: 'req_1' }), TENANT);
@@ -148,8 +147,8 @@ describe('createRequest', () => {
     });
   });
 
-  it('allows creation well under the unlimited Premium cap (e.g. 100 this month)', async () => {
-    dbMock.serviceRequest.count.mockResolvedValue(100);
+  it('allows creation when under the per-type cap (social_media 5/12)', async () => {
+    dbMock.serviceRequest.count.mockResolvedValue(5);
     const result = await createRequest({
       tenantId: TENANT.id,
       type: 'social_media',
@@ -160,21 +159,47 @@ describe('createRequest', () => {
     expect(dbMock.serviceRequest.create).toHaveBeenCalled();
   });
 
-  it('throws 429 REQUEST_LIMIT_REACHED only at the unlimited Premium cap (999)', async () => {
+  it('allows uncapped types (general / file_upload) without counting', async () => {
     dbMock.serviceRequest.count.mockResolvedValue(999);
+    await createRequest({ tenantId: TENANT.id, type: 'general', title: 'x', description: 'y' });
+    expect(dbMock.serviceRequest.create).toHaveBeenCalled();
+    // Uncapped types short-circuit before the per-type count.
+    expect(dbMock.serviceRequest.count).not.toHaveBeenCalled();
+  });
+
+  it('throws 429 monthly_limit_reached at the per-type cap (ai_creative 4/4)', async () => {
+    dbMock.serviceRequest.count.mockResolvedValue(4); // ai_creative cap is 4
     await expect(
       createRequest({
         tenantId: TENANT.id,
-        type: 'general',
+        type: 'ai_creative',
         title: 'One too many',
         description: 'nope',
       }),
     ).rejects.toMatchObject({
       status: 429,
-      code: 'REQUEST_LIMIT_REACHED',
-      details: { limit: 999, used: 999 },
+      code: 'monthly_limit_reached',
+      details: { type: 'ai_creative', limit: 4, used: 4, addon_price: 25 },
     });
     expect(dbMock.serviceRequest.create).not.toHaveBeenCalled();
+  });
+
+  it('accepts an over-limit request when addOn is set (bypasses the cap)', async () => {
+    dbMock.serviceRequest.count.mockResolvedValue(4); // already at the ai_creative cap
+    dbMock.serviceRequest.create.mockResolvedValue(makeRequest({ type: 'ai_creative', addOn: true }));
+    const result = await createRequest({
+      tenantId: TENANT.id,
+      type: 'ai_creative',
+      title: 'Extra flyer',
+      description: 'summer promo',
+      addOn: true,
+    });
+    expect(result.id).toBe('req_1');
+    expect(dbMock.serviceRequest.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({ type: 'ai_creative', addOn: true }),
+    });
+    // addOn short-circuits the cap check, so we never count.
+    expect(dbMock.serviceRequest.count).not.toHaveBeenCalled();
   });
 
   it('accepts the new ai_creative and report_request types', async () => {
@@ -185,9 +210,10 @@ describe('createRequest', () => {
     expect(dbMock.serviceRequest.create.mock.calls[1]![0].data.type).toBe('report_request');
   });
 
-  it('counts only requests from the current calendar month (quota resets monthly)', async () => {
-    await createRequest({ tenantId: TENANT.id, type: 'general', title: 'x', description: 'y' });
+  it('counts only the same type from the current calendar month (cap resets monthly)', async () => {
+    await createRequest({ tenantId: TENANT.id, type: 'ai_creative', title: 'x', description: 'y' });
     const countArg = dbMock.serviceRequest.count.mock.calls[0]![0];
+    expect(countArg.where.type).toBe('ai_creative');
     expect(countArg.where.createdAt.gte.getTime()).toBe(startOfCurrentMonthUTC().getTime());
   });
 
@@ -257,13 +283,24 @@ describe('getRequest', () => {
 });
 
 describe('getUsage', () => {
-  it('returns used / limit / resetsAt for the Premium plan (unlimited = 999)', async () => {
-    dbMock.serviceRequest.count.mockResolvedValue(3);
+  it('returns per-type used/limit for the current month', async () => {
+    const counts: Record<string, number> = {
+      ai_creative: 2,
+      social_media: 5,
+      website_update: 1,
+      report_request: 0,
+    };
+    dbMock.serviceRequest.count.mockImplementation((args: { where: { type: string } }) =>
+      Promise.resolve(counts[args.where.type] ?? 0),
+    );
+
     const usage = await getUsage();
+
     expect(usage).toEqual({
-      used: 3,
-      limit: 999,
-      resetsAt: startOfNextMonthUTC().toISOString(),
+      ai_creative: { used: 2, limit: 4 },
+      social_media: { used: 5, limit: 12 },
+      website_update: { used: 1, limit: 4 },
+      report_request: { used: 0, limit: 1 },
     });
   });
 });

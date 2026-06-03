@@ -1,9 +1,11 @@
 import { ActivityIndicator, Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
+import { LIMITED_REQUEST_TYPES, type RequestUsage } from '@bdt/shared-types';
 import { RNBadge, RNButton, RNCard, RNSectionHeader } from '@/components/ui';
 import { api } from '@/api/client';
 import { palette, space, typography } from '@/styles/appTokens';
+import { TYPE_LABEL } from '../requests/requestMeta';
 
 interface PlanShape {
   id: 'premium';
@@ -33,6 +35,12 @@ export function ClientDashboardScreen() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['tenant'],
     queryFn: () => api<{ data: TenantDetail }>('/api/tenant'),
+    select: (r) => r.data,
+  });
+
+  const usage = useQuery({
+    queryKey: ['requests', 'usage'],
+    queryFn: () => api<{ data: RequestUsage }>('/api/requests/usage'),
     select: (r) => r.data,
   });
 
@@ -82,6 +90,25 @@ export function ClientDashboardScreen() {
           ))}
         </View>
       </RNCard>
+
+      {/* --- This Month's Usage -------------------------------------- */}
+      {usage.data && (
+        <>
+          <RNSectionHeader title="This Month's Usage" />
+          <RNCard>
+            <View style={{ gap: space[3] }}>
+              {LIMITED_REQUEST_TYPES.map((t) => (
+                <View key={t} style={styles.usageRow}>
+                  <Text style={styles.usageLabel}>{TYPE_LABEL[t]}</Text>
+                  <Text style={styles.usageValue}>
+                    {usage.data![t].used} / {usage.data![t].limit}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </RNCard>
+        </>
+      )}
 
       {/* --- Your Website -------------------------------------------- */}
       <RNSectionHeader title="Your Website" />
@@ -233,5 +260,20 @@ const styles = StyleSheet.create({
     fontFamily: typography.family.bodyMedium,
     fontSize: typography.size.bodyMD,
     color: palette.ink.primary,
+  },
+  usageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  usageLabel: {
+    fontFamily: typography.family.bodyMedium,
+    fontSize: typography.size.bodyMD,
+    color: palette.ink.primary,
+  },
+  usageValue: {
+    fontFamily: typography.family.bodySemibold,
+    fontSize: typography.size.bodyMD,
+    color: palette.metal.rose,
   },
 });

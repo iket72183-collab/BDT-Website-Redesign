@@ -8,6 +8,7 @@ export type BadgeTone =
   | 'cancelled'   // muted
   | 'premium'     // rose-gold metal accent
   | 'basic'       // outlined neutral
+  | 'addon'       // billable $25 over-limit add-on — stands out for invoicing
   | 'unread'
   | 'read';
 
@@ -19,6 +20,7 @@ const TONES: Record<BadgeTone, string> = {
   cancelled: 'border-ink-subtle/40 bg-ink-subtle/10 text-ink-muted',
   premium:   'border-metal-border/60 bg-metal-rose/15 text-metal-champagne',
   basic:     'border-metal-border/40 bg-bg-raised text-ink-muted',
+  addon:     'border-status-warning/70 bg-status-warning/30 text-status-warning',
   unread:    'border-metal-rose/50 bg-metal-rose/10 text-metal-rose',
   read:      'border-ink-subtle/30 bg-bg-raised text-ink-muted',
 };

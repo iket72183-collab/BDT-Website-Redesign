@@ -42,9 +42,10 @@ export default function TermsPage() {
           <h2 className={H2}>1. What you get</h2>
           <p className={P}>
             With Premium, BDT delivers website design, ongoing website maintenance, social media
-            management, AI-generated creative assets, unlimited service requests, 24/7 AI-powered
-            support, monthly performance reporting, and direct messaging with our team — all
-            accessible from the BDT Connect mobile app. Current plan details are listed at{' '}
+            management, AI-generated creative assets, monthly performance reporting, and direct
+            messaging with our team — all accessible from the BDT Connect mobile app. Each service
+            type includes a monthly request allowance; additional requests beyond those allowances
+            are available as a $25 add-on each. Current plan details are listed at{' '}
             <Link href="/#plans" className="text-metal-rose">
               bdttalentgroup.com/connect
             </Link>

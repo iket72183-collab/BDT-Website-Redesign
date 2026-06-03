@@ -1,7 +1,7 @@
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import type { ClientRequest, RequestUsage } from '@bdt/shared-types';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import type { ClientRequest } from '@bdt/shared-types';
 import { RNBadge, RNButton, RNCard, RNEmptyState, Icon } from '@/components/ui';
 import { api } from '@/api/client';
 import { palette, radius, space, typography } from '@/styles/appTokens';
@@ -11,7 +11,6 @@ import {
   TYPE_ICON,
   TYPE_LABEL,
   formatRelative,
-  formatResetDate,
 } from './requestMeta';
 
 interface ListPage {
@@ -19,12 +18,6 @@ interface ListPage {
 }
 
 export function RequestsScreen() {
-  const usage = useQuery({
-    queryKey: ['requests', 'usage'],
-    queryFn: () => api<{ data: RequestUsage }>('/api/requests/usage'),
-    select: (r) => r.data,
-  });
-
   const list = useInfiniteQuery({
     queryKey: ['requests', 'list'],
     queryFn: ({ pageParam }) =>
@@ -49,8 +42,6 @@ export function RequestsScreen() {
           <Text style={styles.newBtnLabel}>NEW</Text>
         </Pressable>
       </View>
-
-      {usage.data && <UsageBar usage={usage.data} />}
 
       {list.isLoading ? (
         <View style={styles.center}>
@@ -88,21 +79,6 @@ export function RequestsScreen() {
           renderItem={({ item }) => <RequestCard request={item} />}
         />
       )}
-    </View>
-  );
-}
-
-function UsageBar({ usage }: { usage: RequestUsage }) {
-  const pct = usage.limit > 0 ? Math.min(1, usage.used / usage.limit) : 0;
-  return (
-    <View style={styles.usageWrap}>
-      <Text style={styles.usageText}>
-        {usage.used} of {usage.limit} requests used this month
-      </Text>
-      <View style={styles.track}>
-        <View style={[styles.fill, { width: `${pct * 100}%` }]} />
-      </View>
-      <Text style={styles.resetText}>Resets {formatResetDate(usage.resetsAt)}</Text>
     </View>
   );
 }
@@ -149,24 +125,6 @@ const styles = StyleSheet.create({
     fontSize: typography.size.label,
     letterSpacing: typography.tracking.label,
     color: palette.metal.rose,
-  },
-  usageWrap: { paddingHorizontal: space[5], marginBottom: space[5], gap: space[2] },
-  usageText: {
-    fontFamily: typography.family.bodyMedium,
-    fontSize: typography.size.bodySM,
-    color: palette.ink.muted,
-  },
-  track: {
-    height: 4,
-    borderRadius: radius.full,
-    backgroundColor: palette.bg.raised,
-    overflow: 'hidden',
-  },
-  fill: { height: 4, borderRadius: radius.full, backgroundColor: palette.metal.rose },
-  resetText: {
-    fontFamily: typography.family.body,
-    fontSize: typography.size.caption,
-    color: palette.ink.subtle,
   },
   list: { paddingHorizontal: space[5], paddingBottom: space[8], gap: space[3] },
   card: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
