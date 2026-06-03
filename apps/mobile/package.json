@@ -23,6 +23,7 @@
     "@sentry/react-native": "~7.2.0",
     "@stripe/stripe-react-native": "0.50.3",
     "@tanstack/react-query": "^5.51.23",
+    "babel-preset-expo": "~54.0.10",
     "expo": "~54.0.0",
     "expo-blur": "~15.0.8",
     "expo-constants": "~18.0.13",
