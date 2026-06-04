@@ -3,12 +3,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+type SubscriptionStatus = 'incomplete' | 'active' | 'trialing' | 'past_due' | 'cancelled';
+
 interface ClientEditorProps {
   clientId: string;
   initial: {
     notes: string | null;
     isActive: boolean;
     businessName: string;
+    subscriptionStatus: SubscriptionStatus;
   };
 }
 
@@ -30,11 +33,18 @@ export function ClientEditor({ clientId, initial }: ClientEditorProps) {
 
   const [isActive, setIsActive] = useState(initial.isActive);
 
+  const [status, setStatus] = useState<SubscriptionStatus>(initial.subscriptionStatus);
+  const [activating, setActivating] = useState(false);
+
   const [deleteConfirm, setDeleteConfirm] = useState('');
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const patchClient = async (body: { notes?: string | null; isActive?: boolean }) => {
+  const patchClient = async (body: {
+    notes?: string | null;
+    isActive?: boolean;
+    subscriptionStatus?: SubscriptionStatus;
+  }) => {
     const response = await fetch(`/api/clients/${clientId}`, {
       method: 'PATCH',
       headers: { 'content-type': 'application/json' },
@@ -77,6 +87,25 @@ export function ClientEditor({ clientId, initial }: ClientEditorProps) {
     } catch (err) {
       setIsActive(!next); // rollback
       window.alert(err instanceof Error ? err.message : 'Update failed.');
+    }
+  };
+
+  const activateAccount = async () => {
+    const ok = window.confirm(
+      'Manually activate this account? Use this only when Stripe shows a completed payment ' +
+        'but the status is stuck on “incomplete” (e.g. the webhook failed). This grants the ' +
+        'client full app access.',
+    );
+    if (!ok) return;
+    setActivating(true);
+    try {
+      await patchClient({ subscriptionStatus: 'trialing' });
+      setStatus('trialing');
+      router.refresh();
+    } catch (err) {
+      window.alert(err instanceof Error ? err.message : 'Activation failed.');
+    } finally {
+      setActivating(false);
     }
   };
 
@@ -125,6 +154,30 @@ export function ClientEditor({ clientId, initial }: ClientEditorProps) {
           </button>
         </div>
       </div>
+
+      {/* Manual activation — escape hatch for a failed Stripe webhook. Only
+          shown while the tenant is stuck pre-payment; once active/trialing it
+          disappears. */}
+      {status === 'incomplete' && (
+        <div className="rounded-xl border border-status-warning/30 bg-status-warning/5 p-5">
+          <h3 className="font-display text-lg font-semibold text-ink-primary">
+            Payment setup incomplete
+          </h3>
+          <p className="mt-1 text-xs text-ink-muted">
+            This client registered but their subscription never activated, so they cannot access
+            the app. If Stripe shows a completed payment, the activation webhook may have failed —
+            manually activate to restore access.
+          </p>
+          <button
+            type="button"
+            onClick={activateAccount}
+            disabled={activating}
+            className="btn-metal mt-4 rounded-lg px-4 py-2 text-xs uppercase tracking-[0.18em] disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {activating ? 'Activating…' : 'Activate account'}
+          </button>
+        </div>
+      )}
 
       {/* Danger zone */}
       <div className="rounded-xl border border-status-danger/30 bg-status-danger/5 p-5">

@@ -215,6 +215,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
               notes: client.notes,
               isActive: client.isActive,
               businessName: client.businessName,
+              subscriptionStatus: client.subscriptionStatus,
             }}
           />
         </Card>

@@ -7,7 +7,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
  *   - listClients: search OR-clause, plan / status filters, sort dispatch,
  *     pagination math, MRR decoration.
  *   - getClient: 404 on unknown id, includes recent messages + sub events.
- *   - updateClient: 404 on unknown id, audit log fires.
+ *   - updateClient: 404 on unknown id, audit log fires, and the manual
+ *     activation escape hatch completes onboarding only when granting access.
  *   - listAllMessages: filters by status/tenant, returns unreadCount.
  *   - markMessageRead: 404 on unknown id, sets status to 'read'.
  *   - revenueOverview: MRR math from counts × PLAN price, includes mrrByMonth.
@@ -180,6 +181,49 @@ describe('updateClient', () => {
       expect.objectContaining({ clientId: 't_1' }),
     );
     expect(result.mrr).toBe(150);
+  });
+
+  // Manual-activation escape hatch: when an admin grants access to a client
+  // stuck pre-payment (a failed Stripe webhook), the service must ALSO complete
+  // onboarding, or requireSubscription strands them on ONBOARDING_INCOMPLETE.
+  it('completes onboarding when activating a client stuck pre-payment', async () => {
+    dbMock.tenant.findUnique.mockResolvedValue({
+      id: 't_1', isActive: true, notes: null, onboardingCompleted: false,
+    });
+    dbMock.tenant.update.mockResolvedValue(TENANT_A);
+
+    await updateClient('t_1', { subscriptionStatus: 'trialing' });
+
+    const data = dbMock.tenant.update.mock.calls[0]![0].data;
+    expect(data.subscriptionStatus).toBe('trialing');
+    expect(data.onboardingCompleted).toBe(true);
+    expect(data.onboardingCompletedAt).toBeInstanceOf(Date);
+  });
+
+  it('does not re-touch onboarding when the client already onboarded', async () => {
+    dbMock.tenant.findUnique.mockResolvedValue({
+      id: 't_1', isActive: true, notes: null, onboardingCompleted: true,
+    });
+    dbMock.tenant.update.mockResolvedValue(TENANT_A);
+
+    await updateClient('t_1', { subscriptionStatus: 'active' });
+
+    const data = dbMock.tenant.update.mock.calls[0]![0].data;
+    expect(data).not.toHaveProperty('onboardingCompleted');
+    expect(data).not.toHaveProperty('onboardingCompletedAt');
+  });
+
+  it('does not complete onboarding for a non-granting status change', async () => {
+    dbMock.tenant.findUnique.mockResolvedValue({
+      id: 't_1', isActive: true, notes: null, onboardingCompleted: false,
+    });
+    dbMock.tenant.update.mockResolvedValue(TENANT_A);
+
+    await updateClient('t_1', { subscriptionStatus: 'cancelled' });
+
+    const data = dbMock.tenant.update.mock.calls[0]![0].data;
+    expect(data.subscriptionStatus).toBe('cancelled');
+    expect(data).not.toHaveProperty('onboardingCompleted');
   });
 });
 

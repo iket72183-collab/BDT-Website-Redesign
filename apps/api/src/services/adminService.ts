@@ -130,13 +130,27 @@ interface UpdateClientInput {
 export async function updateClient(id: string, data: UpdateClientInput) {
   const before = await rawPrisma.tenant.findUnique({
     where: { id },
-    select: { id: true, isActive: true, notes: true },
+    select: { id: true, isActive: true, notes: true, onboardingCompleted: true },
   });
   if (!before) throw new HttpError(404, 'not_found', 'not_found');
 
+  // Manual subscription override (admin escape hatch for a failed Stripe
+  // webhook). `requireSubscription` gates client access on BOTH an
+  // active/trialing status AND completed onboarding, so flipping only the
+  // status would strand the client on ONBOARDING_INCOMPLETE. Mirror the
+  // `customer.subscription.created` webhook and complete onboarding too.
+  const grantsAccess =
+    data.subscriptionStatus === 'active' || data.subscriptionStatus === 'trialing';
+  const completeOnboarding = grantsAccess && !before.onboardingCompleted;
+
   const updated = await rawPrisma.tenant.update({
     where: { id },
-    data,
+    data: {
+      ...data,
+      ...(completeOnboarding
+        ? { onboardingCompleted: true, onboardingCompletedAt: new Date() }
+        : {}),
+    },
     include: {
       owner: { select: USER_PUBLIC },
       _count: { select: { messages: true } },
