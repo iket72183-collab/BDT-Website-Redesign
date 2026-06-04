@@ -43,9 +43,8 @@ export default function TermsPage() {
           <p className={P}>
             With Premium, BDT delivers website design, ongoing website maintenance, social media
             management, AI-generated creative assets, monthly performance reporting, and direct
-            messaging with our team — all accessible from the BDT Connect mobile app. Each service
-            type includes a monthly request allowance; additional requests beyond those allowances
-            are available as a $25 add-on each. Current plan details are listed at{' '}
+            messaging with our team — all accessible from the BDT Connect mobile app. Current
+            plan details are listed at{' '}
             <Link href="/#plans" className="text-metal-rose">
               bdttalentgroup.com/connect
             </Link>
@@ -57,7 +56,7 @@ export default function TermsPage() {
           <h2 className={H2}>2. Subscription and billing</h2>
           <ul className={UL}>
             <li>
-              Service starts when you sign up. The $150 monthly Premium subscription fee is billed
+              Service starts when you sign up. The $100 monthly Premium subscription fee is billed
               automatically to the payment method on file via Stripe.
             </li>
             <li>

@@ -38,7 +38,7 @@ export function Hero() {
         >
           <span className="block text-ink-primary">Your entire online presence.</span>
           <span className="mt-3 block text-[3rem] leading-none text-metal-shimmer xs:text-[3.45rem] sm:mt-4 sm:text-display-xl lg:text-display-2xl">
-            $150/month.
+            $100/month.
           </span>
         </h1>
 

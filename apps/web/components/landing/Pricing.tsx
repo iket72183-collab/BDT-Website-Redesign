@@ -7,15 +7,14 @@ import { Button } from '../ui/Button';
 const tiers = [
   {
     name: 'Premium',
-    price: 150,
+    price: 100,
     tagline: 'Everything your business needs online',
     features: [
-      '4 AI-generated creative assets (flyers, promos, graphics, social visuals)',
-      '12 social media requests (posts, captions, scheduling, engagement)',
-      '4 website update requests (edits, fixes, maintenance, calendar updates)',
-      '1 monthly performance report (social growth, website traffic, insights)',
-      'Unlimited direct messaging to your BDT team',
-      'Additional requests available at $25 each',
+      'AI-generated creative assets (flyers, promos, graphics, social visuals)',
+      'Social media management (posts, captions, scheduling, engagement)',
+      'Website updates and maintenance (edits, fixes, calendar updates)',
+      'Monthly performance report (social growth, website traffic, insights)',
+      'Direct messaging to your BDT team',
     ],
   },
 ];
@@ -76,10 +75,6 @@ export function Pricing() {
                 </li>
               ))}
             </ul>
-
-            <p className="mt-4 font-body text-caption leading-relaxed text-ink-subtle">
-              Need more? Extra requests are just $25 each.
-            </p>
 
             <div className="mt-7 sm:mt-8">
               <Link href="#connect-contact" className="block">
