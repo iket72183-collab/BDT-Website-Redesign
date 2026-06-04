@@ -74,6 +74,28 @@ describe('requireSubscription', () => {
     expect((thrown as HttpError).code).toBe('missing_tenant');
   });
 
+  it('throws 403 tenant_not_found when the tenant row is missing', async () => {
+    prismaMock.tenant.findUnique.mockResolvedValue(null);
+    const { thrown } = await call({ sub: 'u1', role: 'client', tenantId: 't1' });
+    expect((thrown as HttpError).status).toBe(403);
+    expect((thrown as HttpError).code).toBe('tenant_not_found');
+  });
+
+  it('throws 402 SUBSCRIPTION_REQUIRED for a freshly-registered incomplete tenant', async () => {
+    // `incomplete` is the status every tenant carries straight out of
+    // registration (before payment). It must never reach the app surface.
+    // onboardingCompleted is forced true here to isolate the status gate.
+    prismaMock.tenant.findUnique.mockResolvedValue({
+      isActive: true,
+      subscriptionStatus: 'incomplete',
+      onboardingCompleted: true,
+    });
+    prismaMock.user.findUnique.mockResolvedValue({ emailVerifiedAt: new Date() });
+    const { thrown } = await call({ sub: 'u1', role: 'client', tenantId: 't1' });
+    expect((thrown as HttpError).status).toBe(402);
+    expect((thrown as HttpError).code).toBe('SUBSCRIPTION_REQUIRED');
+  });
+
   it('throws 403 ACCOUNT_SUSPENDED when tenant.isActive is false', async () => {
     prismaMock.tenant.findUnique.mockResolvedValue({
       isActive: false,

@@ -26,7 +26,7 @@ vi.mock('../../config/env.js', () => ({
   },
 }));
 
-import { rotateRefreshToken } from '../tokenService.js';
+import { rotateRefreshToken, revokeAllForUser, revokeRefreshToken } from '../tokenService.js';
 
 function refreshJwt(): string {
   return jwt.sign(
@@ -88,5 +88,78 @@ describe('rotateRefreshToken', () => {
       status: 'rejected',
       reason: expect.objectContaining({ code: 'token_reuse_detected' }),
     });
+  });
+
+  it('revokes the whole family when the presented jti is unknown', async () => {
+    // A valid-signature token whose row is gone means either a forged token
+    // (leaked secret) or a wiped row — fail closed AND nuke every session.
+    prismaMock.refreshToken.findUnique.mockResolvedValue(null);
+    prismaMock.refreshToken.updateMany.mockResolvedValue({ count: 4 });
+
+    await expect(rotateRefreshToken(refreshJwt())).rejects.toMatchObject({
+      code: 'token_reuse_detected',
+    });
+    expect(prismaMock.refreshToken.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: expect.objectContaining({ userId: 'user_1', revokedAt: null }) }),
+    );
+  });
+
+  it('rejects an access token presented as a refresh token (no DB lookup)', async () => {
+    const accessJwt = jwt.sign(
+      { sub: 'user_1', tenantId: 'tenant_1', role: 'client', jti: 'jti_1', tokenType: 'access' },
+      SECRET,
+      { issuer: 'bdt-connect-api', audience: 'bdt-connect-client', expiresIn: '15m' },
+    );
+
+    await expect(rotateRefreshToken(accessJwt)).rejects.toMatchObject({ code: 'invalid_token_type' });
+    expect(prismaMock.refreshToken.findUnique).not.toHaveBeenCalled();
+  });
+
+  it('rejects an expired refresh-token row', async () => {
+    prismaMock.refreshToken.findUnique.mockResolvedValue({
+      jti: 'jti_1',
+      userId: 'user_1',
+      revokedAt: null,
+      expiresAt: new Date(Date.now() - 1_000),
+    });
+
+    await expect(rotateRefreshToken(refreshJwt())).rejects.toMatchObject({ code: 'token_expired' });
+  });
+
+  it('rejects rotation when the user is no longer active', async () => {
+    prismaMock.user.findUnique.mockResolvedValue({
+      id: 'user_1',
+      role: 'client',
+      tenantId: 'tenant_1',
+      isActive: false,
+    });
+
+    await expect(rotateRefreshToken(refreshJwt())).rejects.toMatchObject({ code: 'invalid_refresh' });
+  });
+
+  it('rejects a refresh token with a tampered signature', async () => {
+    await expect(rotateRefreshToken(`${refreshJwt()}tamper`)).rejects.toMatchObject({
+      code: 'invalid_refresh',
+    });
+  });
+});
+
+describe('revokeAllForUser', () => {
+  it('revokes every still-active refresh token for the user', async () => {
+    prismaMock.refreshToken.updateMany.mockResolvedValue({ count: 3 });
+
+    await revokeAllForUser('user_1');
+
+    expect(prismaMock.refreshToken.updateMany).toHaveBeenCalledWith({
+      where: { userId: 'user_1', revokedAt: null },
+      data: { revokedAt: expect.any(Date) },
+    });
+  });
+});
+
+describe('revokeRefreshToken', () => {
+  it('is a best-effort no-op for an unparseable token', async () => {
+    await expect(revokeRefreshToken('not-a-jwt')).resolves.toBeUndefined();
+    expect(prismaMock.refreshToken.updateMany).not.toHaveBeenCalled();
   });
 });

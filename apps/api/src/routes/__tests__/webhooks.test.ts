@@ -35,6 +35,7 @@ const { stripeMock, prismaMock, loggerMock } = vi.hoisted(() => ({
       update: vi.fn(),
     },
     subscriptionEvent: { create: vi.fn() },
+    socialAccount: { updateMany: vi.fn() },
   },
   loggerMock: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
 }));
@@ -112,6 +113,7 @@ beforeEach(() => {
   prismaMock.tenant.findUnique.mockResolvedValue({ ownerId: 'u1' });
   prismaMock.tenant.update.mockResolvedValue({});
   prismaMock.subscriptionEvent.create.mockResolvedValue({});
+  prismaMock.socialAccount.updateMany.mockResolvedValue({ count: 0 });
   prismaMock.processedStripeEvent.findUnique.mockResolvedValue(null);
   prismaMock.processedStripeEvent.create.mockResolvedValue({});
   prismaMock.processedStripeEvent.update.mockResolvedValue({});
@@ -262,6 +264,28 @@ describe('handlePlatformWebhook', () => {
           subscriptionStatus: 'active'
         })
       })
+    );
+  });
+
+  it('wipes stored social-account credentials when a subscription is deleted', async () => {
+    stripeMock.webhooks.constructEvent.mockReturnValue(makeEvent('customer.subscription.deleted'));
+    prismaMock.tenant.findFirst.mockResolvedValue({
+      id: 't1',
+      subscriptionTier: 'premium',
+      pendingTier: null,
+      onboardingCompleted: true,
+    });
+
+    const req = mockReq({ 'stripe-signature': 'ok' });
+    const res = mockRes();
+    await handlePlatformWebhook(req, res as unknown as Response);
+
+    expect(res.statusCode).toBe(200);
+    expect(prismaMock.socialAccount.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { tenantId: 't1' },
+        data: expect.objectContaining({ secretCiphertext: null }),
+      }),
     );
   });
 

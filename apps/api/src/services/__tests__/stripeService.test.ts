@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { stripeMock, prismaMock, eventMock } = vi.hoisted(() => ({
   stripeMock: {
-    setupIntents: { retrieve: vi.fn() },
+    setupIntents: { retrieve: vi.fn(), create: vi.fn() },
     customers: { create: vi.fn(), update: vi.fn() },
     subscriptions: { create: vi.fn(), retrieve: vi.fn(), update: vi.fn(), cancel: vi.fn() },
     subscriptionSchedules: { create: vi.fn(), retrieve: vi.fn(), update: vi.fn(), release: vi.fn() },
@@ -31,7 +31,7 @@ vi.mock('../../config/env.js', () => ({
 }));
 vi.mock('../platformEventService.js', () => ({ logEvent: eventMock }));
 
-import { createSubscription } from '../stripeService.js';
+import { createSubscription, createSetupIntent } from '../stripeService.js';
 
 const TENANT = {
   id: 'tenant_1',
@@ -128,5 +128,79 @@ describe('createSubscription', () => {
       createSubscription({ tenantId: 'tenant_1', tier: 'premium', setupIntentId: 'seti_valid' }),
     ).rejects.toMatchObject({ status: 409, code: 'SUBSCRIPTION_PROVISIONING' });
     expect(stripeMock.subscriptions.create).not.toHaveBeenCalled();
+  });
+
+  it('refuses when the tenant already has a subscription, before touching Stripe', async () => {
+    prismaMock.tenant.findUnique.mockResolvedValue({ ...TENANT, stripeSubscriptionId: 'sub_existing' });
+
+    await expect(
+      createSubscription({ tenantId: 'tenant_1', tier: 'premium', setupIntentId: 'seti_valid' }),
+    ).rejects.toMatchObject({ status: 409, code: 'subscription_exists' });
+    expect(stripeMock.setupIntents.retrieve).not.toHaveBeenCalled();
+    expect(stripeMock.subscriptions.create).not.toHaveBeenCalled();
+  });
+
+  it('404s when the tenant does not exist', async () => {
+    prismaMock.tenant.findUnique.mockResolvedValue(null);
+
+    await expect(
+      createSubscription({ tenantId: 'ghost', tier: 'premium', setupIntentId: 'seti_valid' }),
+    ).rejects.toMatchObject({ status: 404 });
+    expect(stripeMock.subscriptions.create).not.toHaveBeenCalled();
+  });
+
+  it('rejects a SetupIntent whose Stripe customer is not the tenant customer', async () => {
+    stripeMock.setupIntents.retrieve.mockResolvedValueOnce({
+      ...SETUP_INTENT,
+      customer: 'cus_someone_else',
+    });
+
+    await expect(
+      createSubscription({ tenantId: 'tenant_1', tier: 'premium', setupIntentId: 'seti_valid' }),
+    ).rejects.toMatchObject({ status: 403, code: 'SETUP_INTENT_MISMATCH' });
+    expect(stripeMock.subscriptions.create).not.toHaveBeenCalled();
+  });
+
+  it('rejects a SetupIntent with no attached payment method', async () => {
+    stripeMock.setupIntents.retrieve.mockResolvedValueOnce({ ...SETUP_INTENT, payment_method: null });
+
+    await expect(
+      createSubscription({ tenantId: 'tenant_1', tier: 'premium', setupIntentId: 'seti_valid' }),
+    ).rejects.toMatchObject({ status: 400, code: 'SETUP_INTENT_INCOMPLETE' });
+    expect(stripeMock.subscriptions.create).not.toHaveBeenCalled();
+  });
+
+  it('persists the subscription and completes onboarding on success', async () => {
+    await createSubscription({ tenantId: 'tenant_1', tier: 'premium', setupIntentId: 'seti_valid' });
+
+    const storeCall = prismaMock.tenant.updateMany.mock.calls.find(
+      ([args]) => (args as { data?: Record<string, unknown> }).data?.stripeSubscriptionId === 'sub_1',
+    );
+    expect(storeCall).toBeTruthy();
+    expect((storeCall![0] as { data: Record<string, unknown> }).data).toMatchObject({
+      stripeSubscriptionId: 'sub_1',
+      subscriptionStatus: 'active',
+      onboardingCompleted: true,
+    });
+  });
+});
+
+describe('createSetupIntent', () => {
+  it('creates a tenant-scoped SetupIntent with a stable idempotency key', async () => {
+    stripeMock.setupIntents.create.mockResolvedValue({ client_secret: 'seti_secret_123' });
+
+    const result = await createSetupIntent('tenant_1');
+
+    expect(result.clientSecret).toBe('seti_secret_123');
+    expect(stripeMock.setupIntents.create).toHaveBeenCalledWith(
+      expect.objectContaining({ metadata: { tenantId: 'tenant_1' } }),
+      { idempotencyKey: 'setup:tenant_1' },
+    );
+  });
+
+  it('throws when Stripe returns no client_secret', async () => {
+    stripeMock.setupIntents.create.mockResolvedValue({ client_secret: null });
+
+    await expect(createSetupIntent('tenant_1')).rejects.toMatchObject({ status: 500 });
   });
 });
