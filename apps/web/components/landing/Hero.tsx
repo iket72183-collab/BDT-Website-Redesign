@@ -32,53 +32,29 @@ export function Hero() {
       {/* Hero content. Padding is tighter on mobile so CTAs sit above the fold. */}
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pb-12 pt-6 text-center xs:pb-16 xs:pt-8 sm:px-10 sm:pb-24 sm:pt-12">
         <h1
-          className="font-display font-bold leading-[1.03] animate-fade-up
-                     text-[2.18rem] xs:text-[2.5rem] sm:text-display-xl lg:text-display-2xl"
+          className="font-display font-bold leading-[0.98] animate-fade-up
+                     text-[2.5rem] xs:text-[2.9rem] sm:text-display-xl lg:text-display-2xl"
           style={{ animationDelay: '80ms' }}
         >
-          <span className="text-ink-primary">Your entire online presence.</span>
-          <br />
-          <span className="text-metal-shimmer">One team. $150/month.</span>
+          <span className="block text-ink-primary">Your entire online presence.</span>
+          <span className="mt-3 block text-[3rem] leading-none text-metal-shimmer xs:text-[3.45rem] sm:mt-4 sm:text-display-xl lg:text-display-2xl">
+            $150/month.
+          </span>
         </h1>
 
         <p
-          className="mx-auto mt-4 max-w-2xl font-body text-body-sm leading-relaxed text-ink-muted animate-fade-up xs:mt-5 xs:text-body-md sm:mt-8 sm:text-body-lg"
+          className="mx-auto mt-5 max-w-3xl font-body text-[1.04rem] leading-[1.55] text-ink-muted animate-fade-up xs:mt-6 xs:text-[1.16rem] sm:mt-8 sm:text-body-lg"
           style={{ animationDelay: '160ms' }}
         >
-          <span className="xs:hidden">
-            A monthly digital support service for small businesses that need social media help,
-            website updates, creative assets, and basic performance reporting without hiring a full
-            marketing team.
-          </span>
-          <span className="hidden xs:inline">
-            A monthly digital support service for small businesses that need social media help,
-            website updates, creative assets, and basic performance reporting without hiring a full
-            marketing team.
-          </span>
+          A monthly digital support service for small businesses that need social media help,
+          website updates, creative assets, and basic performance reporting without hiring a full
+          marketing team.
         </p>
-
-        <div
-          className="mt-5 w-full max-w-2xl rounded-2xl border border-metal-border/35 bg-bg-surface/55 px-4 py-3 text-left shadow-card backdrop-blur animate-fade-up xs:mt-6 xs:px-5 xs:py-4 sm:px-6"
-          style={{ animationDelay: '220ms' }}
-        >
-          <div className="font-body text-caption uppercase tracking-label text-metal-rose">
-            Premium service
-          </div>
-          <p className="mt-2 font-body text-body-sm leading-relaxed text-ink-muted sm:text-body-md">
-            <span className="xs:hidden">
-              Sign up for Premium and your service starts right away.
-            </span>
-            <span className="hidden xs:inline">
-              Sign up for Premium and your service starts right away. Send requests and
-              stay connected with the team through the BDT Connect app.
-            </span>
-          </p>
-        </div>
 
         {/* CTAs: full-width on mobile, side-by-side from sm up. */}
         <div
-          className="mt-6 flex w-full max-w-md flex-col items-stretch gap-3 sm:mt-12 sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-4 animate-fade-up"
-          style={{ animationDelay: '300ms' }}
+          className="mt-8 flex w-full max-w-md flex-col items-stretch gap-3 sm:mt-12 sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-4 animate-fade-up"
+          style={{ animationDelay: '220ms' }}
         >
           <Link href="#plans" className="block w-full sm:inline-block sm:w-auto">
             <Button asAnchor size="lg" variant="primary" className="w-full sm:w-auto">
@@ -94,7 +70,7 @@ export function Hero() {
 
         <p
           className="mt-5 max-w-xs font-body text-caption uppercase tracking-label text-ink-subtle animate-fade-up xs:mt-6 sm:mt-8 sm:max-w-none"
-          style={{ animationDelay: '380ms' }}
+          style={{ animationDelay: '300ms' }}
         >
           Service starts on signup · Cancel anytime · No long-term contract
         </p>
