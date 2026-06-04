@@ -46,11 +46,14 @@ export function Hero() {
           style={{ animationDelay: '160ms' }}
         >
           <span className="xs:hidden">
-            Creative, social, website updates, reporting, and direct access to your BDT team.
+            A monthly digital support service for small businesses that need social media help,
+            website updates, creative assets, and basic performance reporting without hiring a full
+            marketing team.
           </span>
           <span className="hidden xs:inline">
-            Premium includes monthly creative assets, social media requests, website updates,
-            reporting, and direct access to your BDT team.
+            A monthly digital support service for small businesses that need social media help,
+            website updates, creative assets, and basic performance reporting without hiring a full
+            marketing team.
           </span>
         </p>
 
