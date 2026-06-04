@@ -2,40 +2,34 @@ import { Card, CardBody, CardEyebrow, CardTitle } from '../ui/Card';
 
 const services = [
   {
+    eyebrow: 'Create',
+    title: 'AI Creative Assets',
+    body:
+      'Flyers, promos, graphics, and social visuals shaped for your brand.',
+  },
+  {
     eyebrow: 'Promote',
     title: 'Social Media Management',
     body:
-      '12 requests per month included for posts, captions, scheduling, and engagement.',
+      'Posts, captions, scheduling, and engagement support for your social presence.',
   },
   {
     eyebrow: 'Maintain',
     title: 'Website Updates',
     body:
-      '4 website update requests per month included for edits, fixes, maintenance, and calendar updates.',
-  },
-  {
-    eyebrow: 'Create',
-    title: 'AI Creative Assets',
-    body:
-      '4 AI-generated creative assets per month included for flyers, promos, graphics, and social visuals.',
-  },
-  {
-    eyebrow: 'Connect',
-    title: 'Direct Messaging',
-    body:
-      'Unlimited direct messaging keeps your BDT team close for files, ideas, and briefs.',
+      'Edits, fixes, maintenance, and calendar updates to keep your site current.',
   },
   {
     eyebrow: 'Report',
     title: 'Performance Reporting',
     body:
-      '1 monthly performance report included with social growth, website traffic, and insights.',
+      'Monthly reporting on social growth, website traffic, and useful insights.',
   },
   {
-    eyebrow: 'Need more',
-    title: 'Extra Requests',
+    eyebrow: 'Connect',
+    title: 'Direct Messaging',
     body:
-      'Additional requests are available at $25 each whenever your month needs more support.',
+      'Direct messaging keeps your BDT team close for files, ideas, and briefs.',
   },
 ];
 

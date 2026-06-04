@@ -50,28 +50,28 @@ const features = [
     eyebrow: 'Design',
     title: 'Creative assets, ready to use',
     body:
-      '4 AI-generated flyers, promos, graphics, or social visuals every month, shaped by your brand.',
+      'AI-generated flyers, promos, graphics, and social visuals shaped by your brand.',
   },
   {
     icon: <ShieldIcon />,
     eyebrow: 'Maintain',
     title: 'Website updates kept moving',
     body:
-      '4 monthly website update requests cover edits, fixes, maintenance, and calendar updates.',
+      'Website updates and maintenance cover edits, fixes, and calendar updates.',
   },
   {
     icon: <MegaphoneIcon />,
     eyebrow: 'Promote',
     title: 'Social presence, delivered',
     body:
-      '12 social media requests per month for posts, captions, scheduling, and engagement.',
+      'Social media management covers posts, captions, scheduling, and engagement.',
   },
   {
     icon: <InboxIcon />,
     eyebrow: 'Connect',
     title: 'Team access and reporting',
     body:
-      'Unlimited direct messaging plus 1 monthly performance report with social growth, website traffic, and insights.',
+      'Direct messaging to your BDT team plus a monthly performance report with social growth, website traffic, and insights.',
   },
 ];
 
