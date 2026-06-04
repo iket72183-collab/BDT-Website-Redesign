@@ -25,16 +25,16 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'BDT Connect — Your online presence, professionally delivered.',
+  title: 'BDT Connect — Your entire online presence. One team. $150/month.',
   description:
-    'BDT Talent Group manages your social media, website, and creative assets for $150/month — delivered through a private client app.',
+    'BDT Talent Group manages monthly creative assets, social media requests, website updates, reporting, and direct messaging for $150/month.',
   metadataBase: new URL('https://bdttalentgroup.com/connect/'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'BDT Connect',
-    description: 'Your online presence, professionally delivered.',
+    description: 'Your entire online presence. One team. $150/month.',
     type: 'website',
     url: '/',
     images: [
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'BDT Connect',
-    description: 'Your online presence, professionally delivered.',
+    description: 'Your entire online presence. One team. $150/month.',
     images: ['https://bdttalentgroup.com/assets/bdt-logo.jpeg'],
   },
 };

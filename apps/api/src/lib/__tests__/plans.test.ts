@@ -20,12 +20,12 @@ describe('PLANS', () => {
 
   it('lists the per-type limits in the feature copy', () => {
     expect(PLANS.premium.features).toEqual([
-      '4 AI-generated creative assets per month (flyers, promos, graphics)',
-      '12 social media requests per month (posting, content, engagement)',
-      '4 website update requests per month (fixes, edits, maintenance)',
-      '1 monthly performance report',
+      '4 AI-generated creative assets (flyers, promos, graphics, social visuals)',
+      '12 social media requests (posts, captions, scheduling, engagement)',
+      '4 website update requests (edits, fixes, maintenance, calendar updates)',
+      '1 monthly performance report (social growth, website traffic, insights)',
+      'Unlimited direct messaging to your BDT team',
       'Additional requests available at $25 each',
-      'Direct messaging to BDT team',
     ]);
   });
 });

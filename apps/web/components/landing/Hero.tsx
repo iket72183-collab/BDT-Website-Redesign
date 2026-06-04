@@ -36,9 +36,9 @@ export function Hero() {
                      text-[2.18rem] xs:text-[2.5rem] sm:text-display-xl lg:text-display-2xl"
           style={{ animationDelay: '80ms' }}
         >
-          <span className="text-ink-primary">Your online presence,</span>
+          <span className="text-ink-primary">Your entire online presence.</span>
           <br />
-          <span className="text-metal-shimmer">professionally delivered.</span>
+          <span className="text-metal-shimmer">One team. $150/month.</span>
         </h1>
 
         <p
@@ -46,12 +46,11 @@ export function Hero() {
           style={{ animationDelay: '160ms' }}
         >
           <span className="xs:hidden">
-            Your entire online presence — social media, website, and creative assets — fully
-            managed for $150/month.
+            Creative, social, website updates, reporting, and direct access to your BDT team.
           </span>
           <span className="hidden xs:inline">
-            Your entire online presence — social media, website, and creative assets — fully
-            managed for $150/month.
+            Premium includes monthly creative assets, social media requests, website updates,
+            reporting, and direct access to your BDT team.
           </span>
         </p>
 

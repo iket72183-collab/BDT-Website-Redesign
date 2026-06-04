@@ -10,12 +10,12 @@ const tiers = [
     price: 150,
     tagline: 'Everything your business needs online',
     features: [
-      '4 AI-generated creative assets per month (flyers, promos, graphics)',
-      '12 social media requests per month (posting, content, engagement)',
-      '4 website update requests per month (fixes, edits, maintenance)',
-      '1 monthly performance report',
+      '4 AI-generated creative assets (flyers, promos, graphics, social visuals)',
+      '12 social media requests (posts, captions, scheduling, engagement)',
+      '4 website update requests (edits, fixes, maintenance, calendar updates)',
+      '1 monthly performance report (social growth, website traffic, insights)',
+      'Unlimited direct messaging to your BDT team',
       'Additional requests available at $25 each',
-      'Direct messaging to BDT team',
     ],
   },
 ];
@@ -76,6 +76,10 @@ export function Pricing() {
                 </li>
               ))}
             </ul>
+
+            <p className="mt-4 font-body text-caption leading-relaxed text-ink-subtle">
+              Need more? Extra requests are just $25 each.
+            </p>
 
             <div className="mt-7 sm:mt-8">
               <Link href="#connect-contact" className="block">

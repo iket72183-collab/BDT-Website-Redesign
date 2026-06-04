@@ -147,9 +147,10 @@ export function Contact() {
           <Input
             label="Website or social link"
             name="website"
-            type="url"
+            type="text"
+            inputMode="url"
             autoComplete="url"
-            placeholder="https://"
+            placeholder="yourwebsite.com or @yourhandle"
           />
 
           <label className="block w-full" htmlFor="connect-message">

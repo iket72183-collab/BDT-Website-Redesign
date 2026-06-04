@@ -48,30 +48,30 @@ const features = [
   {
     icon: <GlobeIcon />,
     eyebrow: 'Design',
-    title: 'A website that fits your brand',
+    title: 'Creative assets, ready to use',
     body:
-      'We rebuild your site from the ground up — fast, mobile-first, written in your voice.',
+      '4 AI-generated flyers, promos, graphics, or social visuals every month, shaped by your brand.',
   },
   {
     icon: <ShieldIcon />,
     eyebrow: 'Maintain',
-    title: 'Kept fast, secure, current',
+    title: 'Website updates kept moving',
     body:
-      "Updates, security patches, hosting, uptime. The site stays sharp because we're working on it whether you ask or not.",
+      '4 monthly website update requests cover edits, fixes, maintenance, and calendar updates.',
   },
   {
     icon: <MegaphoneIcon />,
     eyebrow: 'Promote',
     title: 'Social presence, delivered',
     body:
-      'On-brand posts to Instagram, Facebook, and TikTok every week — never another empty grid.',
+      '12 social media requests per month for posts, captions, scheduling, and engagement.',
   },
   {
     icon: <InboxIcon />,
     eyebrow: 'Connect',
-    title: 'Message us from the app',
+    title: 'Team access and reporting',
     body:
-      'See every deliverable, message your account team, get a monthly performance report. All in your private BDT Connect app.',
+      'Unlimited direct messaging plus 1 monthly performance report with social growth, website traffic, and insights.',
   },
 ];
 

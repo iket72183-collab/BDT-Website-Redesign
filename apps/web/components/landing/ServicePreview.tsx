@@ -5,37 +5,37 @@ const services = [
     eyebrow: 'Promote',
     title: 'Social Media Management',
     body:
-      'We handle your posting, content, and engagement across all your platforms.',
+      '12 requests per month included for posts, captions, scheduling, and engagement.',
   },
   {
     eyebrow: 'Maintain',
-    title: 'Website Maintenance & Redesign',
+    title: 'Website Updates',
     body:
-      'Updates, fixes, and full redesigns handled for you, whenever you need it.',
+      '4 website update requests per month included for edits, fixes, maintenance, and calendar updates.',
   },
   {
     eyebrow: 'Create',
     title: 'AI Creative Assets',
     body:
-      'Professional flyers, promos, and graphics created with AI tools by our team.',
+      '4 AI-generated creative assets per month included for flyers, promos, graphics, and social visuals.',
   },
   {
     eyebrow: 'Connect',
-    title: 'Unlimited Requests',
+    title: 'Direct Messaging',
     body:
-      'Send us files, ideas, or briefs anytime through the BDT Connect app.',
-  },
-  {
-    eyebrow: 'Support',
-    title: '24/7 AI Support',
-    body:
-      'Get instant answers any time of day or night.',
+      'Unlimited direct messaging keeps your BDT team close for files, ideas, and briefs.',
   },
   {
     eyebrow: 'Report',
-    title: 'Monthly Performance Reports',
+    title: 'Performance Reporting',
     body:
-      'See how your social media and website are growing every month.',
+      '1 monthly performance report included with social growth, website traffic, and insights.',
+  },
+  {
+    eyebrow: 'Need more',
+    title: 'Extra Requests',
+    body:
+      'Additional requests are available at $25 each whenever your month needs more support.',
   },
 ];
 
@@ -54,8 +54,8 @@ export function ServicePreview() {
             What BDT Connect will handle.
           </h2>
           <p className="mt-4 font-body text-body-sm leading-relaxed text-ink-muted sm:mt-5 sm:text-body-lg">
-            One Premium plan gives your business the website, social media, creative,
-            support, and reporting services it needs online.
+            One Premium plan gives your business a clear monthly set of creative,
+            social, website, reporting, and messaging support.
           </p>
         </div>
 
