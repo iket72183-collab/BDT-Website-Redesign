@@ -37,14 +37,6 @@ export function Hero() {
 
       {/* Hero content. Padding is tighter on mobile so CTAs sit above the fold. */}
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pb-12 pt-6 text-center xs:pb-16 xs:pt-8 sm:px-10 sm:pb-20 sm:pt-12 lg:pb-24">
-        <div
-          className="mb-5 inline-flex items-center gap-3 rounded-full border border-metal-border/25 bg-bg-surface/35 px-4 py-2 font-body text-caption uppercase tracking-label text-metal-rose backdrop-blur-md animate-fade-up"
-          style={{ animationDelay: '40ms' }}
-        >
-          <span className="size-1.5 rounded-full bg-metal-rose shadow-glow" aria-hidden />
-          BDT Connect Premium
-        </div>
-
         <h1
           className="font-display font-bold leading-[0.98] animate-fade-up
                      text-[2.5rem] xs:text-[2.9rem] sm:text-display-xl lg:text-display-2xl"
