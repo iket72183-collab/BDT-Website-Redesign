@@ -112,7 +112,7 @@ export default async function DashboardPage() {
         <StatCard
           label="Monthly Recurring Revenue"
           value={formatUSD(revenue.currentMRR)}
-          hint={`${revenue.premiumCount} Premium client${revenue.premiumCount === 1 ? '' : 's'} × $150`}
+          hint={`${revenue.premiumCount} Premium client${revenue.premiumCount === 1 ? '' : 's'} × $100`}
           emphasis
         />
         <StatCard

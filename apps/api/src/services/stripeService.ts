@@ -13,7 +13,7 @@ import { PLANS } from '../lib/plans.js';
  * `stripe` or `Stripe`.
  *
  * BDT collects a single monthly subscription from agency clients — the Premium
- * plan ($150/mo). No free trial: the card is captured up front and billed
+ * plan ($100/mo). No free trial: the card is captured up front and billed
  * immediately. No Stripe Connect: we are not a marketplace.
  */
 

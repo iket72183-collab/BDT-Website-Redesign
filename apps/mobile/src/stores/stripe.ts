@@ -5,7 +5,7 @@ import { api } from '@/api/client';
 /**
  * Subscription state. Mirrors `/api/tenant/subscription` so the Plan tab can
  * render without an extra round trip. Single-plan model: one "Premium" plan at
- * $150/mo, no free trial, no tier upgrades. Connect / payouts are gone with the
+ * $100/mo, no free trial, no tier upgrades. Connect / payouts are gone with the
  * pivot — BDT is not a marketplace.
  */
 
@@ -18,7 +18,7 @@ export type Tier = 'premium';
  */
 export const PREMIUM_PLAN = {
   name: 'Premium',
-  price: 150,
+  price: 100,
   features: [
     '4 AI-generated creative assets (flyers, promos, graphics, social visuals)',
     '12 social media requests (posts, captions, scheduling, engagement)',

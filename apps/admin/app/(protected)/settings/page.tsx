@@ -28,7 +28,7 @@ const PLAN_DISPLAY = [
   {
     id: 'premium',
     name: 'Premium',
-    price: 150,
+    price: 100,
     features: [
       '4 AI-generated creative assets per month (flyers, promos, graphics)',
       '12 social media requests per month (posting, content, engagement)',

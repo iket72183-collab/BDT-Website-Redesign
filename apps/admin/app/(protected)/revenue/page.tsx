@@ -79,7 +79,7 @@ export default async function RevenuePage() {
         <StatCard
           label="Premium MRR"
           value={formatUSD(revenue.data.premiumMRR)}
-          hint={`${revenue.data.premiumCount} client${revenue.data.premiumCount === 1 ? '' : 's'} × $150`}
+          hint={`${revenue.data.premiumCount} client${revenue.data.premiumCount === 1 ? '' : 's'} × $100`}
         />
         <StatCard
           label="Churn This Month"

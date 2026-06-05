@@ -4,7 +4,7 @@
 export type UserRole = 'platform_admin' | 'client';
 
 // --- Subscription plan ------------------------------------------------------
-// Single-plan model: one "Premium" plan at $150/mo. (Was Basic/Premium tiers.)
+// Single-plan model: one "Premium" plan at $100/mo. (Was Basic/Premium tiers.)
 
 export type PlanId = 'premium';
 

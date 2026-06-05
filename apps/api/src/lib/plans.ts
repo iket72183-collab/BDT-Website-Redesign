@@ -1,7 +1,7 @@
 /**
  * Plan definition — single source of truth.
  *
- * BDT Connect is a single-plan product: one "Premium" plan at $150/month.
+ * BDT Connect is a single-plan product: one "Premium" plan at $100/month.
  * (Was a Basic/Premium two-tier model; collapsed to one plan with no free
  * trial — clients sign up, pay, and work starts immediately.)
  *
@@ -14,7 +14,7 @@ export const PLANS = {
   premium: {
     id: 'premium',
     name: 'Premium',
-    price: 150,
+    price: 100,
     currency: 'usd',
     interval: 'month',
     features: [
