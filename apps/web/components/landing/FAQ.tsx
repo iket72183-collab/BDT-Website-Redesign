@@ -56,6 +56,7 @@ export function FAQ() {
           {faqs.map((item, index) => {
             const isOpen = openIndex === index;
             const answerId = `faq-answer-${index}`;
+            const toggleOpen = () => setOpenIndex(isOpen ? -1 : index);
 
             return (
               <div
@@ -72,7 +73,13 @@ export function FAQ() {
                   type="button"
                   aria-expanded={isOpen}
                   aria-controls={answerId}
-                  onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                  onClick={toggleOpen}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      toggleOpen();
+                    }
+                  }}
                   className="group flex w-full items-start justify-between gap-4 px-4 py-4 text-left outline-none transition-colors duration-300 focus-visible:bg-metal-rose/[0.08] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-metal-rose/60 sm:px-6 sm:py-5"
                 >
                   <span className="grid gap-1">
