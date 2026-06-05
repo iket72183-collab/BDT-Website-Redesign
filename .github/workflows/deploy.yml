@@ -33,10 +33,11 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      # Triggers a redeploy of every service in the project tied to this
-      # repo. The Railway project is detected via RAILWAY_TOKEN (project-
-      # scoped). Each service runs the build/start commands from railway.toml.
+      # Triggers a redeploy of the API service. The project has only one
+      # deployable service ("worker" is a storage bucket, not a service). The
+      # Railway project is detected via RAILWAY_TOKEN (project-scoped); the
+      # service runs the build/start commands from railway.toml.
       - name: Trigger Railway redeploy
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service api --detach && railway up --service worker --detach
+        run: railway up --service api --detach
