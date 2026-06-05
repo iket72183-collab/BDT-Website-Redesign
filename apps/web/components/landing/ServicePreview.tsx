@@ -37,7 +37,7 @@ export function ServicePreview() {
   return (
     <section
       id="service-preview"
-      className="relative mx-auto w-full max-w-7xl px-5 py-14 sm:px-10 sm:py-32"
+      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
     >
       <div className="grid gap-7 sm:gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
         <div className="lg:sticky lg:top-28">

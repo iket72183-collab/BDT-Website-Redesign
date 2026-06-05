@@ -9,6 +9,7 @@ const SECTIONS = [
   { label: 'How It Works', href: '/#how' },
   { label: 'Services', href: '/#service-preview' },
   { label: 'Plans', href: '/#plans' },
+  { label: 'FAQ', href: '/#faq' },
 ];
 
 /**

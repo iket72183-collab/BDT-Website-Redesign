@@ -78,7 +78,7 @@ export function Contact() {
   return (
     <section
       id="connect-contact"
-      className="relative mx-auto w-full max-w-7xl px-5 py-14 sm:px-10 sm:py-32"
+      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
     >
       <Card framed className="grid gap-8 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
         <div>

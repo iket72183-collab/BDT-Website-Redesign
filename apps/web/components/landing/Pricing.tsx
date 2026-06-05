@@ -21,7 +21,7 @@ const tiers = [
 
 export function Pricing() {
   return (
-    <section id="plans" className="relative mx-auto w-full max-w-7xl px-5 py-14 sm:px-10 sm:py-32">
+    <section id="plans" className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28">
       <div className="mx-auto max-w-3xl text-center">
         <div className="font-body text-caption uppercase tracking-label text-metal-rose">
           Plans

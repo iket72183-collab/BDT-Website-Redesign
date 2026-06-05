@@ -22,7 +22,7 @@ const items = [
 
 export function ProblemSolution() {
   return (
-    <section id="how" className="relative mx-auto w-full max-w-7xl px-5 py-14 sm:px-10 sm:py-32">
+    <section id="how" className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28">
       <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
         {items.map((it) => (
           <div

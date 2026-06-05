@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import { Button } from '../ui/Button';
 
+const heroSignals = [
+  ['One retainer', 'Website, social, creative, reporting'],
+  ['$100/month', 'Clear monthly Premium service'],
+  ['Direct line', 'Message your BDT team anytime'],
+];
+
 export function Hero() {
   return (
     <section
@@ -14,23 +20,31 @@ export function Hero() {
         style={{
           background:
             'radial-gradient(ellipse 60% 50% at 20% 10%, rgba(201,168,130,0.16), transparent 60%), ' +
-            'radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,130,0.10), transparent 60%)',
+            'radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,130,0.10), transparent 60%), ' +
+            'linear-gradient(180deg, rgba(10,10,10,0.08), rgba(10,10,10,0.7))',
         }}
       />
-      {/* Animated diagonal sheen that slowly drifts across the hero. */}
+      {/* Subtle diagonal metal wash: static, so the hero feels composed. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06]"
         style={{
           backgroundImage:
             'linear-gradient(115deg, transparent 40%, rgba(232,212,168,0.5) 50%, transparent 60%)',
           backgroundSize: '200% 100%',
-          animation: 'shimmer 12s linear infinite',
         }}
       />
 
       {/* Hero content. Padding is tighter on mobile so CTAs sit above the fold. */}
-      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pb-12 pt-6 text-center xs:pb-16 xs:pt-8 sm:px-10 sm:pb-24 sm:pt-12">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pb-12 pt-6 text-center xs:pb-16 xs:pt-8 sm:px-10 sm:pb-20 sm:pt-12 lg:pb-24">
+        <div
+          className="mb-5 inline-flex items-center gap-3 rounded-full border border-metal-border/25 bg-bg-surface/35 px-4 py-2 font-body text-caption uppercase tracking-label text-metal-rose backdrop-blur-md animate-fade-up"
+          style={{ animationDelay: '40ms' }}
+        >
+          <span className="size-1.5 rounded-full bg-metal-rose shadow-glow" aria-hidden />
+          BDT Connect Premium
+        </div>
+
         <h1
           className="font-display font-bold leading-[0.98] animate-fade-up
                      text-[2.5rem] xs:text-[2.9rem] sm:text-display-xl lg:text-display-2xl"
@@ -74,6 +88,24 @@ export function Hero() {
         >
           Service starts on signup · Cancel anytime · No long-term contract
         </p>
+
+        <div
+          aria-label="BDT Connect service highlights"
+          className="mt-8 hidden w-full max-w-4xl grid-cols-3 gap-3 animate-fade-up sm:grid lg:mt-10"
+          style={{ animationDelay: '360ms' }}
+        >
+          {heroSignals.map(([label, detail]) => (
+            <div
+              key={label}
+              className="rounded-xl border border-metal-border/25 bg-bg-surface/45 px-4 py-4 text-left shadow-card backdrop-blur-md transition-[border-color,background-color,box-shadow] duration-300 ease-[var(--bdt-ease-base)] hover:border-metal-rose/45 hover:bg-bg-surface/65 hover:shadow-glow"
+            >
+              <div className="font-display text-2xl text-ink-primary">{label}</div>
+              <div className="mt-1 font-body text-caption uppercase tracking-label text-ink-subtle">
+                {detail}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Subtle gold divider line */}

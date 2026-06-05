@@ -3,6 +3,7 @@ import { ProblemSolution } from '@/components/landing/ProblemSolution';
 import { ServicePreview } from '@/components/landing/ServicePreview';
 import { Features } from '@/components/landing/Features';
 import { Pricing } from '@/components/landing/Pricing';
+import { FAQ } from '@/components/landing/FAQ';
 import { Contact } from '@/components/landing/Contact';
 import { Footer } from '@/components/landing/Footer';
 import { SiteNav } from '@/components/landing/SiteNav';
@@ -18,6 +19,7 @@ export default function LandingPage() {
         <ServicePreview />
         <Features />
         <Pricing />
+        <FAQ />
         <Contact />
         <Footer />
       </main>
