@@ -22,8 +22,16 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Install via npm rather than the upstream `curl | sh` installer. That
+      # script uses bash-only syntax and breaks under Ubuntu's /bin/sh (dash)
+      # with "Bad substitution", and it drops the binary in ~/.railway/bin
+      # which isn't on PATH. The npm package puts `railway` straight on PATH.
       - name: Install Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
+        run: npm install -g @railway/cli
 
       # Triggers a redeploy of every service in the project tied to this
       # repo. The Railway project is detected via RAILWAY_TOKEN (project-
