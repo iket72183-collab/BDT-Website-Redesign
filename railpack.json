@@ -6,7 +6,10 @@
     },
     "build": {
       "inputs": [{ "step": "install" }],
-      "commands": ["pnpm --filter @bdt/api build"]
+      "commands": [
+        "pnpm --filter @bdt/api db:migrate",
+        "pnpm --filter @bdt/api build"
+      ]
     }
   },
   "deploy": {
