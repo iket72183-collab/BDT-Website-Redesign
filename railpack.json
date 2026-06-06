@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "steps": {
+    "install": {
+      "commands": ["pnpm install --frozen-lockfile"]
+    },
+    "build": {
+      "inputs": [{ "step": "install" }],
+      "commands": ["pnpm --filter @bdt/api build"]
+    }
+  },
+  "deploy": {
+    "startCommand": "pnpm --filter @bdt/api start"
+  }
+}
