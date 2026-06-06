@@ -23,6 +23,7 @@ const TYPE_LABELS: Record<ServiceRequest['type'], string> = {
   file_upload: 'File Upload',
   ai_creative: 'AI Creative',
   report_request: 'Monthly Report',
+  ai_consultation: 'AI Consultation',
 };
 
 /** Human-readable request type for subjects / push bodies. */
@@ -42,6 +43,7 @@ const CLIENT_TYPE_LABELS: Record<ServiceRequest['type'], string> = {
   file_upload: 'file upload',
   ai_creative: 'AI creative',
   report_request: 'monthly report',
+  ai_consultation: 'AI consultation',
 };
 
 /**

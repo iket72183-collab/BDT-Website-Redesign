@@ -202,6 +202,27 @@ describe('createRequest', () => {
     expect(dbMock.serviceRequest.count).not.toHaveBeenCalled();
   });
 
+  it('treats ai_consultation as an uncapped one-time service (never counts against limits)', async () => {
+    // Even with a huge existing count, the one-time service must not be capped
+    // and must never hit the per-type monthly count.
+    dbMock.serviceRequest.count.mockResolvedValue(999);
+    dbMock.serviceRequest.create.mockResolvedValue(makeRequest({ type: 'ai_consultation' }));
+
+    const result = await createRequest({
+      tenantId: TENANT.id,
+      type: 'ai_consultation',
+      title: 'AI setup',
+      description: 'Install agent + automate intake',
+    });
+
+    expect(result.id).toBe('req_1');
+    expect(dbMock.serviceRequest.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({ type: 'ai_consultation', addOn: false }),
+    });
+    // Uncapped → the per-type monthly count is never queried.
+    expect(dbMock.serviceRequest.count).not.toHaveBeenCalled();
+  });
+
   it('accepts the new ai_creative and report_request types', async () => {
     await createRequest({ tenantId: TENANT.id, type: 'ai_creative', title: 'Flyer', description: 'spring promo' });
     await createRequest({ tenantId: TENANT.id, type: 'report_request', title: 'Report', description: 'May numbers' });

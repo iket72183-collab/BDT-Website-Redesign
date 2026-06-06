@@ -84,6 +84,10 @@ enum RequestType {
   file_upload
   ai_creative
   report_request
+  // Standalone one-time paid service ($500). Intentionally NOT in
+  // LIMITED_REQUEST_TYPES (lib/plans.ts) so it never counts against the
+  // monthly plan caps. Stripe billing for it is not wired yet.
+  ai_consultation
 }
 
 enum RequestStatus {

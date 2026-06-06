@@ -12,7 +12,8 @@ type RequestType =
   | 'general'
   | 'file_upload'
   | 'ai_creative'
-  | 'report_request';
+  | 'report_request'
+  | 'ai_consultation';
 type RequestStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
 export interface RequestRow {
@@ -46,6 +47,7 @@ const TYPE_LABEL: Record<RequestType, string> = {
   file_upload: 'File Upload',
   ai_creative: 'AI Creative',
   report_request: 'Monthly Report',
+  ai_consultation: 'AI Consultation',
 };
 
 // Map request status to an existing BadgeTone (no new tones introduced).
@@ -132,6 +134,7 @@ export function RequestsTable(props: Props) {
             { value: 'social_media', label: 'Social' },
             { value: 'ai_creative', label: 'AI Creative' },
             { value: 'report_request', label: 'Monthly Report' },
+            { value: 'ai_consultation', label: 'AI Consultation' },
             { value: 'general', label: 'General' },
             { value: 'file_upload', label: 'File Upload' },
           ]}
@@ -152,7 +155,7 @@ export function RequestsTable(props: Props) {
                 <Th>Business</Th>
                 <Th>Plan</Th>
                 <Th>Type</Th>
-                <Th>Add-on</Th>
+                <Th>Billing</Th>
                 <Th>Title</Th>
                 <Th>Status</Th>
                 <Th>Submitted</Th>
@@ -174,7 +177,11 @@ export function RequestsTable(props: Props) {
                   </td>
                   <td className="px-4 py-3 text-ink-muted">{TYPE_LABEL[r.type]}</td>
                   <td className="px-4 py-3">
-                    {r.addOn ? (
+                    {r.type === 'ai_consultation' ? (
+                      // Standalone one-time service. Stripe not wired yet — this
+                      // flags the $500 charge BDT collects out of band.
+                      <Badge tone="addon">$500 one-time</Badge>
+                    ) : r.addOn ? (
                       <Badge tone="addon">$25 Add-on</Badge>
                     ) : (
                       <span className="text-ink-subtle">In plan</span>

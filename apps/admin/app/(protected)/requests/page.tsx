@@ -6,7 +6,14 @@ import { RequestsTable, type RequestRow } from './RequestsTable';
 type SearchParams = {
   page?: string;
   search?: string;
-  type?: 'website_update' | 'social_media' | 'general' | 'file_upload';
+  type?:
+    | 'website_update'
+    | 'social_media'
+    | 'general'
+    | 'file_upload'
+    | 'ai_creative'
+    | 'report_request'
+    | 'ai_consultation';
   status?: 'pending' | 'in_progress' | 'completed' | 'cancelled';
 };
 

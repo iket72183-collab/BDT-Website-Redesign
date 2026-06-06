@@ -58,6 +58,19 @@ export const LIMITED_REQUEST_TYPES = [
   'report_request',
 ] as const;
 
+/**
+ * "AI Consultation" — a standalone one-time service ($500): on-site/remote AI
+ * consultation, agent installation, and workflow automation. It is deliberately
+ * NOT in LIMITED_REQUEST_TYPES, so `monthlyLimitFor` returns null for it and it
+ * never counts against the monthly plan caps.
+ *
+ * PAYMENT STUB: Stripe is not wired for this charge yet. This constant mirrors
+ * `AI_CONSULTATION_PRICE_CENTS` in `@bdt/shared-types` (the API ships compiled
+ * JS and can't import that package at runtime — keep the two in sync).
+ * TODO(stripe): create a one-time charge for this amount on request creation.
+ */
+export const AI_CONSULTATION_PRICE_CENTS = 50000;
+
 export type LimitedRequestType = (typeof LIMITED_REQUEST_TYPES)[number];
 
 /** Monthly cap for a request type on a plan, or `null` if the type is

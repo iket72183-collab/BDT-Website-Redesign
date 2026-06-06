@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { PLANS, PLAN_LIMITS, LIMITED_REQUEST_TYPES, monthlyLimitFor } from '../plans.js';
+import {
+  PLANS,
+  PLAN_LIMITS,
+  LIMITED_REQUEST_TYPES,
+  monthlyLimitFor,
+  AI_CONSULTATION_PRICE_CENTS,
+} from '../plans.js';
 
 /**
  * Single-plan model: one plan, "premium", at $150/mo. Each limited request
@@ -62,5 +68,16 @@ describe('monthlyLimitFor', () => {
   it('returns null for uncapped types', () => {
     expect(monthlyLimitFor('premium', 'general')).toBeNull();
     expect(monthlyLimitFor('premium', 'file_upload')).toBeNull();
+  });
+
+  it('treats ai_consultation as uncapped (standalone one-time service)', () => {
+    expect(monthlyLimitFor('premium', 'ai_consultation')).toBeNull();
+    expect([...LIMITED_REQUEST_TYPES]).not.toContain('ai_consultation');
+  });
+});
+
+describe('AI_CONSULTATION_PRICE_CENTS', () => {
+  it('is the $500 one-time price (Stripe billing not wired yet)', () => {
+    expect(AI_CONSULTATION_PRICE_CENTS).toBe(50000);
   });
 });

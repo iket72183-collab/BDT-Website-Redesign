@@ -16,7 +16,10 @@ export type RequestType =
   | 'general'
   | 'file_upload'
   | 'ai_creative'
-  | 'report_request';
+  | 'report_request'
+  // Standalone one-time paid service ($500) — NOT a LimitedRequestType, so it
+  // never counts against the monthly plan caps. See AI_CONSULTATION_PRICE_USD.
+  | 'ai_consultation';
 
 export type RequestStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
@@ -54,6 +57,18 @@ export const PLAN_LIMITS = {
 
 /** Dollar price of one over-limit add-on request (derived from cents). */
 export const ADDON_PRICE_USD = PLAN_LIMITS.premium.addon_price_cents / 100;
+
+// --- AI Consultation (standalone one-time service) -------------------------
+// A one-time, $500 service (on-site/remote AI consultation, agent install, and
+// workflow automation). It is NOT a subscription plan feature and does NOT
+// count against the monthly request caps.
+//
+// PAYMENT STUB: Stripe is not wired for this yet. This price is the single
+// source of truth for the "$500 one-time charge" copy shown in the apps; the
+// actual one-time charge will be created here later.
+// TODO(stripe): create a one-time PaymentIntent for AI_CONSULTATION_PRICE_CENTS.
+export const AI_CONSULTATION_PRICE_CENTS = 50000;
+export const AI_CONSULTATION_PRICE_USD = AI_CONSULTATION_PRICE_CENTS / 100;
 
 export interface RequestAttachment {
   name: string;
