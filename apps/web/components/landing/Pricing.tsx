@@ -19,9 +19,19 @@ const tiers = [
   },
 ];
 
+const consultation = {
+  name: 'AI Consultation',
+  price: 500,
+  description:
+    'We come to you — on-site or remote AI agent installation, workflow automation, and setup for your small business. One flat fee, no surprises.',
+};
+
 export function Pricing() {
   return (
-    <section id="plans" className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28">
+    <section
+      id="plans"
+      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
+    >
       <div className="mx-auto max-w-3xl text-center">
         <div className="font-body text-caption uppercase tracking-label text-metal-rose">
           Plans
@@ -30,21 +40,24 @@ export function Pricing() {
           One plan. <span className="text-metal">Everything you need.</span>
         </h2>
         <p className="mt-4 font-body text-body-sm leading-relaxed text-ink-muted sm:mt-6 sm:text-body-lg">
-          Service starts on signup. Cancel anytime from the app's billing portal.
+          Service starts on signup. Add hands-on AI setup when your business needs
+          implementation support.
         </p>
       </div>
 
-      <div className="mx-auto mt-8 grid max-w-md items-stretch gap-4 sm:mt-16 sm:gap-6">
+      <div className="mx-auto mt-8 grid max-w-5xl items-stretch gap-4 sm:mt-16 sm:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         {tiers.map((t) => (
           <Card
             key={t.name}
             framed
             hover
-            className="flex flex-col shadow-glow-strong lg:scale-[1.03]"
+            className="flex h-full flex-col shadow-glow-strong lg:scale-[1.02]"
           >
             <CardEyebrow>Plan</CardEyebrow>
             <CardTitle>{t.name}</CardTitle>
-            <p className="mt-2 font-body text-body-sm leading-relaxed text-ink-muted sm:text-body-md">{t.tagline}</p>
+            <p className="mt-2 font-body text-body-sm leading-relaxed text-ink-muted sm:text-body-md">
+              {t.tagline}
+            </p>
 
             <div className="mt-5 rounded-xl border border-metal-border/30 bg-bg-inset/80 p-4 sm:mt-6 sm:p-5">
               <span className="font-display text-display-lg text-metal-shimmer">${t.price}</span>
@@ -90,6 +103,35 @@ export function Pricing() {
             </div>
           </Card>
         ))}
+
+        <Card hover className="relative flex h-full flex-col overflow-hidden">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-metal-rose/70 to-transparent"
+          />
+          <CardEyebrow>One-time setup</CardEyebrow>
+          <CardTitle>{consultation.name}</CardTitle>
+          <p className="mt-3 font-body text-body-sm leading-relaxed text-ink-muted sm:text-body-md">
+            {consultation.description}
+          </p>
+
+          <div className="mt-5 rounded-xl border border-metal-border/30 bg-bg-inset/70 p-4 sm:mt-6 sm:p-5">
+            <span className="font-display text-display-lg text-metal">${consultation.price}</span>
+            {' '}
+            <span className="ml-1 font-body text-body-md text-ink-muted">one-time</span>
+            <div className="mt-1 font-body text-caption uppercase tracking-label text-ink-subtle">
+              On-site or remote implementation
+            </div>
+          </div>
+
+          <div className="mt-auto pt-7 sm:pt-8">
+            <Link href="#connect-contact" className="block">
+              <Button asAnchor variant="ghost" size="md" className="w-full">
+                Ask About AI Consultation
+              </Button>
+            </Link>
+          </div>
+        </Card>
       </div>
     </section>
   );
