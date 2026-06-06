@@ -28,6 +28,11 @@ const faqs = [
     answer:
       'Yes. Premium is listed at $100 per month. If your needs grow beyond the standard monthly service, BDT will discuss scope and pricing with you before any billing changes.',
   },
+  {
+    question: 'How does the AI Consultation work?',
+    answer:
+      'Every business is different, so we handle AI Consultation on a case-by-case basis. We review your workflow, recommend the right AI agents or automations, and help install and set them up for your business.',
+  },
 ];
 
 export function FAQ() {
