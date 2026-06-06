@@ -12,6 +12,7 @@ export const TYPE_ICON: Record<RequestType, IconName> = {
   file_upload: 'paperclip',
   ai_creative: 'image',
   report_request: 'bar-chart-2',
+  ai_consultation: 'cpu',
 };
 
 export const TYPE_LABEL: Record<RequestType, string> = {
@@ -21,6 +22,7 @@ export const TYPE_LABEL: Record<RequestType, string> = {
   file_upload: 'File Upload',
   ai_creative: 'AI Creative',
   report_request: 'Monthly Report',
+  ai_consultation: 'AI Consultation',
 };
 
 export const TYPE_BLURB: Record<RequestType, string> = {
@@ -30,6 +32,7 @@ export const TYPE_BLURB: Record<RequestType, string> = {
   file_upload: 'Send logos, photos, or documents',
   ai_creative: 'Flyers, promos, graphics, and social assets',
   report_request: 'Request your performance report',
+  ai_consultation: 'On-site or remote AI setup & automation — $500 one-time',
 };
 
 /**

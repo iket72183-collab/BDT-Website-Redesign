@@ -13,6 +13,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   ADDON_PRICE_USD,
+  AI_CONSULTATION_PRICE_USD,
   LIMITED_REQUEST_TYPES,
   type LimitedRequestType,
   type RequestAttachment,
@@ -33,6 +34,8 @@ const TYPE_ORDER: RequestType[] = [
   'social_media',
   'ai_creative',
   'report_request',
+  // Standalone one-time paid service — not part of the monthly plan caps.
+  'ai_consultation',
   'general',
   'file_upload',
 ];
@@ -279,6 +282,16 @@ export function NewRequestScreen() {
         onBack={type === 'social_media' ? () => setAccountStepDone(false) : () => setType(null)}
         title={TYPE_LABEL[type]}
       />
+
+      {type === 'ai_consultation' && (
+        <View style={styles.limitBanner}>
+          <Icon name="cpu" size="sm" color={palette.metal.rose} />
+          <Text style={styles.limitText}>
+            One-time service — ${AI_CONSULTATION_PRICE_USD}. This is separate from your monthly
+            plan. BDT will arrange payment after you submit (billing setup coming soon).
+          </Text>
+        </View>
+      )}
 
       {atLimit && !addOn && (
         <>
