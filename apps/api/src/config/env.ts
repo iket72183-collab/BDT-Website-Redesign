@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  API_PORT: z.coerce.number().default(4000),
+  // Railway injects PORT at runtime and routes its proxy to that port.
+  // We read PORT first, then fall back to API_PORT, then to 4000.
+  PORT: z.coerce.number().optional(),
+  API_PORT: z.coerce.number().optional(),
   API_PUBLIC_URL: z.string().url().default('http://localhost:4000'),
 
   DATABASE_URL: z.string().min(1),
@@ -150,7 +153,8 @@ if (env.NODE_ENV === 'production') {
 
 export const config = {
   nodeEnv: env.NODE_ENV,
-  port: env.API_PORT,
+  // Prefer Railway's injected PORT, then API_PORT, then default 4000.
+  port: env.PORT ?? env.API_PORT ?? 4000,
   publicUrl: env.API_PUBLIC_URL,
   db: {
     url: env.DATABASE_URL,
