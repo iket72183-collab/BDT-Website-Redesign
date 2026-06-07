@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  // Railway injects PORT; API_PORT is the legacy local name. PORT wins when set.
+  PORT: z.coerce.number().optional(),
   API_PORT: z.coerce.number().default(4000),
   API_PUBLIC_URL: z.string().url().default('http://localhost:4000'),
 
@@ -150,7 +152,7 @@ if (env.NODE_ENV === 'production') {
 
 export const config = {
   nodeEnv: env.NODE_ENV,
-  port: env.API_PORT,
+  port: env.PORT ?? env.API_PORT,
   publicUrl: env.API_PUBLIC_URL,
   db: {
     url: env.DATABASE_URL,
