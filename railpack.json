@@ -2,7 +2,10 @@
   "$schema": "https://schema.railpack.com",
   "steps": {
     "build": {
-      "inputs": [{ "step": "install" }],
+      "inputs": [
+        { "step": "install" },
+        { "local": true, "include": ["."] }
+      ],
       "commands": [
         "pnpm --filter @bdt/api db:migrate",
         "pnpm --filter @bdt/api build"
