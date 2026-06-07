@@ -26,7 +26,7 @@ function requireBilling(): void {
 
 /**
  * Client-billing routes. BDT charges the client a single monthly subscription
- * — the Premium plan ($150/mo). No free trial, no tier upgrades, no Connect.
+ * — the Premium plan ($100/mo). No free trial, no tier upgrades, no Connect.
  *
  * Mounted under /api/stripe behind verifyToken + tenantScope. All routes
  * are client-only.

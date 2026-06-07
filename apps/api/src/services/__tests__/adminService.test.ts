@@ -90,9 +90,9 @@ describe('listClients', () => {
 
     expect(result.total).toBe(2);
     expect(result.rows).toHaveLength(2);
-    expect(result.rows[0]!.mrr).toBe(150);
+    expect(result.rows[0]!.mrr).toBe(100);
     expect(result.rows[0]!.planName).toBe('Premium');
-    expect(result.rows[1]!.mrr).toBe(150);
+    expect(result.rows[1]!.mrr).toBe(100);
     expect(result.rows[1]!.planName).toBe('Premium');
   });
 
@@ -155,7 +155,7 @@ describe('getClient', () => {
 
     const result = await getClient('t_2');
 
-    expect(result.mrr).toBe(150);
+    expect(result.mrr).toBe(100);
     expect(result.messages).toEqual([{ id: 'm_1' }]);
     expect(result.subscriptionEvents).toEqual([{ id: 'se_1' }]);
   });
@@ -180,7 +180,7 @@ describe('updateClient', () => {
       'admin.client_updated',
       expect.objectContaining({ clientId: 't_1' }),
     );
-    expect(result.mrr).toBe(150);
+    expect(result.mrr).toBe(100);
   });
 
   // Manual-activation escape hatch: when an admin grants access to a client
@@ -264,7 +264,7 @@ describe('markMessageRead', () => {
 });
 
 describe('revenueOverview', () => {
-  it('computes MRR from the single Premium plan (premiumCount × $150)', async () => {
+  it('computes MRR from the single Premium plan (premiumCount × $100)', async () => {
     dbMock.tenant.count.mockResolvedValueOnce(5); // premiumCount (all paying tenants)
 
     dbMock.subscriptionEvent.count
@@ -283,13 +283,13 @@ describe('revenueOverview', () => {
     const result = await revenueOverview();
 
     expect(result.premiumCount).toBe(5);
-    expect(result.premiumMRR).toBe(750); // 5 x $150
-    expect(result.currentMRR).toBe(750);
+    expect(result.premiumMRR).toBe(500); // 5 x $100
+    expect(result.currentMRR).toBe(500);
     expect(result.churnThisMonth).toBe(1);
     expect(result.trialConversionsThisMonth).toBe(2);
     expect(result.mrrByMonth).toHaveLength(6);
-    // Current month produced 5 premium -> 5 x $150 = $750.
-    expect(result.mrrByMonth.at(-1)!.total).toBe(750);
+    // Current month produced 5 premium -> 5 x $100 = $500.
+    expect(result.mrrByMonth.at(-1)!.total).toBe(500);
   });
 });
 

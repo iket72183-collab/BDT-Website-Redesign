@@ -57,15 +57,21 @@ export function createServer(): Express {
   app.use(express.json({ limit: '1mb' }));
 
   // 5. PUBLIC routes (no auth required).
-  //    /health is what Railway hits to confirm a deployment is live; the
-  //    payload includes a version so we can tell which build is serving.
-  app.get('/health', (_req, res) => {
+  //    Health check is what Railway hits to confirm a deployment is live; the
+  //    payload includes a version so we can tell which build is serving. It's
+  //    lightweight (no DB/Redis calls) so it returns 200 the moment the
+  //    process is up. Exposed at both /health and /api/health — the latter is
+  //    Railway's configured healthcheckPath. Both MUST be registered before
+  //    the `/api` auth middleware below or they'd 401.
+  const health = (_req: express.Request, res: express.Response): void => {
     res.json({
       status: 'ok',
       timestamp: new Date().toISOString(),
       version: config.appVersion,
     });
-  });
+  };
+  app.get('/health', health);
+  app.get('/api/health', health);
   app.use('/api/auth', authRouter);
 
   // 6. PLATFORM ADMIN — auth required but NO tenant scope (cross-tenant).

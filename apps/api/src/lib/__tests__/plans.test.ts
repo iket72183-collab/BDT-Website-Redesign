@@ -8,7 +8,7 @@ import {
 } from '../plans.js';
 
 /**
- * Single-plan model: one plan, "premium", at $150/mo. Each limited request
+ * Single-plan model: one plan, "premium", at $100/mo. Each limited request
  * type has its own monthly cap (PLAN_LIMITS); over-limit requests are $25
  * add-ons.
  */
@@ -17,8 +17,8 @@ describe('PLANS', () => {
     expect(Object.keys(PLANS)).toEqual(['premium']);
   });
 
-  it('prices the Premium plan at $150/month', () => {
-    expect(PLANS.premium.price).toBe(150);
+  it('prices the Premium plan at $100/month', () => {
+    expect(PLANS.premium.price).toBe(100);
     expect(PLANS.premium.currency).toBe('usd');
     expect(PLANS.premium.interval).toBe('month');
     expect(PLANS.premium.name).toBe('Premium');

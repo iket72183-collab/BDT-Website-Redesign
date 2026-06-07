@@ -5,7 +5,7 @@ import { useStripeStore, PREMIUM_PLAN } from '@/stores/stripe';
 import { palette, space, typography } from '@/styles/appTokens';
 
 /**
- * Plan tab. Single-plan model: shows the one Premium plan ($150/mo) + features,
+ * Plan tab. Single-plan model: shows the one Premium plan ($100/mo) + features,
  * the Stripe-hosted billing portal hand-off, and a cancel link. No trial, no
  * tier comparison, no upgrade — there's only one plan.
  */

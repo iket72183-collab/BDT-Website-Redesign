@@ -7,7 +7,7 @@
 #
 # Service: "api"
 #   Start command: pnpm start
-#   Health check:  /health  (Railway pings it after a deploy)
+#   Health check:  /api/health  (Railway pings it after a deploy)
 #
 # Service: "worker"
 #   Start command: pnpm --filter @bdt/api worker
@@ -35,8 +35,10 @@
   restartPolicyMaxRetries = 10
 
   # Railway hits this URL on every deploy. If it doesn't return 2xx within
-  # the timeout, the deploy is rolled back automatically.
-  healthcheckPath = "/health"
+  # the timeout, the deploy is rolled back automatically. The server serves
+  # this at both /health and /api/health; /api/health is used here so the
+  # path matches the rest of the API surface.
+  healthcheckPath = "/api/health"
   healthcheckTimeout = 60
 
 [nixpacks]

@@ -2,7 +2,7 @@
 // BDT Connect — Prisma schema
 //
 // Agency client portal. BDT Talent Group's clients install the mobile app,
-// subscribe to the single Premium plan ($150/mo), and use it to
+// subscribe to the single Premium plan ($100/mo), and use it to
 // track work the agency is doing for them and message the team. Tenant rows
 // exist per-client; multi-tenancy isolation still applies via the Prisma
 // extension in `src/lib/db.ts` (auto-injects `WHERE tenantId = ?`).
@@ -36,7 +36,7 @@ enum BusinessType {
 }
 
 // Single-plan model. `basic` was removed (2026-05 migration
-// simplify_to_single_premium_plan); only `premium` ($150/mo) remains.
+// simplify_to_single_premium_plan); only `premium` ($100/mo) remains.
 enum SubscriptionTier {
   premium
 }
