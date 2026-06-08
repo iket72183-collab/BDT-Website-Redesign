@@ -14,7 +14,14 @@ export const billingPortalSchema = z.object({
   returnUrl: z.string().url().refine((url) => {
     if (url.startsWith('bdtconnect://')) return true;
     if (!process.env.PUBLIC_APP_URL) return false;
-    return new URL(url).origin === new URL(process.env.PUBLIC_APP_URL).origin;
+    // `.url()` runs first but zod still invokes this refinement on a malformed
+    // value, so guard the parse: a bad URL must reject cleanly (400) rather
+    // than throw an uncaught TypeError (500).
+    try {
+      return new URL(url).origin === new URL(process.env.PUBLIC_APP_URL).origin;
+    } catch {
+      return false;
+    }
   }, 'Return URL must be an approved domain').optional(),
 });
 
