@@ -94,7 +94,7 @@ async function loadDashboard(): Promise<{
 }
 
 export default async function DashboardPage() {
-  const user = getCurrentUser();
+  const user = await getCurrentUser();
   const { stats, revenue, recentClients, recentMessages, growth } = await loadDashboard();
 
   return (

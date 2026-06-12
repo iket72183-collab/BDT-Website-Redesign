@@ -15,7 +15,7 @@ interface StatsResponse {
  * page wrote.
  */
 async function loadUser(): Promise<AdminUser | null> {
-  const raw = cookies().get(USER_COOKIE)?.value;
+  const raw = (await cookies()).get(USER_COOKIE)?.value;
   if (!raw) return null;
   try {
     return JSON.parse(decodeURIComponent(raw)) as AdminUser;

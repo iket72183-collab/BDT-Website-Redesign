@@ -7,8 +7,8 @@ import { USER_COOKIE, type AdminUser } from './auth';
  * Returns null if the cookie is missing / malformed (middleware would have
  * already redirected such a request).
  */
-export function getCurrentUser(): AdminUser | null {
-  const raw = cookies().get(USER_COOKIE)?.value;
+export async function getCurrentUser(): Promise<AdminUser | null> {
+  const raw = (await cookies()).get(USER_COOKIE)?.value;
   if (!raw) return null;
   try {
     return JSON.parse(decodeURIComponent(raw)) as AdminUser;

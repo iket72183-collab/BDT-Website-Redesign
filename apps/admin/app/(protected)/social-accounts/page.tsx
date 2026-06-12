@@ -10,9 +10,10 @@ type SearchParams = {
   status?: string;
 };
 
-export default async function SocialAccountsPage({ searchParams }: { searchParams: SearchParams }) {
-  const user = getCurrentUser();
-  const page = Math.max(1, Number(searchParams.page) || 1);
+export default async function SocialAccountsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const user = await getCurrentUser();
+  const query = await searchParams;
+  const page = Math.max(1, Number(query.page) || 1);
   const limit = 20;
 
   // platform + status are server-side (backend supports them); business-name
@@ -22,8 +23,8 @@ export default async function SocialAccountsPage({ searchParams }: { searchParam
   const qs = new URLSearchParams({
     page: String(page),
     limit: String(limit),
-    ...(searchParams.platform ? { platform: searchParams.platform } : {}),
-    ...(searchParams.status ? { status: searchParams.status } : {}),
+    ...(query.platform ? { platform: query.platform } : {}),
+    ...(query.status ? { status: query.status } : {}),
   });
 
   const res = await api<SocialAccountRow[]>(`/api/admin/social-accounts?${qs.toString()}`);
@@ -35,9 +36,9 @@ export default async function SocialAccountsPage({ searchParams }: { searchParam
         total={res.meta?.total ?? 0}
         page={page}
         limit={limit}
-        search={searchParams.search ?? ''}
-        platform={searchParams.platform ?? ''}
-        status={searchParams.status ?? ''}
+        search={query.search ?? ''}
+        platform={query.platform ?? ''}
+        status={query.status ?? ''}
       />
     </PageWrapper>
   );

@@ -39,9 +39,9 @@ interface FetchOpts extends Omit<RequestInit, 'body'> {
   token?: string | null;
 }
 
-function readServerToken(): string | null {
+async function readServerToken(): Promise<string | null> {
   try {
-    return cookies().get(AUTH_COOKIE)?.value ?? null;
+    return (await cookies()).get(AUTH_COOKIE)?.value ?? null;
   } catch {
     // `cookies()` throws if called outside a request scope (e.g. during a
     // build-time static analysis pass). Fall through — the caller gets an
@@ -60,9 +60,9 @@ export async function api<T>(path: string, opts: FetchOpts = {}): Promise<ApiEnv
   //     mutations should go through a Route Handler instead)
   const t =
     token !== undefined
-      ? token
-      : typeof window === 'undefined'
-        ? readServerToken()
+        ? token
+        : typeof window === 'undefined'
+        ? await readServerToken()
         : null;
 
   const h = new Headers(headers);

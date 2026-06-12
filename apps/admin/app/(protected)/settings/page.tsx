@@ -43,7 +43,7 @@ const PLAN_DISPLAY = [
 const AGENCY_INBOX = 'BDTTalentGroup@yahoo.com';
 
 export default async function SettingsPage() {
-  const user = getCurrentUser();
+  const user = await getCurrentUser();
 
   // Queue health is best-effort — Redis may be down without breaking the page.
   let queueHealth: QueueHealth | null = null;

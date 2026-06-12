@@ -59,11 +59,12 @@ const STATUS_TONE: Record<ClientDetail['subscriptionStatus'], BadgeTone> = {
   cancelled: 'cancelled',
 };
 
-export default async function ClientDetailPage({ params }: { params: { id: string } }) {
-  const user = getCurrentUser();
+export default async function ClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser();
+  const { id } = await params;
   let client: ClientDetail;
   try {
-    const res = await api<ClientDetail>(`/api/admin/clients/${params.id}`);
+    const res = await api<ClientDetail>(`/api/admin/clients/${id}`);
     client = res.data;
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) notFound();

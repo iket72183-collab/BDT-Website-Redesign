@@ -13,9 +13,10 @@ const API_URL =
  */
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<Response> {
-  const token = cookies().get(AUTH_COOKIE)?.value;
+  const { id } = await params;
+  const token = (await cookies()).get(AUTH_COOKIE)?.value;
   if (!token) {
     return NextResponse.json(
       { success: false, error: 'unauthorized', code: 'missing_token' },
@@ -25,7 +26,7 @@ export async function PATCH(
 
   const body = await request.text();
   const upstream = await fetch(
-    `${API_URL}/api/admin/requests/${encodeURIComponent(params.id)}/status`,
+    `${API_URL}/api/admin/requests/${encodeURIComponent(id)}/status`,
     {
       method: 'PATCH',
       headers: {

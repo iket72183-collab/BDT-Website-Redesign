@@ -25,7 +25,18 @@
     "prettier": "^3.3.3"
   },
   "engines": {
-    "node": ">=20.0.0",
+    "node": ">=20.19.0",
     "pnpm": ">=9.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-xml-parser": "5.7.0",
+      "joi": "18.2.1",
+      "postcss": "8.5.14",
+      "qs": "6.15.2",
+      "shell-quote": "1.8.4",
+      "uuid": "11.1.1",
+      "vite": "7.3.5"
+    }
   }
 }

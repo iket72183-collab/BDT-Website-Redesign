@@ -23,19 +23,20 @@ type SearchParams = {
   order?: 'asc' | 'desc';
 };
 
-export default async function ClientsPage({ searchParams }: { searchParams: SearchParams }) {
-  const user = getCurrentUser();
-  const page = Math.max(1, Number(searchParams.page) || 1);
+export default async function ClientsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const user = await getCurrentUser();
+  const query = await searchParams;
+  const page = Math.max(1, Number(query.page) || 1);
   const limit = 20;
 
   const qs = new URLSearchParams({
     page: String(page),
     limit: String(limit),
-    ...(searchParams.search ? { search: searchParams.search } : {}),
-    ...(searchParams.plan   ? { plan:   searchParams.plan }   : {}),
-    ...(searchParams.status ? { status: searchParams.status } : {}),
-    ...(searchParams.sort   ? { sort:   searchParams.sort }   : { sort: 'joined' }),
-    ...(searchParams.order  ? { order:  searchParams.order }  : { order: 'desc' }),
+    ...(query.search ? { search: query.search } : {}),
+    ...(query.plan   ? { plan:   query.plan }   : {}),
+    ...(query.status ? { status: query.status } : {}),
+    ...(query.sort   ? { sort:   query.sort }   : { sort: 'joined' }),
+    ...(query.order  ? { order:  query.order }  : { order: 'desc' }),
   });
 
   const res = await api<ClientRow[]>(`/api/admin/clients?${qs.toString()}`);
@@ -47,11 +48,11 @@ export default async function ClientsPage({ searchParams }: { searchParams: Sear
         total={res.meta?.total ?? 0}
         page={page}
         limit={limit}
-        search={searchParams.search ?? ''}
-        plan={searchParams.plan ?? ''}
-        status={searchParams.status ?? ''}
-        sort={(searchParams.sort as 'joined' | 'mrr' | 'name') ?? 'joined'}
-        order={(searchParams.order as 'asc' | 'desc') ?? 'desc'}
+        search={query.search ?? ''}
+        plan={query.plan ?? ''}
+        status={query.status ?? ''}
+        sort={(query.sort as 'joined' | 'mrr' | 'name') ?? 'joined'}
+        order={(query.order as 'asc' | 'desc') ?? 'desc'}
       />
     </PageWrapper>
   );

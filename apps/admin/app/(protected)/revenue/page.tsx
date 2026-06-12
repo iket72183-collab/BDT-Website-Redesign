@@ -60,7 +60,7 @@ const EVENT_LABEL: Record<string, string> = {
 };
 
 export default async function RevenuePage() {
-  const user = getCurrentUser();
+  const user = await getCurrentUser();
   const [revenue, events] = await Promise.all([
     api<Revenue>('/api/admin/revenue'),
     api<SubscriptionEventRow[]>('/api/admin/subscription-events?limit=25'),

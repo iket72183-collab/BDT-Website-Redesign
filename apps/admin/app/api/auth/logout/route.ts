@@ -14,7 +14,7 @@ const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? process.env.API_URL ?? 'http://localhost:4000';
 
 export async function POST(): Promise<Response> {
-  const jar = cookies();
+  const jar = await cookies();
   const token = jar.get(AUTH_COOKIE)?.value;
   const refreshToken = jar.get('bdt_refresh')?.value;
 

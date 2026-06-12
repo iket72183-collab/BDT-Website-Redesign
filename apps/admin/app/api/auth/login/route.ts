@@ -79,7 +79,7 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  const jar = cookies();
+  const jar = await cookies();
   jar.set({
     name: AUTH_COOKIE,
     value: accessToken,

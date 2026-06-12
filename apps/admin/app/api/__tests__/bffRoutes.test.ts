@@ -21,7 +21,7 @@ const { cookieStore } = vi.hoisted(() => ({
 }));
 
 vi.mock('next/headers', () => ({
-  cookies: () => ({
+  cookies: async () => ({
     get: (name: string) =>
       cookieStore.has(name) ? { name, value: cookieStore.get(name) } : undefined,
   }),
@@ -58,7 +58,7 @@ describe('PATCH /api/clients/[id] (BFF)', () => {
       body: JSON.stringify({ subscriptionStatus: 'trialing' }),
     });
 
-    const res = await patchClient(req, { params: { id: 'c1' } });
+    const res = await patchClient(req, { params: Promise.resolve({ id: 'c1' }) });
 
     expect(res.status).toBe(200);
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -76,7 +76,7 @@ describe('PATCH /api/clients/[id] (BFF)', () => {
       body: '{}',
     });
 
-    const res = await patchClient(req, { params: { id: 'c1' } });
+    const res = await patchClient(req, { params: Promise.resolve({ id: 'c1' }) });
 
     expect(res.status).toBe(401);
     expect(fetchMock).not.toHaveBeenCalled();
@@ -92,7 +92,7 @@ describe('PATCH /api/clients/[id] (BFF)', () => {
       body: '{}',
     });
 
-    const res = await patchClient(req, { params: { id: 'missing' } });
+    const res = await patchClient(req, { params: Promise.resolve({ id: 'missing' }) });
 
     expect(res.status).toBe(404);
   });
@@ -103,7 +103,7 @@ describe('PATCH /api/messages/[id] (BFF)', () => {
     cookieStore.set('bdt_admin_token', 'tok_admin_456');
     const req = new Request('http://localhost/api/messages/m1', { method: 'PATCH' });
 
-    const res = await patchMessage(req, { params: { id: 'm1' } });
+    const res = await patchMessage(req, { params: Promise.resolve({ id: 'm1' }) });
 
     expect(res.status).toBe(200);
     const [url, init] = fetchMock.mock.calls[0]!;
@@ -114,7 +114,7 @@ describe('PATCH /api/messages/[id] (BFF)', () => {
   it('returns 401 without a cookie and never calls the API', async () => {
     const req = new Request('http://localhost/api/messages/m1', { method: 'PATCH' });
 
-    const res = await patchMessage(req, { params: { id: 'm1' } });
+    const res = await patchMessage(req, { params: Promise.resolve({ id: 'm1' }) });
 
     expect(res.status).toBe(401);
     expect(fetchMock).not.toHaveBeenCalled();

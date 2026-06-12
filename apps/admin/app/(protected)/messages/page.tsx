@@ -13,11 +13,12 @@ type SearchParams = {
   id?: string;
 };
 
-export default async function MessagesPage({ searchParams }: { searchParams: SearchParams }) {
-  const user = getCurrentUser();
+export default async function MessagesPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const user = await getCurrentUser();
+  const query = await searchParams;
   const qs = new URLSearchParams({
     limit: '50',
-    ...(searchParams.status ? { status: searchParams.status } : {}),
+    ...(query.status ? { status: query.status } : {}),
   });
   const res = await api<MessagesEnvelope>(`/api/admin/messages?${qs.toString()}`);
 
@@ -29,7 +30,7 @@ export default async function MessagesPage({ searchParams }: { searchParams: Sea
     >
       <MessagesInbox
         messages={res.data.rows}
-        initialStatus={searchParams.status ?? ''}
+        initialStatus={query.status ?? ''}
       />
     </PageWrapper>
   );

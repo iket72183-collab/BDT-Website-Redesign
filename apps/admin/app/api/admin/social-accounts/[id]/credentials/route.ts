@@ -13,9 +13,10 @@ const API_URL =
  */
 export async function GET(
   _request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<Response> {
-  const token = cookies().get(AUTH_COOKIE)?.value;
+  const { id } = await params;
+  const token = (await cookies()).get(AUTH_COOKIE)?.value;
   if (!token) {
     return NextResponse.json(
       { success: false, error: 'unauthorized', code: 'missing_token' },
@@ -24,7 +25,7 @@ export async function GET(
   }
 
   const upstream = await fetch(
-    `${API_URL}/api/admin/social-accounts/${encodeURIComponent(params.id)}/credentials`,
+    `${API_URL}/api/admin/social-accounts/${encodeURIComponent(id)}/credentials`,
     {
       method: 'GET',
       headers: { authorization: `Bearer ${token}` },
