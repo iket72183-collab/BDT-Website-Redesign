@@ -12,7 +12,7 @@ import { router } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
 import { RNButton, RNCard } from '@/components/ui';
 import { api } from '@/api/client';
-import { palette, radius, space, typography } from '@/styles/appTokens';
+import { palette, space, typography } from '@/styles/appTokens';
 
 const MAX_BODY = 2000;
 
@@ -109,9 +109,7 @@ export function MessageScreen() {
         </RNCard>
 
         {sendMutation.isError && (
-          <Text style={styles.errorText}>
-            Couldn't send — please try again in a moment.
-          </Text>
+          <Text style={styles.errorText}>Couldn't send — please try again in a moment.</Text>
         )}
 
         <RNButton

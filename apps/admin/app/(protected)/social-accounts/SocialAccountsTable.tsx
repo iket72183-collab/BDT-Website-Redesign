@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Badge, type BadgeTone } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { formatDate } from '@/lib/format';
 
 type SocialPlatform =
   | 'instagram'
@@ -163,11 +162,7 @@ export function SocialAccountsTable(props: Props) {
                     {r.tenant?.businessName ?? '—'}
                   </td>
                   <td className="px-4 py-3">
-                    {r.tenant ? (
-                      <Badge tone={r.tenant.subscriptionTier}>Premium</Badge>
-                    ) : (
-                      '—'
-                    )}
+                    {r.tenant ? <Badge tone={r.tenant.subscriptionTier}>Premium</Badge> : '—'}
                   </td>
                   <td className="px-4 py-3 text-ink-primary">{PLATFORM_LABEL[r.platform]}</td>
                   <td className="px-4 py-3 text-ink-muted">{r.handle ?? '—'}</td>
@@ -203,7 +198,10 @@ export function SocialAccountsTable(props: Props) {
           {Math.min(props.page * props.limit, props.total)} of {props.total}
         </p>
         <div className="flex gap-2">
-          <PagerBtn disabled={props.page <= 1} onClick={() => update({ page: String(props.page - 1) })}>
+          <PagerBtn
+            disabled={props.page <= 1}
+            onClick={() => update({ page: String(props.page - 1) })}
+          >
             ← Prev
           </PagerBtn>
           <span className="px-3 py-2 text-ink-muted">
@@ -266,10 +264,7 @@ function CredentialsModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
       onClick={onClose}
     >
-      <div
-        className="glass w-full max-w-md space-y-4 p-6"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="glass w-full max-w-md space-y-4 p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg text-ink-primary">
             {PLATFORM_LABEL[account.platform]} login
@@ -280,7 +275,7 @@ function CredentialsModal({
         </div>
 
         <div className="rounded-lg border border-status-warning/40 bg-status-warning/10 px-3 py-2 text-xs text-status-warning">
-          This access is logged. Only open a client's login when you need it for active work.
+          This access is logged. Only open a client&apos;s login when you need it for active work.
         </div>
 
         {loading ? (

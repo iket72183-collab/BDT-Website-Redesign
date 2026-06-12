@@ -32,11 +32,17 @@ export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 export function sanitizeFilename(name: string): string {
   const dot = name.lastIndexOf('.');
   const ext =
-    dot > 0 ? '.' + name.slice(dot + 1).toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+    dot > 0
+      ? '.' +
+        name
+          .slice(dot + 1)
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, '')
+      : '';
   const base =
     (dot > 0 ? name.slice(0, dot) : name)
       .normalize('NFKD')
-      .replace(/[^\x00-\x7F]/g, '') // drop non-ASCII (incl. NFKD combining marks)
+      .replace(/[^\u0020-\u007E]/g, '') // drop non-ASCII/control chars
       .replace(/[^a-zA-Z0-9-_]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 80) || 'file';
@@ -144,7 +150,5 @@ export async function createSignedUrl(path: string): Promise<string> {
 
   // Supabase returns a storage-relative path (`/object/sign/...`); make it
   // absolute so the client can open it directly.
-  return body.signedURL.startsWith('http')
-    ? body.signedURL
-    : `${base}/storage/v1${body.signedURL}`;
+  return body.signedURL.startsWith('http') ? body.signedURL : `${base}/storage/v1${body.signedURL}`;
 }

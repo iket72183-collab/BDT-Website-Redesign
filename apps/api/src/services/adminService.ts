@@ -47,7 +47,7 @@ export async function listClients(input: ListClientsInput) {
       ? {
           OR: [
             { businessName: { contains: input.search, mode: 'insensitive' } },
-            { slug:         { contains: input.search, mode: 'insensitive' } },
+            { slug: { contains: input.search, mode: 'insensitive' } },
             { owner: { email: { contains: input.search, mode: 'insensitive' } } },
           ],
         }
@@ -57,10 +57,13 @@ export async function listClients(input: ListClientsInput) {
   const orderBy: Prisma.TenantOrderByWithRelationInput = (() => {
     const dir: SortOrder = input.order ?? 'desc';
     switch (input.sort) {
-      case 'name': return { businessName: dir };
-      case 'mrr':  return { subscriptionTier: dir };
+      case 'name':
+        return { businessName: dir };
+      case 'mrr':
+        return { subscriptionTier: dir };
       case 'joined':
-      default:     return { createdAt: dir };
+      default:
+        return { createdAt: dir };
     }
   })();
 
@@ -188,7 +191,7 @@ export async function listAllMessages(input: ListAllMessagesInput) {
       take: input.limit,
       include: {
         tenant: { select: { id: true, businessName: true, subscriptionTier: true } },
-        user:   { select: { id: true, email: true, firstName: true, lastName: true } },
+        user: { select: { id: true, email: true, firstName: true, lastName: true } },
       },
     }),
     rawPrisma.message.count({ where }),
@@ -213,8 +216,8 @@ export async function markMessageRead(id: string) {
 // ============================================================================
 
 export interface MRRSnapshot {
-  month: string;             // ISO date — first of the month, UTC
-  premium: number;           // dollars
+  month: string; // ISO date — first of the month, UTC
+  premium: number; // dollars
   total: number;
 }
 
@@ -236,23 +239,22 @@ export async function revenueOverview(): Promise<RevenueOverview> {
   const now = new Date();
   const monthStart = startOfMonthUTC(now);
 
-  const [premiumCount, churnThisMonth, trialConversionsThisMonth] =
-    await rawPrisma.$transaction([
-      rawPrisma.tenant.count({
-        where: {
-          subscriptionTier: 'premium',
-          subscriptionStatus: { in: ['active', 'trialing'] },
-        },
-      }),
-      rawPrisma.subscriptionEvent.count({
-        where: { eventType: 'cancelled', createdAt: { gte: monthStart } },
-      }),
-      // Conversions = first `payment_succeeded` events this month (a tenant
-      // moving from any non-paying state to paid).
-      rawPrisma.subscriptionEvent.count({
-        where: { eventType: 'payment_succeeded', createdAt: { gte: monthStart } },
-      }),
-    ]);
+  const [premiumCount, churnThisMonth, trialConversionsThisMonth] = await rawPrisma.$transaction([
+    rawPrisma.tenant.count({
+      where: {
+        subscriptionTier: 'premium',
+        subscriptionStatus: { in: ['active', 'trialing'] },
+      },
+    }),
+    rawPrisma.subscriptionEvent.count({
+      where: { eventType: 'cancelled', createdAt: { gte: monthStart } },
+    }),
+    // Conversions = first `payment_succeeded` events this month (a tenant
+    // moving from any non-paying state to paid).
+    rawPrisma.subscriptionEvent.count({
+      where: { eventType: 'payment_succeeded', createdAt: { gte: monthStart } },
+    }),
+  ]);
 
   const premiumMRR = premiumCount * PLANS.premium.price;
 
@@ -304,9 +306,7 @@ async function mrrByMonth(now: Date, monthCount: number): Promise<MRRSnapshot[]>
     start.setUTCMonth(start.getUTCMonth() - i);
     const monthStr = start.toISOString().slice(0, 10);
 
-    const matchingRows = queryResult.filter(
-      (r) => r.month.toISOString().slice(0, 10) === monthStr
-    );
+    const matchingRows = queryResult.filter((r) => r.month.toISOString().slice(0, 10) === monthStr);
 
     let premiumCount = 0;
     for (const row of matchingRows) {
@@ -470,18 +470,6 @@ export async function listSubscriptionEvents(input: ListSubscriptionEventsInput)
 // helpers
 // ============================================================================
 
-type TenantRow = Prisma.TenantGetPayload<{
-  include: {
-    owner: { select: typeof USER_PUBLIC };
-    _count: { select: { messages: true } };
-  };
-}> | Prisma.TenantGetPayload<{
-  include: {
-    owner: { select: { id: true; email: true; firstName: true; lastName: true; phone: true } };
-    _count: { select: { messages: true } };
-  };
-}>;
-
 /**
  * Stamp the computed monthly-recurring-revenue contribution onto a tenant
  * row. Done in the service so callers don't re-import PLANS everywhere.
@@ -495,4 +483,3 @@ function decorateClient<T extends { subscriptionTier: SubscriptionTier }>(
     planName: PLANS[tenant.subscriptionTier].name,
   };
 }
-

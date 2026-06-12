@@ -6,7 +6,6 @@ import { getContext } from './tenantContext.js';
 // =============================================================================
 
 declare global {
-  // eslint-disable-next-line no-var
   var __bdtPrisma: PrismaClient | undefined;
 }
 
@@ -63,13 +62,7 @@ const READ_OPS = new Set([
 ]);
 
 /** Operations that mutate rows — extension scopes `where` and stamps `data`. */
-const WRITE_OPS = new Set([
-  'update',
-  'updateMany',
-  'delete',
-  'deleteMany',
-  'upsert',
-]);
+const WRITE_OPS = new Set(['update', 'updateMany', 'delete', 'deleteMany', 'upsert']);
 
 /** Create-style operations — extension stamps `data.tenantId`. */
 const CREATE_OPS = new Set(['create', 'createMany']);
@@ -111,9 +104,10 @@ export const db = basePrisma.$extends({
           } else {
             args = {
               ...args,
-              where: operation === 'update' || operation === 'delete'
-                ? { ...where, tenantId }
-                : { AND: [{ tenantId }, where] },
+              where:
+                operation === 'update' || operation === 'delete'
+                  ? { ...where, tenantId }
+                  : { AND: [{ tenantId }, where] },
             };
           }
         } else if (CREATE_OPS.has(operation)) {

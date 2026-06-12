@@ -1,6 +1,5 @@
 import type { MessageStatus } from '@prisma/client';
 import { db, rawPrisma } from '../lib/db.js';
-import { getTenantId } from '../lib/tenantContext.js';
 import { HttpError } from '../middleware/error.js';
 import { logger } from '../lib/logger.js';
 import { sendEmail } from './notificationService.js';
@@ -74,13 +73,15 @@ export async function sendMessage(input: SendMessageInput) {
     );
   } catch (err) {
     await markEmailFailed(message.id, err);
-    await platformEventsQueue.add(
-      'deliver-agency-message-email',
-      { messageId: message.id },
-      { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
-    ).catch((queueErr) =>
-      logger.error({ queueErr, messageId: message.id }, 'message.email_retry_enqueue_failed'),
-    );
+    await platformEventsQueue
+      .add(
+        'deliver-agency-message-email',
+        { messageId: message.id },
+        { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
+      )
+      .catch((queueErr) =>
+        logger.error({ queueErr, messageId: message.id }, 'message.email_retry_enqueue_failed'),
+      );
     logger.error({ err, messageId: message.id }, 'message.email_failed');
   }
 
@@ -201,15 +202,17 @@ async function markEmailSent(messageId: string): Promise<void> {
 
 async function markEmailFailed(messageId: string, err: unknown): Promise<void> {
   const message = err instanceof Error ? err.message : String(err);
-  await rawPrisma.message.update({
-    where: { id: messageId },
-    data: {
-      emailDeliveryStatus: 'failed',
-      emailLastError: message.slice(0, 1000),
-    },
-  }).catch((updateErr) =>
-    logger.error({ updateErr, messageId }, 'message.email_status_update_failed'),
-  );
+  await rawPrisma.message
+    .update({
+      where: { id: messageId },
+      data: {
+        emailDeliveryStatus: 'failed',
+        emailLastError: message.slice(0, 1000),
+      },
+    })
+    .catch((updateErr) =>
+      logger.error({ updateErr, messageId }, 'message.email_status_update_failed'),
+    );
 }
 
 async function notifyPlatformAdmins(input: {

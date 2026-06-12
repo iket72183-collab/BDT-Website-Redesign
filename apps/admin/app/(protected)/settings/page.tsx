@@ -60,15 +60,15 @@ export default async function SettingsPage() {
         {/* --- Admin profile ----------------------------------------- */}
         <Card title="Admin profile">
           <dl className="space-y-3 text-sm">
-            <Row label="Name">
-              {user ? `${user.firstName} ${user.lastName}` : '—'}
-            </Row>
+            <Row label="Name">{user ? `${user.firstName} ${user.lastName}` : '—'}</Row>
             <Row label="Email">{user?.email ?? '—'}</Row>
-            <Row label="Role"><Badge tone="premium">Platform admin</Badge></Row>
+            <Row label="Role">
+              <Badge tone="premium">Platform admin</Badge>
+            </Row>
           </dl>
           <p className="mt-4 text-xs text-ink-subtle">
-            Password changes go through the standard reset flow:
-            sign out → "Forgot password" on the login screen.
+            Password changes go through the standard reset flow: sign out → &quot;Forgot
+            password&quot; on the login screen.
           </p>
         </Card>
 
@@ -88,8 +88,8 @@ export default async function SettingsPage() {
             </Row>
           </dl>
           <p className="mt-4 text-xs text-ink-subtle">
-            To change the agency inbox, update <code className="font-mono">AGENCY_INBOX</code>{' '}
-            in <code className="font-mono">apps/api/src/services/messageService.ts</code>.
+            To change the agency inbox, update <code className="font-mono">AGENCY_INBOX</code> in{' '}
+            <code className="font-mono">apps/api/src/services/messageService.ts</code>.
           </p>
         </Card>
 
@@ -103,7 +103,8 @@ export default async function SettingsPage() {
                     <Badge tone={plan.id}>{plan.name}</Badge>
                   </div>
                   <p className="font-display text-2xl font-bold text-metal-rose">
-                    {formatUSD(plan.price)}<span className="ml-1 text-xs text-ink-muted">/mo</span>
+                    {formatUSD(plan.price)}
+                    <span className="ml-1 text-xs text-ink-muted">/mo</span>
                   </p>
                 </div>
                 <ul className="space-y-1 text-xs text-ink-muted">
@@ -115,33 +116,36 @@ export default async function SettingsPage() {
             ))}
           </ul>
           <p className="mt-4 text-xs text-ink-subtle">
-            To change the price, update the Stripe product price ID
-            (<code className="font-mono">STRIPE_PREMIUM_PRICE_ID</code>) and{' '}
+            To change the price, update the Stripe product price ID (
+            <code className="font-mono">STRIPE_PREMIUM_PRICE_ID</code>) and{' '}
             <code className="font-mono">apps/api/src/lib/plans.ts</code>.
           </p>
         </Card>
 
         {/* --- Queue health ------------------------------------------ */}
-        <Card title="Queue health" action={
-          queueHealth ? (
-            <Badge tone={queueHealth.reachable ? 'active' : 'past_due'}>
-              {queueHealth.reachable ? 'Reachable' : 'Unreachable'}
-            </Badge>
-          ) : (
-            <Badge tone="past_due">Error</Badge>
-          )
-        }>
+        <Card
+          title="Queue health"
+          action={
+            queueHealth ? (
+              <Badge tone={queueHealth.reachable ? 'active' : 'past_due'}>
+                {queueHealth.reachable ? 'Reachable' : 'Unreachable'}
+              </Badge>
+            ) : (
+              <Badge tone="past_due">Error</Badge>
+            )
+          }
+        >
           {queueHealth ? (
             <QueueRow name="platform-events" counts={queueHealth.queues.platformEvents} />
           ) : (
             <p className="text-sm text-ink-muted">
-              Couldn't reach the queue health endpoint. Check the API logs.
+              Couldn&apos;t reach the queue health endpoint. Check the API logs.
             </p>
           )}
           <p className="mt-4 text-xs text-ink-subtle">
-            Source: <code className="font-mono">GET /api/admin/queue-health</code>. Backed by
-            BullMQ + Redis. If queues are unreachable the API still serves requests, but
-            push receipts and async audit writes will lag.
+            Source: <code className="font-mono">GET /api/admin/queue-health</code>. Backed by BullMQ
+            + Redis. If queues are unreachable the API still serves requests, but push receipts and
+            async audit writes will lag.
           </p>
         </Card>
       </div>
@@ -160,11 +164,11 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 function QueueRow({ name, counts }: { name: string; counts: QueueCounts }) {
   const cells: Array<[keyof QueueCounts, string]> = [
-    ['waiting',   'Waiting'],
-    ['active',    'Active'],
-    ['delayed',   'Delayed'],
+    ['waiting', 'Waiting'],
+    ['active', 'Active'],
+    ['delayed', 'Delayed'],
     ['completed', 'Completed'],
-    ['failed',    'Failed'],
+    ['failed', 'Failed'],
   ];
   return (
     <div>

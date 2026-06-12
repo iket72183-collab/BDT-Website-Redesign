@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { api } from '@/lib/api';
@@ -33,7 +32,7 @@ async function loadUnreadCount(): Promise<number> {
   }
 }
 
-export default async function ProtectedLayout({ children }: { children: ReactNode }) {
+export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const [user, unreadMessageCount] = await Promise.all([loadUser(), loadUnreadCount()]);
 
   return (
@@ -55,6 +54,6 @@ export default async function ProtectedLayout({ children }: { children: ReactNod
  * This wrapper just forwards children — kept as a seam if we later want a
  * client-side user provider.
  */
-function UserContext({ children }: { user: AdminUser | null; children: ReactNode }) {
+function UserContext({ children }: { user: AdminUser | null; children: React.ReactNode }) {
   return <>{children}</>;
 }

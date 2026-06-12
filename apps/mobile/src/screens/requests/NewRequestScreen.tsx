@@ -21,7 +21,7 @@ import {
   type RequestUsage,
   type SocialAccount,
 } from '@bdt/shared-types';
-import { RNBadge, RNButton, RNCard, RNInput, Icon } from '@/components/ui';
+import { RNButton, RNCard, RNInput, Icon } from '@/components/ui';
 import { api, ApiError, uploadRequestAttachment } from '@/api/client';
 import { palette, radius, space, typography } from '@/styles/appTokens';
 import { TYPE_BLURB, TYPE_ICON, TYPE_LABEL } from './requestMeta';
@@ -93,7 +93,13 @@ export function NewRequestScreen() {
         '\n\n' +
         finalDescription;
     }
-    return { type: type!, title: title.trim(), description: finalDescription, attachments, addOn: withAddOn };
+    return {
+      type: type!,
+      title: title.trim(),
+      description: finalDescription,
+      attachments,
+      addOn: withAddOn,
+    };
   };
 
   const mutation = useMutation({
@@ -277,7 +283,11 @@ export function NewRequestScreen() {
 
   // Step 2 — details form.
   return (
-    <ScrollView style={styles.root} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      style={styles.root}
+      contentContainerStyle={styles.content}
+      keyboardShouldPersistTaps="handled"
+    >
       <Header
         onBack={type === 'social_media' ? () => setAccountStepDone(false) : () => setType(null)}
         title={TYPE_LABEL[type]}
@@ -358,7 +368,10 @@ export function NewRequestScreen() {
               <Text style={styles.chipLabel} numberOfLines={1}>
                 {a.name}
               </Text>
-              <Pressable onPress={() => removeAttachment(i)} accessibilityLabel={`Remove ${a.name}`}>
+              <Pressable
+                onPress={() => removeAttachment(i)}
+                accessibilityLabel={`Remove ${a.name}`}
+              >
                 <Icon name="x" size="sm" color={palette.ink.subtle} />
               </Pressable>
             </View>
@@ -403,7 +416,12 @@ function Header({ onBack, title }: { onBack: () => void; title: string }) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: palette.bg.base },
-  content: { paddingTop: space[8], paddingHorizontal: space[5], paddingBottom: space[12], gap: space[3] },
+  content: {
+    paddingTop: space[8],
+    paddingHorizontal: space[5],
+    paddingBottom: space[12],
+    gap: space[3],
+  },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',

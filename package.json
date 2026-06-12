@@ -20,9 +20,15 @@
     "web:dev": "pnpm --filter @bdt/web dev"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9",
+    "eslint-config-next": "^15.5.18",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^17.6.0",
+    "prettier": "^3.3.3",
     "turbo": "^2.1.0",
     "typescript": "^5.5.4",
-    "prettier": "^3.3.3"
+    "typescript-eslint": "^8.61.0"
   },
   "engines": {
     "node": ">=20.19.0",
@@ -30,6 +36,7 @@
   },
   "pnpm": {
     "overrides": {
+      "esbuild": "0.28.1",
       "fast-xml-parser": "5.7.0",
       "joi": "18.2.1",
       "postcss": "8.5.14",

@@ -6,7 +6,7 @@
     "dev": "next dev -p 3100",
     "build": "next build",
     "start": "next start -p 3100",
-    "lint": "next lint",
+    "lint": "pnpm --dir ../.. exec eslint apps/admin",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
-import { useStripe } from '@stripe/stripe-react-native';
 import Constants from 'expo-constants';
 import { RNButton, RNCard } from '@/components/ui';
 import { useStripeStore, PREMIUM_PLAN } from '@/stores/stripe';
+import { useStripe } from '@/lib/stripe';
 import { palette, space, typography } from '@/styles/appTokens';
 
 /**
@@ -17,7 +17,7 @@ import { palette, space, typography } from '@/styles/appTokens';
 export function PaymentSetupScreen() {
   const stripePublishableKey =
     (Constants.expoConfig?.extra?.stripePublishableKey as string | undefined) ?? '';
-  const cardCaptureAvailable = stripePublishableKey.length > 0;
+  const cardCaptureAvailable = Platform.OS !== 'web' && stripePublishableKey.length > 0;
 
   const { initPaymentSheet, presentPaymentSheet, retrieveSetupIntent } = useStripe();
   const { createSubscription, createSetupIntent } = useStripeStore();
@@ -48,7 +48,9 @@ export function PaymentSetupScreen() {
         Alert.alert('Setup failed', (err as Error).message);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [cardCaptureAvailable, createSetupIntent, initPaymentSheet]);
 
   const handlePay = async () => {
@@ -112,12 +114,7 @@ export function PaymentSetupScreen() {
         </Text>
       )}
 
-      <RNButton
-        label="← Back"
-        variant="text"
-        onPress={() => router.back()}
-        disabled={submitting}
-      />
+      <RNButton label="← Back" variant="text" onPress={() => router.back()} disabled={submitting} />
     </ScrollView>
   );
 }

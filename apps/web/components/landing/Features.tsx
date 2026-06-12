@@ -51,7 +51,13 @@ function DesignIcon() {
         strokeWidth="3"
         {...iconStroke}
       />
-      <path d="M23 22h10M23 28h5" stroke="#F5F0E8" strokeOpacity="0.72" strokeWidth="2" {...iconStroke} />
+      <path
+        d="M23 22h10M23 28h5"
+        stroke="#F5F0E8"
+        strokeOpacity="0.72"
+        strokeWidth="2"
+        {...iconStroke}
+      />
       <path d="M50 13l1.5 3.5L55 18l-3.5 1.5L50 23l-1.5-3.5L45 18l3.5-1.5L50 13z" fill="#F5DFAE" />
       <circle cx="17" cy="47" r="2.6" fill="#64D3FF" opacity="0.85" />
     </svg>
@@ -71,7 +77,16 @@ function MaintainIcon() {
           <stop offset="1" stopColor="#75B8FF" />
         </linearGradient>
       </defs>
-      <rect x="10" y="14" width="44" height="36" rx="6" fill="#111111" stroke="url(#maintain-window)" strokeWidth="2.2" />
+      <rect
+        x="10"
+        y="14"
+        width="44"
+        height="36"
+        rx="6"
+        fill="#111111"
+        stroke="url(#maintain-window)"
+        strokeWidth="2.2"
+      />
       <path d="M11 25h42" stroke="#8B7355" strokeOpacity="0.72" strokeWidth="2" {...iconStroke} />
       <circle cx="18" cy="20" r="2" fill="#C9A882" />
       <circle cx="25" cy="20" r="2" fill="#75B8FF" opacity="0.8" />
@@ -83,7 +98,13 @@ function MaintainIcon() {
         strokeWidth="2"
         {...iconStroke}
       />
-      <path d="M17 31h13M17 36h8" stroke="#F5F0E8" strokeOpacity="0.48" strokeWidth="2" {...iconStroke} />
+      <path
+        d="M17 31h13M17 36h8"
+        stroke="#F5F0E8"
+        strokeOpacity="0.48"
+        strokeWidth="2"
+        {...iconStroke}
+      />
       <circle cx="49" cy="42" r="5" fill="#58E1A8" opacity="0.18" />
     </svg>
   );
@@ -104,12 +125,39 @@ function PromoteIcon() {
         </linearGradient>
       </defs>
       <path d="M14 31v9l9-1 20 10V22L23 32l-9-1z" fill="url(#promote-body)" opacity="0.22" />
-      <path d="M14 31v9l9-1 20 10V22L23 32l-9-1z" stroke="url(#promote-body)" strokeWidth="2.3" {...iconStroke} />
-      <path d="M23 39l3 10a4 4 0 0 0 7.6-2.4L31 41" stroke="#E8D4A8" strokeWidth="2.3" {...iconStroke} />
+      <path
+        d="M14 31v9l9-1 20 10V22L23 32l-9-1z"
+        stroke="url(#promote-body)"
+        strokeWidth="2.3"
+        {...iconStroke}
+      />
+      <path
+        d="M23 39l3 10a4 4 0 0 0 7.6-2.4L31 41"
+        stroke="#E8D4A8"
+        strokeWidth="2.3"
+        {...iconStroke}
+      />
       <path d="M43 23v25" stroke="#F5F0E8" strokeOpacity="0.5" strokeWidth="2" {...iconStroke} />
-      <path d="M49 24c4 2 6 5.2 6 9s-2 7-6 9" stroke="url(#promote-signal)" strokeWidth="2.5" {...iconStroke} />
-      <path d="M52 16c6.5 3.3 10 9.5 10 17s-3.5 13.7-10 17" stroke="url(#promote-signal)" strokeOpacity="0.55" strokeWidth="2.2" {...iconStroke} />
-      <path d="M10 47h5M13 51h11M31 15h4v13h-4zM23 20h4v8h-4z" stroke="#64D3FF" strokeOpacity="0.75" strokeWidth="2" {...iconStroke} />
+      <path
+        d="M49 24c4 2 6 5.2 6 9s-2 7-6 9"
+        stroke="url(#promote-signal)"
+        strokeWidth="2.5"
+        {...iconStroke}
+      />
+      <path
+        d="M52 16c6.5 3.3 10 9.5 10 17s-3.5 13.7-10 17"
+        stroke="url(#promote-signal)"
+        strokeOpacity="0.55"
+        strokeWidth="2.2"
+        {...iconStroke}
+      />
+      <path
+        d="M10 47h5M13 51h11M31 15h4v13h-4zM23 20h4v8h-4z"
+        stroke="#64D3FF"
+        strokeOpacity="0.75"
+        strokeWidth="2"
+        {...iconStroke}
+      />
     </svg>
   );
 }
@@ -144,7 +192,13 @@ function ConnectIcon() {
       <circle cx="46" cy="31" r="4" fill="#E8B7FF" />
       <path d="M26 31h4M38 31h4" stroke="url(#connect-node)" strokeWidth="2.2" {...iconStroke} />
       <path d="M42 13l2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4z" fill="#58E1A8" opacity="0.9" />
-      <path d="M28 44c4 3 9 3 14 0" stroke="#F5F0E8" strokeOpacity="0.55" strokeWidth="2" {...iconStroke} />
+      <path
+        d="M28 44c4 3 9 3 14 0"
+        stroke="#F5F0E8"
+        strokeOpacity="0.55"
+        strokeWidth="2"
+        {...iconStroke}
+      />
     </svg>
   );
 }
@@ -154,38 +208,37 @@ const features = [
     icon: <DesignIcon />,
     eyebrow: 'Design',
     title: 'Creative assets, ready to use',
-    body:
-      'AI-generated flyers, promos, graphics, and social visuals shaped by your brand.',
+    body: 'AI-generated flyers, promos, graphics, and social visuals shaped by your brand.',
   },
   {
     icon: <MaintainIcon />,
     eyebrow: 'Maintain',
     title: 'Website updates kept moving',
-    body:
-      'Website updates and maintenance cover edits, fixes, and calendar updates.',
+    body: 'Website updates and maintenance cover edits, fixes, and calendar updates.',
   },
   {
     icon: <PromoteIcon />,
     eyebrow: 'Promote',
     title: 'Social presence, delivered',
-    body:
-      'Social media management covers posts, captions, scheduling, and engagement.',
+    body: 'Social media management covers posts, captions, scheduling, and engagement.',
   },
   {
     icon: <ConnectIcon />,
     eyebrow: 'Connect',
     title: 'Team access and reporting',
-    body:
-      'Direct messaging to your BDT team plus a monthly performance report with social growth, website traffic, and insights.',
+    body: 'Direct messaging to your BDT team plus a monthly performance report with social growth, website traffic, and insights.',
   },
 ];
 
 export function Features() {
   return (
-    <section id="features" className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28">
+    <section
+      id="features"
+      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
+    >
       <div className="mx-auto max-w-3xl text-center">
         <div className="font-body text-caption uppercase tracking-label text-metal-rose">
-          What's on retainer
+          What&apos;s on retainer
         </div>
         <h2 className="mt-4 font-display text-[1.9rem] leading-[1.1] sm:text-display-xl text-ink-primary">
           Four things, done right.

@@ -3,7 +3,6 @@ import { Stack, router } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { StripeProvider } from '@stripe/stripe-react-native';
 import { Platform, View } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -23,16 +22,15 @@ import { palette } from '@/styles/appTokens';
 import { useAuthStore } from '@/stores/auth';
 import { useTenantStore } from '@/stores/tenant';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
+import { StripeProvider } from '@/lib/stripe';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 // Sentry — initialized at module load (before React renders) so init errors
 // in component code are captured. `enabled` gates on the DSN so dev builds
 // without a DSN configured don't spam an unused project.
-const sentryDsn =
-  (Constants.expoConfig?.extra?.sentryDsn as string | undefined) ?? '';
-const sentryEnv =
-  (Constants.expoConfig?.extra?.appEnv as string | undefined) ?? 'development';
+const sentryDsn = (Constants.expoConfig?.extra?.sentryDsn as string | undefined) ?? '';
+const sentryEnv = (Constants.expoConfig?.extra?.appEnv as string | undefined) ?? 'development';
 Sentry.init({
   dsn: sentryDsn,
   enabled: Boolean(sentryDsn),
@@ -135,7 +133,12 @@ function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <StripeProvider publishableKey={publishableKey}>
           <StatusBar style="light" />
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: palette.bg.base } }}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: palette.bg.base },
+            }}
+          >
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(client)" />
             <Stack.Screen name="(onboarding)" />
