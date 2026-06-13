@@ -3,19 +3,19 @@ const items = [
     eyebrow: 'The Problem',
     title: 'A website nobody updates',
     body:
-      'You paid for a site two years ago. The agency moved on. The plugins broke. Now it loads slow, looks dated, and nobody on your team knows how to fix it.',
+      'You paid for a website years ago. The IT people moved on. Now it loads slow, looks outdated, and nobody on your team knows how to fix it.',
   },
   {
     eyebrow: 'The Problem',
-    title: 'Five vendors, one mess',
+    title: 'You don't have the time',
     body:
-      'A web freelancer, a social-media person, a SEO consultant, a hosting bill, an email tool. Different invoices, different chat threads, different excuses.',
+      'You need someone to maintain and update your website, a social-media person, someone to respond to DM's or emails, keep up with trends in your industry. But you have no time.',
   },
   {
     eyebrow: 'The Solution',
     title: 'One agency. One app. One retainer.',
     body:
-      'BDT Talent Group runs your web and social on retainer, and ships every update to a private app where you can see the work and message the team.',
+      'BDT Connect runs your website and social media accounts on retainer, and sends you every update on a private app where you can see the work and message our team. Simple and efficient.',
     accent: true,
   },
 ];
