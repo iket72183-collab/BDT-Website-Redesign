@@ -7,9 +7,9 @@ const items = [
   },
   {
     eyebrow: 'The Problem',
-    title: 'You don't have the time',
+    title: "You don't have the time",
     body:
-      'You need someone to maintain and update your website, a social-media person, someone to respond to DM's or emails, keep up with trends in your industry. But you have no time.',
+      "You need someone to maintain and update your website, a social-media person, someone to respond to DM's or emails, keep up with trends in your industry. But you have no time.",
   },
   {
     eyebrow: 'The Solution',
