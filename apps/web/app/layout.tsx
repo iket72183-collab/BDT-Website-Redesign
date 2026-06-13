@@ -24,6 +24,8 @@ const playfair = Playfair_Display({
   weight: ['400', '500', '600', '700'],
 });
 
+const connectShareImage = 'https://bdttalentgroup.com/connect/brand/bdt-connect-share.jpg';
+
 export const metadata: Metadata = {
   title: 'BDT Connect — Your entire online presence. $100/month.',
   description:
@@ -39,8 +41,11 @@ export const metadata: Metadata = {
     url: '/',
     images: [
       {
-        url: 'https://bdttalentgroup.com/assets/bdt-logo.jpeg',
-        alt: 'BDT Talent Group',
+        url: connectShareImage,
+        width: 1200,
+        height: 630,
+        alt: 'BDT Connect gold logo on a black premium service banner',
+        type: 'image/jpeg',
       },
     ],
   },
@@ -48,7 +53,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'BDT Connect',
     description: 'Your entire online presence. $100/month.',
-    images: ['https://bdttalentgroup.com/assets/bdt-logo.jpeg'],
+    images: [connectShareImage],
   },
 };
 
