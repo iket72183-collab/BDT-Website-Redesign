@@ -1,7 +1,6 @@
 import { Hero } from '@/components/landing/Hero';
 import { ProblemSolution } from '@/components/landing/ProblemSolution';
 import { ServicePreview } from '@/components/landing/ServicePreview';
-import { Features } from '@/components/landing/Features';
 import { Pricing } from '@/components/landing/Pricing';
 import { FAQ } from '@/components/landing/FAQ';
 import { Contact } from '@/components/landing/Contact';
@@ -17,7 +16,6 @@ export default function LandingPage() {
         <Hero />
         <ProblemSolution />
         <ServicePreview />
-        <Features />
         <Pricing />
         <FAQ />
         <Contact />
