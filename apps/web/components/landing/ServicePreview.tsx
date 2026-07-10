@@ -37,7 +37,7 @@ export function ServicePreview() {
   return (
     <section
       id="service-preview"
-      className="connect-section relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-16 sm:px-10 sm:py-28"
+      className="connect-section relative mx-auto w-full max-w-7xl scroll-mt-28 px-8 py-16 sm:px-10 sm:py-28"
     >
       <div aria-hidden className="pointer-events-none absolute -left-20 top-24 size-64 rounded-full border border-metal-border/10 bg-metal-rose/[0.025] blur-[1px]" />
       <div className="relative grid gap-8 sm:gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
