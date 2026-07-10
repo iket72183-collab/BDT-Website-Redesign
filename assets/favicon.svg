@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">BDT Talent Group</title>
+  <desc id="desc">BDT initials in a metallic frame on black</desc>
+  <defs>
+    <linearGradient id="frame" x1="48" y1="24" x2="464" y2="488" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8b0000" />
+      <stop offset="0.32" stop-color="#d8bd78" />
+      <stop offset="0.68" stop-color="#f1d78f" />
+      <stop offset="1" stop-color="#8b0000" />
+    </linearGradient>
+    <linearGradient id="metal" x1="128" y1="136" x2="382" y2="356" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffdf4" />
+      <stop offset="0.46" stop-color="#b8b6ae" />
+      <stop offset="0.7" stop-color="#f5f0e8" />
+      <stop offset="1" stop-color="#9b998f" />
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="496" height="496" rx="74" fill="#080808" />
+  <rect x="18" y="18" width="476" height="476" rx="64" fill="none" stroke="url(#frame)" stroke-width="12" />
+  <text x="256" y="302" fill="url(#metal)" font-family="Georgia" font-size="190" font-weight="700" letter-spacing="-12" text-anchor="middle">BDT</text>
+  <path d="M104 354h114m76 0h114" stroke="url(#metal)" stroke-width="14" stroke-linecap="square" />
+  <rect x="238" y="336" width="36" height="36" transform="rotate(45 256 354)" fill="url(#metal)" />
+</svg>
