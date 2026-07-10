@@ -81,7 +81,7 @@ export function Contact() {
       className="connect-section relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-16 sm:px-10 sm:py-28"
     >
       <Card framed className="connect-showcase relative grid gap-8 overflow-hidden border-metal-rose/35 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14 lg:p-12">
-        <div className="relative z-10">
+        <div data-reveal className="relative z-10">
           <div className="font-body text-caption uppercase tracking-label text-metal-rose">
             Get started
           </div>

@@ -41,7 +41,7 @@ export function ServicePreview() {
     >
       <div aria-hidden className="pointer-events-none absolute -left-20 top-24 size-64 rounded-full border border-metal-border/10 bg-metal-rose/[0.025] blur-[1px]" />
       <div className="relative grid gap-8 sm:gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-        <div className="lg:sticky lg:top-28 lg:pr-8">
+        <div data-reveal className="lg:sticky lg:top-28 lg:pr-8">
           <div className="font-body text-caption uppercase tracking-label text-metal-rose">
             Service preview
           </div>
@@ -54,20 +54,22 @@ export function ServicePreview() {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
+        <div data-reveal-group className="grid gap-4 sm:grid-cols-2 sm:gap-5">
           {services.map((service, index) => (
-            <Card
+            <div
               key={service.title}
-              hover
+              data-reveal
               className={
-                'service-visual-card group min-h-0 p-6 sm:p-7 ' +
+                'h-full ' +
                 (index === services.length - 1 ? 'sm:col-span-2' : '')
               }
             >
-              <CardEyebrow>{service.eyebrow}</CardEyebrow>
-              <CardTitle>{service.title}</CardTitle>
-              <CardBody>{service.body}</CardBody>
-            </Card>
+              <Card hover className="service-visual-card group h-full min-h-0 p-6 sm:p-7">
+                <CardEyebrow>{service.eyebrow}</CardEyebrow>
+                <CardTitle>{service.title}</CardTitle>
+                <CardBody>{service.body}</CardBody>
+              </Card>
+            </div>
           ))}
         </div>
       </div>

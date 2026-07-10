@@ -184,16 +184,24 @@ if (contactForm) {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
+document.querySelectorAll(".legal-page > h2, .legal-page > h2 + p").forEach((item) => {
+  item.classList.add("reveal");
+});
+
 const revealItems = Array.from(document.querySelectorAll(".reveal, .reveal-card"));
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+let revealObserver = null;
 
 document.querySelectorAll(".service-grid, .product-grid").forEach((group) => {
   group.querySelectorAll(".reveal, .reveal-card").forEach((item, index) => {
-    item.style.setProperty("--reveal-delay", `${Math.min(index * 70, 210)}ms`);
+    const step = window.innerWidth <= 640 ? 40 : 55;
+    const maximum = window.innerWidth <= 640 ? 80 : 165;
+    item.style.setProperty("--reveal-delay", `${Math.min(index * step, maximum)}ms`);
   });
 });
 
 const showAllRevealItems = () => {
+  revealObserver?.disconnect();
   document.documentElement.classList.remove("reveal-enabled");
   revealItems.forEach((item) => {
     item.classList.remove("reveal-pending");
@@ -202,7 +210,7 @@ const showAllRevealItems = () => {
 };
 
 const enableRevealAnimations = () => {
-  if (!revealItems.length || reduceMotion || !("IntersectionObserver" in window)) {
+  if (!revealItems.length || motionPreference.matches || !("IntersectionObserver" in window)) {
     showAllRevealItems();
     return;
   }
@@ -214,6 +222,7 @@ const enableRevealAnimations = () => {
 
     item.classList.add("reveal-pending");
     window.requestAnimationFrame(() => item.classList.add("is-visible"));
+    window.setTimeout(() => item.classList.add("is-visible"), 700);
   };
 
   const isInInitialRevealRange = (item) => {
@@ -224,21 +233,25 @@ const enableRevealAnimations = () => {
   const initiallyVisibleItems = revealItems.filter(isInInitialRevealRange);
   initiallyVisibleItems.forEach((item) => item.classList.add("reveal-pending"));
 
-  const observer = new IntersectionObserver(
+  revealObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          queueReveal(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
+      try {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            queueReveal(entry.target);
+            revealObserver?.unobserve(entry.target);
+          }
+        });
+      } catch {
+        showAllRevealItems();
+      }
     },
-    { threshold: 0.01, rootMargin: "0px 0px 20% 0px" }
+    { threshold: 0.04, rootMargin: "0px 0px -8% 0px" }
   );
 
   revealItems.forEach((item) => {
     if (!initiallyVisibleItems.includes(item)) {
-      observer.observe(item);
+      revealObserver.observe(item);
     }
   });
 
@@ -247,10 +260,27 @@ const enableRevealAnimations = () => {
   window.requestAnimationFrame(() => {
     initiallyVisibleItems.forEach((item) => item.classList.add("is-visible"));
   });
+
+  window.addEventListener("pageshow", () => {
+    revealItems.forEach((item) => {
+      if (!item.classList.contains("is-visible") && item.getBoundingClientRect().top < window.innerHeight) {
+        queueReveal(item);
+      }
+    });
+  }, { once: true });
 };
 
 try {
   enableRevealAnimations();
+  const handleMotionChange = (event) => {
+    if (event.matches) showAllRevealItems();
+  };
+
+  if (typeof motionPreference.addEventListener === "function") {
+    motionPreference.addEventListener("change", handleMotionChange);
+  } else {
+    motionPreference.addListener(handleMotionChange);
+  }
 } catch {
   showAllRevealItems();
 }

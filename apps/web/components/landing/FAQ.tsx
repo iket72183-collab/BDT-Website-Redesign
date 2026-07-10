@@ -44,7 +44,7 @@ export function FAQ() {
       className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
     >
       <div className="grid gap-7 sm:gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
-        <div className="lg:sticky lg:top-28">
+        <div data-reveal className="lg:sticky lg:top-28">
           <div className="font-body text-caption uppercase tracking-label text-metal-rose">
             FAQ
           </div>

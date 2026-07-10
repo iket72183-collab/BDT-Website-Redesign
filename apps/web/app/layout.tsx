@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
+import { ScrollReveal } from '@/components/ScrollReveal';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="min-h-screen bg-bg-base font-body text-ink-primary antialiased">
+        <ScrollReveal />
         {children}
       </body>
     </html>

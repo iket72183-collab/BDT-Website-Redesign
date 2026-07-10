@@ -21,7 +21,7 @@ export default function TermsPage() {
   return (
     <>
       <SiteNav />
-      <main className="mx-auto w-full max-w-3xl px-5 pb-16 pt-28 sm:px-10 sm:pt-32">
+      <main data-reveal-sections className="mx-auto w-full max-w-3xl px-5 pb-16 pt-28 sm:px-10 sm:pt-32">
         <div className="font-body text-caption uppercase tracking-label text-metal-rose">
           Legal
         </div>

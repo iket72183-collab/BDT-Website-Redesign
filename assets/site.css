@@ -493,16 +493,14 @@ textarea:focus-visible {
   transform: translate3d(0, calc(var(--reveal-y) + var(--hover-y)), 0);
   transform-origin: center;
   transition:
-    opacity 720ms var(--reveal-ease),
-    filter 720ms var(--reveal-ease),
-    transform 720ms var(--reveal-ease);
+    opacity 480ms var(--reveal-ease),
+    transform 480ms var(--reveal-ease);
 }
 
 .reveal-enabled .reveal.reveal-pending,
 .reveal-enabled .reveal-card.reveal-pending {
-  --reveal-y: 20px;
+  --reveal-y: 14px;
   opacity: 0;
-  filter: saturate(0.92);
   transition-delay: var(--reveal-delay);
   will-change: opacity, transform;
 }
@@ -511,8 +509,19 @@ textarea:focus-visible {
 .reveal-enabled .reveal-card.reveal-pending.is-visible {
   --reveal-y: 0px;
   opacity: 1;
-  filter: none;
   will-change: auto;
+}
+
+@media (max-width: 640px) {
+  .reveal,
+  .reveal-card {
+    transition-duration: 380ms;
+  }
+
+  .reveal-enabled .reveal.reveal-pending,
+  .reveal-enabled .reveal-card.reveal-pending {
+    --reveal-y: 12px;
+  }
 }
 
 .section-card,
