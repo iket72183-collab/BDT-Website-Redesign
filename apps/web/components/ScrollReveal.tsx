@@ -61,7 +61,7 @@ export function ScrollReveal() {
           if (!item.classList.contains('reveal-pending')) return;
 
           const rect = item.getBoundingClientRect();
-          if (rect.top < window.innerHeight * 1.02) reveal(item);
+          if (rect.top < window.innerHeight * 0.96) reveal(item);
         });
       } catch {
         showAll();
@@ -84,8 +84,8 @@ export function ScrollReveal() {
       document.querySelectorAll<HTMLElement>(GROUP_SELECTOR).forEach((group) => {
         const groupItems = Array.from(group.querySelectorAll<HTMLElement>(REVEAL_SELECTOR));
         groupItems.forEach((item, index) => {
-          const step = mobileViewport ? 40 : 55;
-          const maximum = mobileViewport ? 80 : 165;
+          const step = mobileViewport ? 50 : 55;
+          const maximum = mobileViewport ? 100 : 165;
           item.style.setProperty('--reveal-delay', `${Math.min(index * step, maximum)}ms`);
         });
       });
@@ -118,7 +118,7 @@ export function ScrollReveal() {
             showAll();
           }
         },
-        { threshold: 0.04, rootMargin: '0px 0px -8% 0px' },
+        { threshold: 0.04, rootMargin: '0px 0px -12% 0px' },
       );
 
       pendingItems.forEach((item) => observer?.observe(item));

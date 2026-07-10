@@ -220,21 +220,26 @@
 
   [data-reveal] {
     --reveal-delay: 0ms;
+    --reveal-duration: 460ms;
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
 
   .reveal-active [data-reveal] {
     transition:
-      opacity 460ms cubic-bezier(0.16, 1, 0.3, 1),
-      transform 460ms cubic-bezier(0.16, 1, 0.3, 1);
+      opacity var(--reveal-duration) cubic-bezier(0.16, 1, 0.3, 1),
+      transform var(--reveal-duration) cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--reveal-delay);
   }
 
   .reveal-active [data-reveal].reveal-pending {
     opacity: 0;
-    transform: translate3d(0, 14px, 0);
+    transform: translate3d(0, 16px, 0);
     will-change: opacity, transform;
+  }
+
+  .reveal-active [data-reveal].reveal-pending:not(.is-revealed) {
+    transition: none;
   }
 
   .reveal-active [data-reveal].reveal-pending.is-revealed,
@@ -242,6 +247,13 @@
     opacity: 1;
     transform: translate3d(0, 0, 0);
     will-change: auto;
+  }
+
+  .reveal-active [data-reveal].reveal-pending.is-revealed {
+    transition:
+      opacity var(--reveal-duration) cubic-bezier(0.16, 1, 0.3, 1),
+      transform var(--reveal-duration) cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay);
   }
 
   .service-visual-card {
@@ -289,11 +301,11 @@
   }
 
   .reveal-active [data-reveal] {
-    transition-duration: 380ms;
+    --reveal-duration: 440ms;
   }
 
   .reveal-active [data-reveal].reveal-pending {
-    transform: translate3d(0, 12px, 0);
+    transform: translate3d(0, 16px, 0);
   }
 }
 

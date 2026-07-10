@@ -194,8 +194,8 @@ let revealObserver = null;
 
 document.querySelectorAll(".service-grid, .product-grid").forEach((group) => {
   group.querySelectorAll(".reveal, .reveal-card").forEach((item, index) => {
-    const step = window.innerWidth <= 640 ? 40 : 55;
-    const maximum = window.innerWidth <= 640 ? 80 : 165;
+    const step = window.innerWidth <= 640 ? 50 : 55;
+    const maximum = window.innerWidth <= 640 ? 100 : 165;
     item.style.setProperty("--reveal-delay", `${Math.min(index * step, maximum)}ms`);
   });
 });
@@ -215,59 +215,74 @@ const enableRevealAnimations = () => {
     return;
   }
 
-  const queueReveal = (item) => {
+  let scrollFrame = 0;
+
+  const revealItem = (item) => {
     if (item.classList.contains("is-visible")) {
       return;
     }
 
-    item.classList.add("reveal-pending");
-    window.requestAnimationFrame(() => item.classList.add("is-visible"));
-    window.setTimeout(() => item.classList.add("is-visible"), 700);
+    item.classList.add("is-visible");
+    revealObserver?.unobserve(item);
   };
 
-  const isInInitialRevealRange = (item) => {
+  const hasAlreadyReached = (item) => {
     const rect = item.getBoundingClientRect();
-    return rect.top < window.innerHeight * 1.08 && rect.bottom > -window.innerHeight * 0.08;
+    return rect.bottom < 0 || rect.top < window.innerHeight * 0.88;
   };
 
-  const initiallyVisibleItems = revealItems.filter(isInInitialRevealRange);
-  initiallyVisibleItems.forEach((item) => item.classList.add("reveal-pending"));
+  const pendingItems = [];
+  revealItems.forEach((item) => {
+    if (hasAlreadyReached(item)) {
+      item.classList.add("is-visible");
+    } else {
+      item.classList.add("reveal-pending");
+      pendingItems.push(item);
+    }
+  });
+
+  const revealReachedItems = () => {
+    scrollFrame = 0;
+
+    try {
+      pendingItems.forEach((item) => {
+        if (item.classList.contains("is-visible")) return;
+        if (item.getBoundingClientRect().top < window.innerHeight * 0.96) {
+          revealItem(item);
+        }
+      });
+    } catch {
+      showAllRevealItems();
+    }
+  };
+
+  const scheduleReachedCheck = () => {
+    if (scrollFrame) return;
+    scrollFrame = window.requestAnimationFrame(revealReachedItems);
+  };
 
   revealObserver = new IntersectionObserver(
     (entries) => {
       try {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            queueReveal(entry.target);
-            revealObserver?.unobserve(entry.target);
+            revealItem(entry.target);
           }
         });
       } catch {
         showAllRevealItems();
       }
     },
-    { threshold: 0.04, rootMargin: "0px 0px -8% 0px" }
+    { threshold: 0.04, rootMargin: "0px 0px -12% 0px" }
   );
 
-  revealItems.forEach((item) => {
-    if (!initiallyVisibleItems.includes(item)) {
-      revealObserver.observe(item);
-    }
-  });
+  pendingItems.forEach((item) => revealObserver.observe(item));
 
   // The enhancement class is added only after every observer and fallback is ready.
   document.documentElement.classList.add("reveal-enabled");
-  window.requestAnimationFrame(() => {
-    initiallyVisibleItems.forEach((item) => item.classList.add("is-visible"));
-  });
-
-  window.addEventListener("pageshow", () => {
-    revealItems.forEach((item) => {
-      if (!item.classList.contains("is-visible") && item.getBoundingClientRect().top < window.innerHeight) {
-        queueReveal(item);
-      }
-    });
-  }, { once: true });
+  window.addEventListener("scroll", scheduleReachedCheck, { passive: true });
+  window.addEventListener("pageshow", scheduleReachedCheck);
+  scheduleReachedCheck();
 };
 
 try {

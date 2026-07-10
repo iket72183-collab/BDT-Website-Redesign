@@ -489,17 +489,18 @@ textarea:focus-visible {
   --reveal-y: 0px;
   --hover-y: 0px;
   --reveal-delay: 0ms;
+  --reveal-duration: 480ms;
   opacity: 1;
   transform: translate3d(0, calc(var(--reveal-y) + var(--hover-y)), 0);
   transform-origin: center;
   transition:
-    opacity 480ms var(--reveal-ease),
-    transform 480ms var(--reveal-ease);
+    opacity var(--reveal-duration) var(--reveal-ease),
+    transform var(--reveal-duration) var(--reveal-ease);
 }
 
 .reveal-enabled .reveal.reveal-pending,
 .reveal-enabled .reveal-card.reveal-pending {
-  --reveal-y: 14px;
+  --reveal-y: 16px;
   opacity: 0;
   transition-delay: var(--reveal-delay);
   will-change: opacity, transform;
@@ -515,12 +516,12 @@ textarea:focus-visible {
 @media (max-width: 640px) {
   .reveal,
   .reveal-card {
-    transition-duration: 380ms;
+    --reveal-duration: 440ms;
   }
 
   .reveal-enabled .reveal.reveal-pending,
   .reveal-enabled .reveal-card.reveal-pending {
-    --reveal-y: 12px;
+    --reveal-y: 16px;
   }
 }
 
@@ -611,6 +612,22 @@ textarea:focus-visible {
     border-color 220ms ease,
     background 220ms ease,
     box-shadow 260ms ease;
+}
+
+.reveal-enabled .reveal.reveal-pending:not(.is-visible),
+.reveal-enabled .reveal-card.reveal-pending:not(.is-visible) {
+  transition: none;
+}
+
+.reveal-enabled .reveal.reveal-pending.is-visible,
+.reveal-enabled .reveal-card.reveal-pending.is-visible {
+  transition:
+    opacity var(--reveal-duration) var(--reveal-ease),
+    transform var(--reveal-duration) var(--reveal-ease),
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 260ms ease;
+  transition-delay: var(--reveal-delay);
 }
 
 .section-card:hover,
