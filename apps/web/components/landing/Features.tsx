@@ -234,8 +234,9 @@ export function Features() {
   return (
     <section
       id="features"
-      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
+      className="connect-section relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-16 sm:px-10 sm:py-28"
     >
+      <div aria-hidden className="pointer-events-none absolute inset-x-[12%] top-[48%] hidden h-px bg-gradient-to-r from-transparent via-metal-border/25 to-transparent lg:block" />
       <div className="mx-auto max-w-3xl text-center">
         <div className="font-body text-caption uppercase tracking-label text-metal-rose">
           What&apos;s on retainer
@@ -246,11 +247,18 @@ export function Features() {
         </h2>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:mt-16 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map((f) => (
-          <Card key={f.title} hover className="group flex flex-col">
+      <div className="relative mt-8 grid gap-4 sm:mt-16 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {features.map((f, index) => (
+          <Card
+            key={f.title}
+            hover
+            className={
+              'service-visual-card group flex min-h-[23rem] flex-col justify-between overflow-hidden ' +
+              (index % 2 === 1 ? 'lg:translate-y-8' : '')
+            }
+          >
             <IconFrame>{f.icon}</IconFrame>
-            <div className="mt-6">
+            <div className="mt-10">
               <CardEyebrow>{f.eyebrow}</CardEyebrow>
               <CardTitle>{f.title}</CardTitle>
               <CardBody>{f.body}</CardBody>

@@ -30,8 +30,9 @@ export function Pricing() {
   return (
     <section
       id="plans"
-      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
+      className="connect-section relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-16 sm:px-10 sm:py-28"
     >
+      <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 size-[34rem] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-metal-rose/[0.035] blur-3xl" />
       <div className="mx-auto max-w-3xl text-center">
         <div className="font-body text-caption uppercase tracking-label text-metal-rose">
           Plans
@@ -45,14 +46,15 @@ export function Pricing() {
         </p>
       </div>
 
-      <div className="mx-auto mt-8 grid max-w-5xl items-stretch gap-4 sm:mt-16 sm:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="relative mx-auto mt-8 grid max-w-5xl items-stretch gap-4 sm:mt-16 sm:gap-6 lg:grid-cols-[1.08fr_0.92fr]">
         {tiers.map((t) => (
           <Card
             key={t.name}
             framed
             hover
-            className="flex h-full flex-col shadow-glow-strong lg:scale-[1.02]"
+            className="service-visual-card flex h-full flex-col overflow-hidden border-metal-rose/45 shadow-glow-strong lg:scale-[1.035]"
           >
+            <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full border border-metal-rose/20 bg-metal-rose/[0.035] shadow-glow-strong" />
             <CardEyebrow>Plan</CardEyebrow>
             <CardTitle>{t.name}</CardTitle>
             <p className="mt-2 font-body text-body-sm leading-relaxed text-ink-muted sm:text-body-md">
@@ -104,7 +106,7 @@ export function Pricing() {
           </Card>
         ))}
 
-        <Card hover className="relative flex h-full flex-col overflow-hidden">
+        <Card hover className="service-visual-card relative flex h-full flex-col overflow-hidden lg:my-4">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-metal-rose/70 to-transparent"

@@ -78,10 +78,10 @@ export function Contact() {
   return (
     <section
       id="connect-contact"
-      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-14 sm:px-10 sm:py-28"
+      className="connect-section relative mx-auto w-full max-w-7xl scroll-mt-28 px-5 py-16 sm:px-10 sm:py-28"
     >
-      <Card framed className="grid gap-8 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
-        <div>
+      <Card framed className="connect-showcase relative grid gap-8 overflow-hidden border-metal-rose/35 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14 lg:p-12">
+        <div className="relative z-10">
           <div className="font-body text-caption uppercase tracking-label text-metal-rose">
             Get started
           </div>
@@ -106,7 +106,7 @@ export function Contact() {
         <form
           action={formspreeEndpoint}
           method="POST"
-          className="grid gap-4"
+          className="relative z-10 grid gap-4 rounded-2xl border border-metal-border/20 bg-bg-inset/45 p-4 shadow-card backdrop-blur-md sm:p-6"
           onSubmit={handleSubmit}
         >
           <input type="hidden" name="_subject" value="BDT Connect Premium inquiry" />

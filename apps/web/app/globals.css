@@ -31,9 +31,46 @@
   body {
     background: var(--bdt-bg-base);
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 168, 130, 0.10), transparent 60%),
-      radial-gradient(ellipse 60% 40% at 100% 50%, rgba(201, 168, 130, 0.04), transparent 60%);
+      radial-gradient(ellipse 90% 52% at 10% -8%, rgba(201, 168, 130, 0.16), transparent 58%),
+      radial-gradient(ellipse 70% 45% at 100% 42%, rgba(212, 175, 122, 0.07), transparent 62%),
+      linear-gradient(
+        180deg,
+        var(--bdt-bg-base) 0%,
+        color-mix(in srgb, var(--bdt-bg-base) 92%, var(--bdt-metal-deep)) 48%,
+        var(--bdt-bg-base) 100%
+      );
     font-family: var(--bdt-font-body);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.28;
+    background-image:
+      linear-gradient(rgba(201, 168, 130, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 168, 130, 0.04) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(to bottom, black, transparent 82%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.16;
+    background-image: repeating-linear-gradient(
+      112deg,
+      transparent 0,
+      transparent 4px,
+      rgba(245, 240, 232, 0.016) 5px,
+      transparent 6px
+    );
+    mix-blend-mode: soft-light;
   }
 
   ::selection {
@@ -78,10 +115,166 @@
 
   /* Frosted glass surface used by all cards. Layered over a dark page. */
   .glass {
-    background: linear-gradient(180deg, rgba(22, 22, 22, 0.7), rgba(17, 17, 17, 0.6));
+    background:
+      linear-gradient(145deg, rgba(245, 240, 232, 0.035), transparent 38%),
+      linear-gradient(180deg, rgba(22, 22, 22, 0.82), rgba(12, 12, 12, 0.72));
     backdrop-filter: blur(14px) saturate(120%);
     -webkit-backdrop-filter: blur(14px) saturate(120%);
     border: 1px solid rgba(139, 115, 85, 0.25);
+  }
+
+  .connect-section,
+  #faq {
+    isolation: isolate;
+  }
+
+  .connect-section::before,
+  #faq::before {
+    content: '';
+    position: absolute;
+    inset: 0 1.25rem;
+    z-index: -2;
+    border-top: 1px solid rgba(139, 115, 85, 0.18);
+    border-radius: 2rem;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(201, 168, 130, 0.075), transparent 26%),
+      linear-gradient(180deg, rgba(22, 22, 22, 0.2), transparent 28%);
+  }
+
+  .connect-section::after,
+  #faq::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -1px;
+    z-index: -1;
+    width: min(18rem, 42vw);
+    height: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, rgba(232, 212, 168, 0.72), transparent);
+    box-shadow: 0 0 24px rgba(201, 168, 130, 0.34);
+  }
+
+  .connect-hero-stage {
+    background:
+      linear-gradient(90deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.72)),
+      radial-gradient(circle at 76% 46%, rgba(201, 168, 130, 0.15), transparent 22%);
+  }
+
+  .connect-showcase {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(145deg, rgba(245, 240, 232, 0.06), transparent 34%),
+      radial-gradient(circle at 50% 30%, rgba(201, 168, 130, 0.16), transparent 48%),
+      rgba(12, 12, 12, 0.84);
+    box-shadow:
+      inset 0 1px 0 rgba(245, 240, 232, 0.08),
+      0 32px 90px rgba(0, 0, 0, 0.48),
+      0 0 70px rgba(201, 168, 130, 0.08);
+  }
+
+  .connect-showcase::before,
+  .connect-showcase::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border: 1px solid rgba(201, 168, 130, 0.18);
+    border-radius: 50%;
+  }
+
+  .connect-showcase::before {
+    inset: -18% 9% 24%;
+    box-shadow:
+      0 0 0 38px rgba(201, 168, 130, 0.025),
+      0 0 0 76px rgba(201, 168, 130, 0.018);
+  }
+
+  .connect-showcase::after {
+    width: 12rem;
+    height: 12rem;
+    right: -4.5rem;
+    bottom: -4rem;
+    border-color: rgba(212, 175, 122, 0.28);
+  }
+
+  .connect-signal {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .connect-signal::after {
+    content: '';
+    position: absolute;
+    inset: auto 1rem 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201, 168, 130, 0.78), transparent);
+    transform: scaleX(0.34);
+    transform-origin: left;
+    transition: transform 420ms var(--bdt-ease-base);
+  }
+
+  .connect-signal:hover::after {
+    transform: scaleX(1);
+  }
+
+  .service-icon-frame {
+    position: relative;
+    display: grid;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    border: 1px solid rgba(139, 115, 85, 0.38);
+    border-radius: 0.9rem;
+    color: var(--bdt-metal-rose);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(232, 212, 168, 0.2), transparent 42%),
+      rgba(8, 8, 8, 0.72);
+    box-shadow: inset 0 1px 0 rgba(245, 240, 232, 0.08), 0 0 22px rgba(201, 168, 130, 0.09);
+  }
+
+  .service-visual-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-visual-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(135deg, rgba(201, 168, 130, 0.075), transparent 34%),
+      radial-gradient(circle at 100% 0%, rgba(212, 175, 122, 0.08), transparent 31%);
+    opacity: 0.72;
+    transition: opacity 300ms var(--bdt-ease-base);
+  }
+
+  .service-visual-card:hover::before {
+    opacity: 1;
+  }
+
+  .service-visual-card > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@media (min-width: 640px) {
+  .connect-section::before,
+  #faq::before {
+    inset-inline: 2.5rem;
+  }
+}
+
+@media (max-width: 639px) {
+  body::before {
+    background-size: 44px 44px;
+  }
+
+  .connect-section::before,
+  #faq::before {
+    border-radius: 1.4rem;
   }
 }
 
