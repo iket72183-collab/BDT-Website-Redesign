@@ -111,9 +111,15 @@ export function Contact() {
         >
           <input type="hidden" name="_subject" value="BDT Connect Premium inquiry" />
           <input type="hidden" name="inquiryType" value="bdt-connect-premium" />
-          <label className="hidden">
+          <label className="hidden" aria-hidden="true">
             Company Name
-            <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" />
+            <input
+              type="text"
+              name="_gotcha"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
           </label>
 
           <div className="grid gap-4 sm:grid-cols-2">

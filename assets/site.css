@@ -498,17 +498,17 @@ textarea:focus-visible {
     transform 720ms var(--reveal-ease);
 }
 
-.js .reveal,
-.js .reveal-card {
+.reveal-enabled .reveal.reveal-pending,
+.reveal-enabled .reveal-card.reveal-pending {
   --reveal-y: 20px;
-  opacity: 0;
+  opacity: 0.82;
   filter: saturate(0.92);
   transition-delay: var(--reveal-delay);
   will-change: opacity, transform;
 }
 
-.js .reveal.is-visible,
-.js .reveal-card.is-visible {
+.reveal-enabled .reveal.reveal-pending.is-visible,
+.reveal-enabled .reveal-card.reveal-pending.is-visible {
   --reveal-y: 0px;
   opacity: 1;
   filter: none;
@@ -1184,8 +1184,8 @@ textarea:focus-visible {
     animation: none !important;
   }
 
-  .js .reveal,
-  .js .reveal-card {
+  .reveal-enabled .reveal,
+  .reveal-enabled .reveal-card {
     --reveal-y: 0px;
     opacity: 1;
     filter: none;

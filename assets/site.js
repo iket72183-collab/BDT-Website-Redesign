@@ -1,5 +1,3 @@
-document.documentElement.classList.add("js");
-
 const year = document.getElementById("current-year");
 if (year) {
   year.textContent = String(new Date().getFullYear());
@@ -195,62 +193,64 @@ document.querySelectorAll(".service-grid, .product-grid").forEach((group) => {
   });
 });
 
-if ("IntersectionObserver" in window && !reduceMotion) {
-  const revealElement = (item) => {
+const showAllRevealItems = () => {
+  document.documentElement.classList.remove("reveal-enabled");
+  revealItems.forEach((item) => {
+    item.classList.remove("reveal-pending");
     item.classList.add("is-visible");
+  });
+};
+
+const enableRevealAnimations = () => {
+  if (!revealItems.length || reduceMotion || !("IntersectionObserver" in window)) {
+    showAllRevealItems();
+    return;
+  }
+
+  const queueReveal = (item) => {
+    if (item.classList.contains("is-visible")) {
+      return;
+    }
+
+    item.classList.add("reveal-pending");
+    window.requestAnimationFrame(() => item.classList.add("is-visible"));
   };
 
-  const isInRevealRange = (item) => {
+  const isInInitialRevealRange = (item) => {
     const rect = item.getBoundingClientRect();
-    return rect.top < window.innerHeight * 0.92 && rect.bottom > window.innerHeight * 0.08;
+    return rect.top < window.innerHeight * 1.08 && rect.bottom > -window.innerHeight * 0.08;
   };
+
+  const initiallyVisibleItems = revealItems.filter(isInInitialRevealRange);
+  initiallyVisibleItems.forEach((item) => item.classList.add("reveal-pending"));
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          revealElement(entry.target);
+          queueReveal(entry.target);
           observer.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.14, rootMargin: "0px 0px -10% 0px" }
+    { threshold: 0.01, rootMargin: "0px 0px 20% 0px" }
   );
 
-  const revealVisibleItems = () => {
-    revealItems.forEach((item) => {
-      if (!item.classList.contains("is-visible") && isInRevealRange(item)) {
-        revealElement(item);
-        observer.unobserve(item);
-      }
-    });
-  };
-
   revealItems.forEach((item) => {
-    if (isInRevealRange(item)) {
-      revealElement(item);
-    } else {
+    if (!initiallyVisibleItems.includes(item)) {
       observer.observe(item);
     }
   });
 
-  let revealTicking = false;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (revealTicking) {
-        return;
-      }
+  // The enhancement class is added only after every observer and fallback is ready.
+  document.documentElement.classList.add("reveal-enabled");
+  window.requestAnimationFrame(() => {
+    initiallyVisibleItems.forEach((item) => item.classList.add("is-visible"));
+  });
+};
 
-      revealTicking = true;
-      window.requestAnimationFrame(() => {
-        revealVisibleItems();
-        revealTicking = false;
-      });
-    },
-    { passive: true }
-  );
-  window.addEventListener("load", revealVisibleItems, { once: true });
-} else {
-  revealItems.forEach((item) => item.classList.add("is-visible"));
+try {
+  enableRevealAnimations();
+} catch {
+  showAllRevealItems();
 }
