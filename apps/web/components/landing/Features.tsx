@@ -11,7 +11,7 @@ const iconStroke = {
 function IconFrame({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className="mx-auto grid size-16 place-items-center rounded-xl border border-metal-border/35 bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,122,0.20),rgba(17,17,17,0.62)_58%,rgba(8,8,8,0.88))] shadow-glow transition-[border-color,box-shadow,transform] duration-300 ease-[var(--bdt-ease-base)] group-hover:-translate-y-0.5 group-hover:border-metal-rose/55 group-hover:shadow-glow-strong sm:size-[4.5rem]"
+      className="grid size-16 place-items-center rounded-xl border border-metal-border/35 bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,122,0.20),rgba(17,17,17,0.62)_58%,rgba(8,8,8,0.88))] shadow-glow transition-[border-color,box-shadow,transform] duration-300 ease-[var(--bdt-ease-base)] group-hover:-translate-y-0.5 group-hover:border-metal-rose/55 group-hover:shadow-glow-strong sm:size-[4.5rem]"
       aria-hidden
     >
       {children}
@@ -253,12 +253,12 @@ export function Features() {
             key={f.title}
             hover
             className={
-              'service-visual-card group flex min-h-[23rem] flex-col justify-between overflow-hidden ' +
+              'service-visual-card group flex flex-col overflow-hidden ' +
               (index % 2 === 1 ? 'lg:translate-y-8' : '')
             }
           >
             <IconFrame>{f.icon}</IconFrame>
-            <div className="mt-10">
+            <div className="mt-7 sm:mt-8">
               <CardEyebrow>{f.eyebrow}</CardEyebrow>
               <CardTitle>{f.title}</CardTitle>
               <CardBody>{f.body}</CardBody>

@@ -112,14 +112,14 @@ export function ServicePreview() {
               key={service.title}
               hover
               className={
-                'service-visual-card group min-h-[16rem] p-6 sm:p-7 ' +
+                'service-visual-card group min-h-0 p-6 sm:min-h-[16rem] sm:p-7 ' +
                 (index === services.length - 1 ? 'sm:col-span-2 sm:min-h-0 sm:grid sm:grid-cols-[auto_1fr] sm:items-center sm:gap-6' : '')
               }
             >
               <div className="service-icon-frame transition-[transform,border-color,box-shadow] duration-300 ease-[var(--bdt-ease-base)] group-hover:-translate-y-1 group-hover:border-metal-rose/60 group-hover:shadow-glow">
                 <ServiceIcon name={service.icon} />
               </div>
-              <div className={index === services.length - 1 ? 'mt-5 sm:mt-0' : 'mt-8'}>
+              <div className={index === services.length - 1 ? 'mt-5 sm:mt-0' : 'mt-6 sm:mt-8'}>
                 <CardEyebrow>{service.eyebrow}</CardEyebrow>
                 <CardTitle>{service.title}</CardTitle>
                 <CardBody>{service.body}</CardBody>
