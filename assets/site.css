@@ -286,9 +286,11 @@ textarea:focus-visible {
 }
 
 .hero-launch h1,
+.section-heading h1,
 .section-heading h2,
 .section-card h1,
 .section-card h2,
+.promo-copy h1,
 .promo-copy h2,
 .contact-grid h1,
 .contact-grid h2 {
@@ -729,8 +731,10 @@ textarea:focus-visible {
 }
 
 .section-heading h2,
+.section-heading h1,
 .section-card h1,
 .section-card h2,
+.promo-copy h1,
 .promo-copy h2,
 .contact-grid h1,
 .contact-grid h2 {
@@ -953,6 +957,42 @@ textarea:focus-visible {
 
 .contact-grid {
   align-items: start;
+}
+
+.availability-note,
+.support-response-note {
+  margin-top: 18px;
+  color: var(--soft) !important;
+  font-size: 0.82rem !important;
+}
+
+.support-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.support-faq h2 {
+  margin-bottom: 22px;
+}
+
+.support-faq details {
+  padding: 16px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.support-faq summary {
+  color: var(--gold-warm);
+  font-weight: 700;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.support-faq details p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
 }
 
 .contact-form span {
@@ -1347,7 +1387,8 @@ textarea:focus-visible {
 
   .two-column,
   .promo-grid,
-  .contact-grid {
+  .contact-grid,
+  .support-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1364,8 +1405,10 @@ textarea:focus-visible {
   }
 
   .section-heading h2,
+  .section-heading h1,
   .section-card h1,
   .section-card h2,
+  .promo-copy h1,
   .promo-copy h2,
   .contact-grid h1,
   .contact-grid h2 {
@@ -1500,8 +1543,10 @@ textarea:focus-visible {
   }
 
   .section-heading h2,
+  .section-heading h1,
   .section-card h1,
   .section-card h2,
+  .promo-copy h1,
   .promo-copy h2,
   .contact-grid h1,
   .contact-grid h2,
