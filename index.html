@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/site.css?v=20260710-5" />
+  <link rel="stylesheet" href="./assets/site.css?v=20260802-1" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -266,10 +266,17 @@
       </div>
       <div class="product-grid">
         <article class="product-card reveal-card">
-          <img class="product-banner" src="./assets/products/aight-bet-banner.jpg" alt="Aight Bet banner with illuminated purple crown logo" width="768" height="428" loading="lazy" decoding="async" />
+          <picture class="product-banner-picture">
+            <source
+              type="image/webp"
+              srcset="./assets/products/runit-bet-banner-800.webp 800w, ./assets/products/runit-bet-banner-1600.webp 1600w"
+              sizes="(max-width: 640px) calc(100vw - 68px), 500px"
+            />
+            <img class="product-banner" src="./assets/products/runit-bet-banner.png" alt="Run It Bet banner with Las Vegas casino imagery and Safe and Risk pick odds" width="1916" height="821" loading="lazy" decoding="async" />
+          </picture>
           <p class="eyebrow">Concept</p>
-          <h3>Aight Bet</h3>
-          <p>A sports culture concept in development with a compliance-aware product path.</p>
+          <h3>Run It Bet</h3>
+          <p>Run It Bet will be a live sports consulting website featuring game analysis, informed picks, and prediction-market coverage.</p>
         </article>
         <article class="product-card featured reveal-card">
           <a class="product-banner-link" href="/connect/#service-preview" aria-label="View the BDT Connect service preview">
