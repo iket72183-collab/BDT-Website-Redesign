@@ -859,6 +859,11 @@ textarea:focus-visible {
   transition: border-color 220ms ease, box-shadow 280ms ease, filter 280ms ease;
 }
 
+.product-banner-picture {
+  display: block;
+  width: 100%;
+}
+
 .product-banner-link {
   display: block;
   border-radius: 8px;
