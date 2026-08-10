@@ -1,21 +1,14 @@
 name: Deploy
 
-# Fires after CI passes on a push to main. Triggers Railway redeploy for the
-# API + worker services. Vercel auto-deploys via its native GitHub integration
-# — no action needed here for the admin app.
+# Railway deployment is temporarily paused while BDT is frontend-only.
+# Keep this workflow manual so the deployment commands remain available and
+# automatic deployment can be restored when backend work resumes.
 on:
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy-api:
     name: Railway · API + worker
-    # Only run if CI passed AND the trigger was a push to main (not a PR).
-    if: |
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
