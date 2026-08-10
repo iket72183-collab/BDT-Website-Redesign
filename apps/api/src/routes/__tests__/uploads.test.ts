@@ -1,4 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import express, { type ErrorRequestHandler } from 'express';
+import type { AddressInfo } from 'node:net';
 import multer from 'multer';
 
 /**
@@ -30,7 +32,14 @@ vi.mock('../../services/uploadService.js', async (importOriginal) => {
 });
 
 import * as uploadService from '../../services/uploadService.js';
-import { fileFilter, mapUploadError, handleRequestAttachment, handleSignedUrl } from '../uploads.js';
+import {
+  acceptFile,
+  fileFilter,
+  handleRequestAttachment,
+  handleSignedUrl,
+  mapUploadError,
+  uploadLimits,
+} from '../uploads.js';
 import { requireRole } from '../../middleware/requireRole.js';
 import { requireSubscription } from '../../middleware/requireSubscription.js';
 import { HttpError } from '../../middleware/error.js';
@@ -38,6 +47,76 @@ import { HttpError } from '../../middleware/error.js';
 beforeEach(() => {
   vi.mocked(uploadService.uploadFile).mockReset();
   vi.mocked(uploadService.createSignedUrl).mockReset();
+});
+
+async function postMultipart(form: FormData): Promise<Response> {
+  const app = express();
+  app.post('/upload', acceptFile, (req, res) => {
+    res.status(200).json({ hasFile: Boolean(req.file) });
+  });
+  const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+    const uploadError = err as { status?: number; code?: string };
+    res.status(uploadError.status ?? 500).json({ code: uploadError.code });
+  };
+  app.use(errorHandler);
+
+  const server = await new Promise<ReturnType<typeof app.listen>>((resolve) => {
+    const listening = app.listen(0, () => resolve(listening));
+  });
+
+  try {
+    const { port } = server.address() as AddressInfo;
+    return await fetch(`http://127.0.0.1:${port}/upload`, {
+      method: 'POST',
+      body: form,
+    });
+  } finally {
+    await new Promise<void>((resolve, reject) => {
+      server.close((err) => (err ? reject(err) : resolve()));
+    });
+  }
+}
+
+describe('multipart limits', () => {
+  it('allows exactly one file and no text-field nesting', () => {
+    expect(uploadLimits).toMatchObject({
+      fileSize: 10 * 1024 * 1024,
+      files: 1,
+      fields: 0,
+      fieldNestingDepth: 0,
+      parts: 2,
+    });
+  });
+
+  it('accepts the expected one-file payload', async () => {
+    const form = new FormData();
+    form.append('file', new Blob(['image'], { type: 'image/png' }), 'image.png');
+
+    const response = await postMultipart(form);
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ hasFile: true });
+  });
+
+  it('rejects unexpected text fields', async () => {
+    const form = new FormData();
+    form.append('note', 'not accepted');
+
+    const response = await postMultipart(form);
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({ code: 'UPLOAD_ERROR' });
+  });
+
+  it('rejects nested field names', async () => {
+    const form = new FormData();
+    form.append('profile[details][name]', 'nested');
+
+    const response = await postMultipart(form);
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({ code: 'UPLOAD_ERROR' });
+  });
 });
 
 describe('fileFilter', () => {
