@@ -20,9 +20,19 @@ export const fileFilter: NonNullable<multer.Options['fileFilter']> = (_req, file
   else cb(new HttpError(415, 'Unsupported file type.', 'UNSUPPORTED_MEDIA_TYPE'));
 };
 
+export const uploadLimits: NonNullable<multer.Options['limits']> = {
+  fileSize: MAX_FILE_SIZE,
+  files: 1,
+  fields: 0,
+  fieldNestingDepth: 0,
+  // Busboy emits partsLimit when the counter reaches this value, so 2 allows
+  // the one expected file part and rejects any second part.
+  parts: 2,
+};
+
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: MAX_FILE_SIZE, files: 1 },
+  limits: uploadLimits,
   fileFilter,
 });
 
@@ -42,7 +52,7 @@ export function mapUploadError(err: unknown): unknown {
 }
 
 /** Run multer for the single `file` field, mapping its errors. */
-const acceptFile: RequestHandler = (req, res, next) => {
+export const acceptFile: RequestHandler = (req, res, next) => {
   upload.single('file')(req, res, (err: unknown) => {
     if (err) next(mapUploadError(err));
     else next();
